@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, ImageBackground, Dimensions, StyleSheet, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import {Text, ImageBackground, Dimensions, StyleSheet, View, Image, TextInput, TouchableOpacity, Alert} from 'react-native';
 import styles from './styles.js';
 export default class login extends React.Component
 {
@@ -7,7 +7,6 @@ export default class login extends React.Component
     {
         super()
         this.state={
-            username:'',
             email:'',
             password:'',
             width:'',
@@ -21,6 +20,19 @@ export default class login extends React.Component
         this.setState({height:Dimensions.get('window').height});
     }
 
+    setEmail(mail)
+    {
+        this.setState({email:mail});
+    }
+    setPass(pass)
+    {
+        this.setState({password:pass});
+    }
+
+    onSubmitPress()
+    {
+        Alert.alert(this.state.password);
+    }
     render()
     {
         return(
