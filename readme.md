@@ -35,3 +35,11 @@
 ```sh
    $ npm run dev
 ```
+
+## License
+
+[MIT License](http://www.opensource.org/licenses/mit-license.php)
+
+## Author
+
+[Khushboo](https://github.com/khushboo2803) ([khushboo.mca19.du@gmail.com](mailto:khushboo.mca19.du@gmail.com))
