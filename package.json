@@ -1,0 +1,30 @@
+{
+  "name": "stackhack-to-do-backend",
+  "version": "0.0.1",
+  "description": "backend functionality for to-do-list",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Khushboo2803/To-do-list.git"
+  },
+  "keywords": [
+    "to-do-list",
+    "stackhackv1"
+  ],
+  "author": "khushRohit",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Khushboo2803/To-do-list/issues"
+  },
+  "homepage": "https://github.com/Khushboo2803/To-do-list#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
