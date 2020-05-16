@@ -11,7 +11,7 @@ gmail: {
     backgroundColor:'mediumturquoise',
     marginLeft:'25%',
     paddingBottom:'10%',
-    marginTop:'40%',
+    marginTop:'23%',
     borderRadius:2,
     height: height*0.05,
     borderColor:'mediumturquoise'
@@ -23,7 +23,7 @@ email: {
     borderWidth: 3,
     marginLeft:'10%',
     borderRadius: 8,
-    marginTop:'40%',
+    marginTop:'45%',
     backgroundColor:'white'
 },
 user: {
@@ -41,7 +41,7 @@ submitButton: {
     height: height*0.06,
     borderWidth: 4,
     borderRadius: 9,
-    marginTop:'23%',
+    marginTop:'20%',
     marginLeft:'33%',
     backgroundColor:'dodgerblue',
     borderColor:'midnightblue',
@@ -52,6 +52,23 @@ icon:{
     width:30, 
     marginTop:6, 
     marginLeft:2
+},
+loginButton: {
+    width: width*0.35,
+    height: height*0.06,
+    borderWidth: 4,
+    borderRadius: 9,
+    marginTop:'2%',
+    marginLeft:'33%',
+    backgroundColor:'dodgerblue',
+    borderColor:'midnightblue',
+    flexDirection:'row'
+},
+text: {
+    fontSize:23, 
+    fontWeight:'bold', 
+    color:'mistyrose', 
+    fontFamily:'monospace'
 }
 
 });

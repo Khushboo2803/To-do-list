@@ -102,10 +102,21 @@ export default class signUp extends React.Component
                 <View style={styles.submitButton}>
                     
                     <TouchableOpacity onPress={()=>{this.onSubmitPress()}}>
-                        <Text style={{fontSize:23, fontWeight:'bold', color:'mistyrose', fontFamily:'monospace'}}>>>Submit </Text>
+                        <Text style={styles.text}>>>Submit </Text>
                     </TouchableOpacity>
                 </View>
+                <Text style={{
+                    marginLeft:'45%',
+                    fontFamily:'monospace',
+                    fontSize:16,
+                    color:'white'
+                }}>OR</Text>
 
+                <View style={styles.loginButton}>
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('login')}}>
+                        <Text style={styles.text}>>>Login </Text>
+                    </TouchableOpacity>
+                </View>
 
                 <View style={styles.gmail}>
                     <Image source={require('../assets/gmail.png')}
