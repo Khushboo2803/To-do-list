@@ -17,7 +17,7 @@
 - checkout to backend branch
 
 ```sh
-  $ git checkout backend
+    $ git checkout backend
 ```
 
 ## Installation
