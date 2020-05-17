@@ -1,9 +1,10 @@
 const reply = require('../response');
-const registerService = require('../services/registeration');
-const code = require('../response/codes')
-exports.register = async (req, res) => {
+const code = require('../response/codes');
+const verifyService = require('../services/verify');
+
+exports.verify = async (req, res) => {
     try {
-        const response = await registerService.register(req);
+        const response = await verifyService.verify(req)
         res.send(response);
     } catch (error) {
         if (error instanceof reply.errorResponse)
