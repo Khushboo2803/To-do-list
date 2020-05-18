@@ -20,9 +20,9 @@ exports.register = async (req) => {
         specialChars: false,
         upperCase: false
     });
-    //const sendMailtoUser = await sendEmail.sendOtp(register.email, otp);
-    const sendMailtoUser = true;
-    if (sendMailtoUser) {
+    const sendMailtoUser = await sendEmail.sendOtp(register.email, otp);
+    //const sendMailtoUser = true;
+    if (sendMailtoUser.response) {
         register.otp = otp;
         const doc = new userModel(register);
         const response = await doc.save();

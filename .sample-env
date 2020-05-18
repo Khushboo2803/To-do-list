@@ -1,3 +1,22 @@
 PORT = 5000
 
 DB=mongodb://localhost:27017/todolist
+
+
+#SMTP
+AUTHEMAIL=your mail id
+AUTHPASS= your mail id password
+SMTPPORT = port
+MAILHOST = smtp mail domain of sender
+MAILSENDER = your email id
+EMAILNAME = label/subject of your mail
+
+
+# sample SMTP for gmail
+# prior to this, gor gmil,  you need to enable allow less secure app access in your account settings
+# AUTHEMAIL= youremail@gmail.com
+# AUTHPASS= your password
+# SMTPPORT = 465
+# MAILHOST = smtp.gmail.com
+# MAILSENDER = youremail@gmail.com
+# EMAILNAME = To-do-List verification code ( for this project)
