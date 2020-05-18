@@ -4,18 +4,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 const height=Dimensions.get('window').height;
 const width=Dimensions.get('window').width;
 const styles=StyleSheet.create({
-gmail: {
-    flexDirection: 'row',
-    width: width*0.58,
-    borderWidth:2,
-    backgroundColor:'mediumturquoise',
-    marginLeft:'25%',
-    paddingBottom:'10%',
-    marginTop:'23%',
-    borderRadius:2,
-    height: height*0.05,
-    borderColor:'mediumturquoise'
-},
+
 email: {
     flexDirection:'row',
     height:height*0.07,

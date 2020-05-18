@@ -1,21 +1,34 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Dimensions, View, TouchableOpacity, Text, Alert,Image } from 'react-native';
+import { ImageBackground, StyleSheet, Dimensions, View, TouchableOpacity, Text, Alert,Image, Button, BackHandler } from 'react-native';
 import styles from './styles.js';
-import AccountManager from 'react-native-account-manager';
 import { TextInput } from 'react-native-gesture-handler';
+import fun from '../functions/fun';
+import Dialog, {
+    DialogTitle,
+    DialogContent,
+    DialogFooter,
+    DialogButton,
+    ScaleAnimation
+} from 'react-native-popup-dialog';
+
 export default class signUp extends React.Component
 {
     constructor(props)
     {
         super()
         this.state={
-            username:'',
+            username:null,
             email:'',
             password:'',
             width:'',
-            height: ''
+            height: '',
+            dialogBox: false,
+            otp: '',
+            resendBox: false
         };
     }
+    interval='';
+    i='';
     UNSAFE_componentWillMount()
     {
         this.setState({width: Dimensions.get('window').width});
@@ -40,9 +53,35 @@ export default class signUp extends React.Component
         this.setState({password:pass});
     }
 
-    onSubmitPress()
+    setOTP(otp)
     {
-        Alert.alert(this.state.password);
+        this.setState({otp:otp});
+    }
+
+    setTimer(i)
+    {
+        if(this.i==30)
+        {
+            this.setState({resendBox: false})
+        }
+        else if(this.i==0)
+        {
+            clearInterval(this.interval);
+            this.setState({resendBox: true})
+        }
+        console.log(this.i);
+        this.i=this.i-1;
+    }
+    onSubmitPress=async()=>
+    {   this.setState({resendBox: false});
+        if(await fun.signupValidation(this.state.email, this.state.password,this.state.username))
+        {  
+            this.setState({dialogBox: true});
+            this.i=30;
+            this.interval=setInterval(()=>{
+                this.setTimer(this.i);
+            }, 1000)
+        }
     }
     render()
     {
@@ -118,17 +157,80 @@ export default class signUp extends React.Component
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.gmail}>
-                    <Image source={require('../assets/gmail.png')}
-                    style={{height:35, width:35, borderRadius:15}}/>
+                <Dialog onTouchOutside={()=>{this.setState({dialogBox: true});
+                }}
+                width={0.9}
+                visible={this.state.dialogBox}
+                dialogAnimation={new ScaleAnimation()}
+                onHardwareBackPress={()=>{
+                    BackHandler.exitApp();
+                    clearInterval(this.interval);
+                    console.log('onHardwareBackPress');
+                    this.setState({dialogBox: false});
+                    return true;
+                }}
+                dialogTitle={
+                    <DialogTitle 
+                    title="Enter OTP"
+                    hasTitleBar={false}
+                />
+                }
+                actions={
+                    [
+                        <DialogButton
+                        text="DISMISS"
+                        onPress={()=>{
+                            this.setState({dialogBox: false});
+                        }}
+                        key="button-1"
+                        />,
+                    ]
+                }>
+                    <DialogContent>
+                        <View>
 
-                    <TouchableOpacity onPress={()=>{this.getDeviceMail()}}>
-                        <Text style={{
-                            fontSize:18,
-                            marginTop:3
-                        }}> Sign-up using gmail </Text>
-                    </TouchableOpacity>
-                </View>
+                            <TextInput
+                                placeholder="OTP is sent to your email                 "
+                                underlineColorAndroid="transparent"
+                                onChangeText={text=>this.setOTP(text)}
+                                defaultValue={this.state.otp}
+                                keyboardType='numeric'
+                                style={{
+                                    color: 'navy',
+                                    fontFamily: 'monospace'
+                                }}
+                            />
+                            
+                            <Button 
+                                title="Verify"
+                                onPress={()=>{
+                                    this.setState({dialogBox: false});
+                                    fun.verifyOTP(this.state.email, this.state.otp);
+                                    this.props.navigation.navigate('todo');
+                                }}
+                                key="button-1"
+                            />
+
+                        <View style={{
+                            marginLeft:'35%',
+                            marginTop:'5%'
+                        }}>
+                        {
+                            this.state.resendBox ? 
+                            <TouchableOpacity onPress={()=>{
+                                this.i=30;
+                                this.interval=setInterval(()=>{
+                                    this.setTimer(this.i);
+                                }, 1000)
+                            }}>
+                                <Text> Resend OTP </Text>
+                            </TouchableOpacity> : null     
+                        }
+                        </View>
+                        </View>
+                    </DialogContent>
+                </Dialog>
+                
                 </View>
             </ImageBackground>
         );
