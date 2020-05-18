@@ -14,12 +14,14 @@ const app = express();
 app.use(bodyParser.json())
 
 const routes = {
+    login: require('./routes/login'),
     register: require('./routes/registeration'),
     verify: require('./routes/verify')
 }
 
 app.use('/register', routes.register);
 app.use('/verify', routes.verify);
+app.use('/login', routes.login);
 app.use('*', (req, res) => {
     res.json({
         status: 'error',
