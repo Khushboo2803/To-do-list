@@ -3,6 +3,7 @@ const taskService = require('../services/task');
 const code = require('../response/codes')
 exports.getAllTask = async (req, res) => {
     try {
+        console.log('trying')
         const response = await taskService.allTask(req);
         res.send(response);
     } catch (error) {
@@ -71,4 +72,8 @@ exports.deleteTask = async (req, res) => {
         else
             res.send(new reply.errorResponse(code.CODE004, error.message, null));
     }
+}
+
+exports.notfound = async (req, res) => {
+    res.send(new reply.errorResponse(code.CODE004, 'invalid route', null));
 }
