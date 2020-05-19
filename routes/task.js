@@ -3,12 +3,12 @@ const router = express.Router();
 
 const taskController = require('../controller/task');
 
-router.use('/:author/update/:taskId', taskController.updateTask);
-router.use('/:author/delete/:taskId', taskController.deleteTask);
-router.use('/:author/completed', taskController.getCompletedTask);
-router.use('/:author/tasks', taskController.getCurrentTask);
-router.use('/:author/addtask', taskController.addTask);
-router.use('/:author', taskController.getAllTask);
+router.post('/:author/update/:taskId', taskController.updateTask);
+router.post('/:author/delete/:taskId', taskController.deleteTask);
+router.post('/:author/completed', taskController.getCompletedTask);
+router.post('/:author/tasks', taskController.getCurrentTask);
+router.post('/:author/addtask', taskController.addTask);
+router.post('/:author', taskController.getAllTask);
 router.use('*', taskController.notfound)
 //router.use('*', taskController.notfound);
 
