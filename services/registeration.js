@@ -29,8 +29,33 @@ exports.register = async (req) => {
         if (response)
             return new reply.successResponse(code.CODE002, 'sucessfully registerd', response)
         else
-            return new reply.errorResponse(code.CODE003, 'faile to save in db', null);
+            return new reply.errorResponse(code.CODE003, 'failed to save in db', null);
     }
     else
         return sendMailtoUser;
+}
+exports.resend = async (req) => {
+    const email = await req.body.email;
+    const user = await userModel.findOne({ email });
+    if (user) {
+        const otp = otpgenerator.generate(6, {
+            digits: true,
+            alphabets: false,
+            specialChars: false,
+            upperCase: false
+        });
+        const sendMailtoUser = await sendEmail.sendOtp(email, otp);
+        if (sendMailtoUser.response) {
+            const response = await userModel.updateOne({ email }, { $set: { otp: otp } });
+            if (response)
+                return new reply.successResponse(code.CODE002, 'otp resend successfully', null)
+            else
+                return new reply.errorResponse(code.CODE003, 'failed to resend otp', null);
+        }
+        else
+            return sendMailtoUser;
+    }
+    else
+        return new reply.errorResponse(code.CODE003, 'no such user exist', null);
+
 }

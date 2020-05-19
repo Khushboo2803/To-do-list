@@ -23,5 +23,8 @@ module.exports = mongoose.model('taskSchema', new Schema({
     author: {
         type: Schema.ObjectId,
         require: true
+    },
+    dueDate: {
+        type: Date
     }
 }), 'tasks')

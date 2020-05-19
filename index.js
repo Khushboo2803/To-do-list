@@ -16,12 +16,16 @@ app.use(bodyParser.json())
 const routes = {
     login: require('./routes/login'),
     register: require('./routes/registeration'),
-    verify: require('./routes/verify')
+    resend: require('./routes/resend'),
+    verify: require('./routes/verify'),
+    task: require('./routes/task')
 }
 
+app.use('/login', routes.login);
 app.use('/register', routes.register);
 app.use('/verify', routes.verify);
-app.use('/login', routes.login);
+app.use('/resend', routes.resend);
+app.use('/task', routes.task)
 app.use('*', (req, res) => {
     res.json({
         status: 'error',
