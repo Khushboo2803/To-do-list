@@ -30,6 +30,7 @@
 
 ## Running
 
+- Copy sample env file and rename it to `.env` and fill the corresponsing details.
 - To run server
 
 ```sh
