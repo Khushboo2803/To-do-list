@@ -1,6 +1,6 @@
 import React from 'react';
-import { ImageBackground, Dimensions, StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
-import { Card, PricingCard, ListItem, Icon } from 'react-native-elements';
+import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal } from 'react-native';
+import { Card, Icon, FormLabel } from 'react-native-elements';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
 export default class main extends React.Component {
@@ -8,7 +8,8 @@ export default class main extends React.Component {
         super(props);
         this.state = {
             users: [],
-            dropmenu: false
+            dropmenu: false,
+            showModal: true
         };
     }
 
@@ -44,6 +45,7 @@ export default class main extends React.Component {
 
     render() {
         return (
+
             <ImageBackground source={require('../assets/todo.png')}
                 style={{
                     height: Dimensions.get('screen').height,
@@ -109,16 +111,25 @@ export default class main extends React.Component {
                         }
                     </View>
                 </View>
-                <View style={{ display: "flex", position: "absolute", bottom: 50, right: 20, zIndex: 10 }}>
+                <View style={{ display: "flex", position: "absolute", bottom: 50, right: 20 }}>
                     <Icon
                         raised
                         name='plus'
                         type='font-awesome'
                         color='#f50'
-                        onPress={() => console.log('hello')}
+                        onPress={() => this.setState({ showModal: true })}
                     />
                 </View>
-
+                <Modal
+                    transparent={true}
+                    animationType={"fade"}
+                    visible={this.state.showModal}
+                    onRequestClose={() => this.setState({ showModal: false })}
+                >
+                    <Card title={'Add New Task'}>
+                        <FormLabel> Name</FormLabel>
+                    </Card>
+                </Modal>
             </ImageBackground>
         );
     }
