@@ -2,6 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const registerController = require('../controller/registeration');
-router.use('/', registerController.register)
-
+router.post('/', registerController.register)
+router.use('*', registerController.notfound);
 module.exports = router;

@@ -12,3 +12,6 @@ exports.resend = async (req, res) => {
             res.send(new reply.errorResponse(code.CODE004, error.message, null));
     }
 }
+exports.notfound = async (req, res) => {
+    res.send(new reply.errorResponse(code.CODE004, 'invalid path', null));
+}
