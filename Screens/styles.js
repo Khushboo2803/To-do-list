@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
     addButton: {
         display: "flex",
         position: "absolute",
-        bottom: 50,
-        right: 20
+        bottom: '10%',
+        right: '3%'
     }
 });
 export default styles;
