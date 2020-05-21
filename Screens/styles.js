@@ -58,7 +58,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'mistyrose',
         fontFamily: 'monospace'
+    },
+    addButton: {
+        display: "flex",
+        position: "absolute",
+        bottom: 50,
+        right: 20
     }
-
 });
 export default styles;

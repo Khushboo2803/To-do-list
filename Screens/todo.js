@@ -1,15 +1,16 @@
 import React from 'react';
-import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal } from 'react-native';
+import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker } from 'react-native';
 import { Card, Icon, FormLabel } from 'react-native-elements';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
-
+import styles from './styles'
 export default class main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             users: [],
             dropmenu: false,
-            showModal: true
+            showModal: true,
+            selectedValue: "java"
         };
     }
 
@@ -111,7 +112,7 @@ export default class main extends React.Component {
                         }
                     </View>
                 </View>
-                <View style={{ display: "flex", position: "absolute", bottom: 50, right: 20 }}>
+                <View style={styles.addButton}>
                     <Icon
                         raised
                         name='plus'
@@ -122,12 +123,26 @@ export default class main extends React.Component {
                 </View>
                 <Modal
                     transparent={true}
-                    animationType={"fade"}
+                    animationType={"slide"}
                     visible={this.state.showModal}
                     onRequestClose={() => this.setState({ showModal: false })}
+                    hardwareAccelerated={true}
                 >
-                    <Card title={'Add New Task'}>
-                        <FormLabel> Name</FormLabel>
+                    <Card title={'Add New Task'} style={{ borderRadius: 100, borderColor: "blue" }}>
+                        <View>
+                            <TextInput placeholder={'Task Heading'} style={{ borderColor: 'black', borderBottomWidth: 1, margin: 20 }} />
+                            <TextInput placeholder={'Task Details'} />
+                            <Picker
+                                selectedValue={this.state.selectedValue}
+                                style={{ height: 50, width: 200 }}
+                                onValueChange={(itemValue, itemIndex) => this.setState({ selectedValue: itemValue })}
+                            >
+                                <Picker.Item label="pyhton" value="python" />
+                                <Picker.Item label="Java" value="java" />
+                                <Picker.Item label="JavaScript" value="javascript" />
+                            </Picker>
+                            <Text>{this.state.selectedValue}</Text>
+                        </View>
                     </Card>
                 </Modal>
             </ImageBackground>
