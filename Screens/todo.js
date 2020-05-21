@@ -15,6 +15,11 @@ export default class main extends React.Component {
             taskHeading: '',
             selectedStatus: '',
             date:'',
+            isHeaderSet:false,
+            isDesSet: false,
+            isTypeSet: false,
+            isStatusSet: false,
+            isDateSet:false
         };
     }
 
@@ -148,25 +153,50 @@ export default class main extends React.Component {
                     }}
                     containerStyle={{
                         borderColor:'midnightblue',
-                        borderRadius: 7
+                        borderRadius: 7,
+                        borderWidth:1,
+                        
                     }}
                     >
+                        
                         <View>
+                            
                             {/* Task heading */}
                             <View style={{
                                 alignContent: 'center',
                                 alignItems: 'center',
                             }}>
                                 <TextInput 
-                                    placeholder="  Task heading            "
+                                    placeholder="  Task Heading            "
                                     underlineColorAndroid="rtransparent"
                                     onChangeText={text=>{this.changeTaskheading(text)}}
                                     defaultValue={this.state.taskHeading}
+                                    onFocus={()=>{this.setState({isHeaderSet: true});}}
                                     style={{
                                         fontFamily:'monospace',
                                         fontSize: 20
                                     }}
                                 />
+                                <View>
+                                {
+                                    this.state.isHeaderSet ? null :
+                                    <View style={{flexDirection:'row'}}>
+                                        <Icon
+                                            name='warning'
+                                            type='font-awesome'
+                                            color='red'
+                                            style={{
+                                                height:24,width:25
+                                            }}
+                                            />
+                                        <Text style={{
+                                            color:'red',
+                                            fontSize:18
+                                        }}>This is a required field ...</Text>
+                                    </View>
+                                    
+                                }
+                            </View>
                             </View>
 
                             {/* Task description */}
@@ -179,8 +209,32 @@ export default class main extends React.Component {
                             <TextInput
                                     placeholder="Task description to be entered here ...."
                                     multiline={true}
-                                    numberOfLines={4}      
+                                    numberOfLines={4}  
+                                    onFocus={()=>{this.setState({isDesSet : true});}}   
+                                    style={{
+                                        fontSize:16
+                                    }} 
                                 />
+                            </View>
+                            <View>
+                                {
+                                    this.state.isDesSet ? null :
+                                    <View style={{flexDirection:'row'}}>
+                                        <Icon
+                                            name='warning'
+                                            type='font-awesome'
+                                            color='red'
+                                            style={{
+                                                height:24,width:25
+                                            }}
+                                            />
+                                        <Text style={{
+                                            color:'red',
+                                            fontSize:18
+                                        }}>This is a required field ...</Text>
+                                    </View>
+                                    
+                                }
                             </View>
                              {/* Task type */}
                              <View style={{
@@ -193,7 +247,7 @@ export default class main extends React.Component {
                                 <Picker
                                     selectedValue={this.state.selectedValue}
                                     style={{ height: 50, width: 150 }}
-                                    onValueChange={(itemValue, itemIndex) => this.setState({ selectedValue: itemValue })}
+                                    onValueChange={(itemValue, itemIndex) =>{ this.setState({ selectedValue: itemValue }); this.setState({isTypeSet : true});}}
                                 >
                                     <Picker.Item label="Task Type " value="none" />
                                     <Picker.Item label="Personal" value="personal" />
@@ -202,7 +256,26 @@ export default class main extends React.Component {
                                     <Picker.Item label="Other" value="other" />
                                 </Picker>
                              </View>
-
+                             <View>
+                                {
+                                    this.state.isTypeSet ? null :
+                                    <View style={{flexDirection:'row'}}>
+                                        <Icon
+                                            name='warning'
+                                            type='font-awesome'
+                                            color='red'
+                                            style={{
+                                                height:24,width:25
+                                            }}
+                                            />
+                                        <Text style={{
+                                            color:'red',
+                                            fontSize:18
+                                        }}>This is a required field ...</Text>
+                                    </View>
+                                    
+                                }
+                            </View>
                              {/* Task status */}
                              <View style={{
                                  marginTop:'7%',
@@ -214,7 +287,7 @@ export default class main extends React.Component {
                                 <Picker
                                     selectedValue={this.state.selectedStatus}
                                     style={{height: 50, width: 150}}
-                                    onValueChange={(itemValue, itemIndex) => this.setState({selectedStatus: itemValue})}
+                                    onValueChange={(itemValue, itemIndex) => {this.setState({selectedStatus: itemValue}); this.setState({isStatusSet : true});}}
                                 >
                                     <Picker.Item label="Task Status" value="none" />
                                     <Picker.Item label="New" value="new" />
@@ -222,7 +295,26 @@ export default class main extends React.Component {
                                     <Picker.Item label="Complete" value="complete" />
                                 </Picker>
                              </View>
-
+                             <View>
+                                {
+                                    this.state.isStatusSet ? null :
+                                    <View style={{flexDirection:'row'}}>
+                                        <Icon
+                                            name='warning'
+                                            type='font-awesome'
+                                            color='red'
+                                            style={{
+                                                height:24,width:25
+                                            }}
+                                            />
+                                        <Text style={{
+                                            color:'red',
+                                            fontSize:18
+                                        }}>This is a required field ...</Text>
+                                    </View>
+                                    
+                                }
+                            </View>
                              {/* Due date calender */}
                              <View style={{
                                  marginTop:'10%',
@@ -241,10 +333,29 @@ export default class main extends React.Component {
                                 minDate={new Date(Date.now())}
                                 confirmBtnText="Confirm"
                                 cancelBtnText="Cancel"
-                                onDateChange={(date) => {this.setState({date: date});}}
+                                onDateChange={(date) => {this.setState({date: date});this.setState({isDateSet : true});}}
                             />
                              </View>
-
+                             <View>
+                                {
+                                    this.state.isDateSet ? null :
+                                    <View style={{flexDirection:'row'}}>
+                                        <Icon
+                                            name='warning'
+                                            type='font-awesome'
+                                            color='red'
+                                            style={{
+                                                height:24,width:25
+                                            }}
+                                            />
+                                        <Text style={{
+                                            color:'red',
+                                            fontSize:18
+                                        }}>This is a required field ...</Text>
+                                    </View>
+                                    
+                                }
+                            </View>
                              {/* Submit and cancel button */}
                              <View style={{
                                  flexDirection:'row',
