@@ -69,15 +69,17 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderRadius:5,
         borderColor:'black',
-        height: 30,
+        height: 35,
         width:90,
-        marginRight:'5%'
+        marginRight:'7%',
+        backgroundColor:'lightgreen'
     },
     addCancelText:{
         alignSelf:'center',
         fontSize:16,
         fontWeight:'bold',
-        fontFamily:'monospace'
+        fontFamily:'monospace',
+        marginTop:'4%'
     }
 });
 export default styles;

@@ -2,8 +2,8 @@ import React from 'react';
 import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker } from 'react-native';
 import { Card, Icon, FormLabel } from 'react-native-elements';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+import DatePicker from 'react-native-datepicker';
 import styles from './styles';
-import Form from './form.js';
 export default class main extends React.Component {
     constructor(props) {
         super(props);
@@ -11,7 +11,10 @@ export default class main extends React.Component {
             users: [],
             dropmenu: false,
             showModal: false,
+            selectedValue: '',
             taskHeading: '',
+            selectedStatus: '',
+            date:'',
         };
     }
 
@@ -134,8 +137,132 @@ export default class main extends React.Component {
                     visible={this.state.showModal}
                     onRequestClose={() => this.setState({ showModal: false })}
                     hardwareAccelerated={true}
+                    
                 >
-                    <Form/>
+                    
+                    <Card title={'ADD NEW TASK'}
+                    titleStyle={{
+                        fontSize: 20,
+                        fontWeight:'bold',
+                        color:'midnightblue'
+                    }}
+                    containerStyle={{
+                        borderColor:'midnightblue',
+                        borderRadius: 7
+                    }}
+                    >
+                        <View>
+                            {/* Task heading */}
+                            <View style={{
+                                alignContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                                <TextInput 
+                                    placeholder="  Task heading            "
+                                    underlineColorAndroid="rtransparent"
+                                    onChangeText={text=>{this.changeTaskheading(text)}}
+                                    defaultValue={this.state.taskHeading}
+                                    style={{
+                                        fontFamily:'monospace',
+                                        fontSize: 20
+                                    }}
+                                />
+                            </View>
+
+                            {/* Task description */}
+                            <View style={{
+                                borderWidth: 2,
+                                borderColor:'grey',
+                                borderRadius:7,
+                                marginTop:'5%'
+                            }}>
+                            <TextInput
+                                    placeholder="Task description to be entered here ...."
+                                    multiline={true}
+                                    numberOfLines={4}      
+                                />
+                            </View>
+                             {/* Task type */}
+                             <View style={{
+                                 marginTop:'5%',
+                                 borderWidth:2, 
+                                 borderColor:'lightgray',
+                                 width:150,
+                                 borderRadius:7,
+                             }}>
+                                <Picker
+                                    selectedValue={this.state.selectedValue}
+                                    style={{ height: 50, width: 150 }}
+                                    onValueChange={(itemValue, itemIndex) => this.setState({ selectedValue: itemValue })}
+                                >
+                                    <Picker.Item label="Task Type " value="none" />
+                                    <Picker.Item label="Personal" value="personal" />
+                                    <Picker.Item label="office" value="office" />
+                                    <Picker.Item label="Shopping" value="shopping" />
+                                    <Picker.Item label="Other" value="other" />
+                                </Picker>
+                             </View>
+
+                             {/* Task status */}
+                             <View style={{
+                                 marginTop:'7%',
+                                 borderWidth:2, 
+                                 width:150,
+                                 borderRadius:7,
+                                 borderColor:'lightgray',
+                             }}>
+                                <Picker
+                                    selectedValue={this.state.selectedStatus}
+                                    style={{height: 50, width: 150}}
+                                    onValueChange={(itemValue, itemIndex) => this.setState({selectedStatus: itemValue})}
+                                >
+                                    <Picker.Item label="Task Status" value="none" />
+                                    <Picker.Item label="New" value="new" />
+                                    <Picker.Item label="In-Progress" value="inprogress" />
+                                    <Picker.Item label="Complete" value="complete" />
+                                </Picker>
+                             </View>
+
+                             {/* Due date calender */}
+                             <View style={{
+                                 marginTop:'10%',
+
+                             }}>
+                             <DatePicker
+                                style={{
+                                    width: 150,
+                                    borderWidth:1,
+                                    borderRadius:6,
+                                    borderColor:'lightgray',}}
+                                date={this.state.date}
+                                mode="date"
+                                placeholder="Due date"
+                                format="DD-MM-YYYY"
+                                minDate={new Date(Date.now())}
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                onDateChange={(date) => {this.setState({date: date});}}
+                            />
+                             </View>
+
+                             {/* Submit and cancel button */}
+                             <View style={{
+                                 flexDirection:'row',
+                                 alignItems:'center',
+                                 alignContent:'center',
+                                 alignSelf:'center',
+                                 marginTop:'10%'
+                             }}>
+                                 <TouchableOpacity style={styles.addCancelButton}>
+                                    <Text style={styles.addCancelText}>Add Task</Text>
+                                 </TouchableOpacity>
+
+                                 <TouchableOpacity style={styles.addCancelButton}>
+                                    <Text style={styles.addCancelText}>Cancel</Text>
+                                 </TouchableOpacity>
+                             </View>
+                        </View>
+                    </Card>
                 </Modal>
             </ImageBackground>
         );
