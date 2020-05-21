@@ -64,6 +64,20 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: '10%',
         right: '3%'
+    },
+    addCancelButton: {
+        borderWidth:2,
+        borderRadius:5,
+        borderColor:'black',
+        height: 30,
+        width:90,
+        marginRight:'5%'
+    },
+    addCancelText:{
+        alignSelf:'center',
+        fontSize:16,
+        fontWeight:'bold',
+        fontFamily:'monospace'
     }
 });
 export default styles;
