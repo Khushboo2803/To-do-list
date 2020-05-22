@@ -4,4 +4,4 @@ const router = express.Router();
 const registerController = require('../controller/registeration');
 router.post('/', registerController.register)
 router.use('*', registerController.notfound);
-module.exports = router;
+module.exports = router; 
