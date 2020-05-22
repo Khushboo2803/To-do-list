@@ -44,3 +44,6 @@
 ## Author
 
 [Khushboo :innocent: ](https://github.com/khushboo2803) ([khushboogrover.mca19.du@gmail.com](mailto:khushboogrover.mca19.du@gmail.com))
+
+
+[Rohit :shushing_face: ](https://github.com/rnayak1) ([rohit.mca17.du@gmail.com](mailto:rohit.mca17.du@gmail.com))
