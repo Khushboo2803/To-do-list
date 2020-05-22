@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, ImageBackground, Dimensions, StyleSheet, View, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import styles from './styles.js';
-import fun from '../functions/fun.js';
+import user from '../functions/user';
 export default class login extends React.Component {
     constructor(props) {
         super(props)
@@ -26,7 +26,7 @@ export default class login extends React.Component {
     }
 
     onSubmitPress = async () => {
-        if (await fun.signupValidation(this.state.email, this.state.password, "default")) {
+        if (await user.signupValidation(this.state.email, this.state.password, "default")) {
             Alert.alert("got true");
         }
 

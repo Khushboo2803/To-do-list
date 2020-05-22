@@ -2,7 +2,7 @@ import React from 'react';
 import { ImageBackground, StyleSheet, Dimensions, View, TouchableOpacity, Text, Alert, Image, Button, BackHandler } from 'react-native';
 import styles from './styles.js';
 import { TextInput } from 'react-native-gesture-handler';
-import fun from '../functions/fun';
+import user from '../functions/user';
 import Dialog, {
     DialogTitle,
     DialogContent,
@@ -63,7 +63,7 @@ export default class signUp extends React.Component {
     }
     onSubmitPress = async () => {
         this.setState({ resendBox: false });
-        if (await fun.signupValidation(this.state.email, this.state.password, this.state.username)) {
+        if (await user.signupValidation(this.state.email, this.state.password, this.state.username)) {
             this.setState({ dialogBox: true });
             this.i = 30;
             this.interval = setInterval(() => {
@@ -193,7 +193,7 @@ export default class signUp extends React.Component {
                                     title="Verify"
                                     onPress={() => {
                                         this.setState({ dialogBox: false });
-                                        fun.verifyOTP(this.state.email, this.state.otp);
+                                        user.verifyOTP(this.state.email, this.state.otp);
                                         this.props.navigation.navigate('todo');
                                     }}
                                     key="button-1"

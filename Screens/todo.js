@@ -4,6 +4,7 @@ import { Card, Icon, FormLabel } from 'react-native-elements';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import DatePicker from 'react-native-datepicker';
 import styles from './styles';
+import task from '../functions/tasks';
 export default class main extends React.Component {
     constructor(props) {
         super(props);
@@ -11,15 +12,16 @@ export default class main extends React.Component {
             users: [],
             dropmenu: false,
             showModal: false,
-            selectedValue: '',
             taskHeading: '',
-            selectedStatus: '',
-            date:'',
-            isHeaderSet:false,
+            taskDetail: '',
+            category: null,
+            taskStatus: null,
+            dueDate: null,
+            isHeaderSet: false,
             isDesSet: false,
             isTypeSet: false,
             isStatusSet: false,
-            isDateSet:false
+            isDateSet: false
         };
     }
 
@@ -36,11 +38,6 @@ export default class main extends React.Component {
     showMenu = () => {
         this._menu.show();
     };
-
-    changeTaskheading(text)
-    {
-        this.setState({taskHeading: text});
-    }
 
     UNSAFE_componentWillMount() {
         this.state.users = [
@@ -92,7 +89,7 @@ export default class main extends React.Component {
                             >
                                 <MenuItem onPress={this.hideMenu}>Incomplete Task</MenuItem>
                                 <MenuDivider />
-                                <MenuItem onPress={this.hideMenu}>Complete task</MenuItem>
+                                <MenuItem onPress={this.hideMenu}>Completed task</MenuItem>
                                 <MenuDivider />
                                 <MenuItem onPress={this.hideMenu}>Account privacy</MenuItem>
                                 <MenuDivider />
@@ -142,236 +139,246 @@ export default class main extends React.Component {
                     visible={this.state.showModal}
                     onRequestClose={() => this.setState({ showModal: false })}
                     hardwareAccelerated={true}
-                    
                 >
-                    
                     <Card title={'ADD NEW TASK'}
-                    titleStyle={{
-                        fontSize: 20,
-                        fontWeight:'bold',
-                        color:'midnightblue'
-                    }}
-                    containerStyle={{
-                        borderColor:'midnightblue',
-                        borderRadius: 7,
-                        borderWidth:1,
-                        
-                    }}
+                        titleStyle={{
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            color: 'midnightblue'
+                        }}
+                        containerStyle={{
+                            borderColor: 'midnightblue',
+                            borderRadius: 7,
+                            borderWidth: 1,
+                        }}
                     >
-                        
                         <View>
-                            
                             {/* Task heading */}
                             <View style={{
                                 alignContent: 'center',
                                 alignItems: 'center',
                             }}>
-                                <TextInput 
+                                <TextInput
                                     placeholder="  Task Heading            "
                                     underlineColorAndroid="rtransparent"
-                                    onChangeText={text=>{this.changeTaskheading(text)}}
+                                    onChangeText={text => this.setState({ taskHeading: text })}
                                     defaultValue={this.state.taskHeading}
-                                    onFocus={()=>{this.setState({isHeaderSet: true});}}
+                                    onFocus={() => { this.setState({ isHeaderSet: true }); }}
+                                    onBlur={() => { if (this.state.taskHeading.length < 1) this.setState({ isHeaderSet: false }); }}
                                     style={{
-                                        fontFamily:'monospace',
+                                        fontFamily: 'monospace',
                                         fontSize: 20
                                     }}
                                 />
                                 <View>
-                                {
-                                    this.state.isHeaderSet ? null :
-                                    <View style={{flexDirection:'row'}}>
-                                        <Icon
-                                            name='warning'
-                                            type='font-awesome'
-                                            color='red'
-                                            style={{
-                                                height:24,width:25
-                                            }}
-                                            />
-                                        <Text style={{
-                                            color:'red',
-                                            fontSize:18
-                                        }}>This is a required field ...</Text>
-                                    </View>
-                                    
-                                }
-                            </View>
-                            </View>
+                                    {
+                                        this.state.isHeaderSet ? null :
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Icon
+                                                    name='warning'
+                                                    type='font-awesome'
+                                                    color='red'
+                                                    style={{
+                                                        height: 24, width: 25
+                                                    }}
+                                                />
+                                                <Text style={{
+                                                    color: 'red',
+                                                    fontSize: 18
+                                                }}>This is a required field ...</Text>
+                                            </View>
 
+                                    }
+                                </View>
+                            </View>
                             {/* Task description */}
                             <View style={{
                                 borderWidth: 2,
-                                borderColor:'grey',
-                                borderRadius:7,
-                                marginTop:'5%'
+                                borderColor: 'grey',
+                                borderRadius: 7,
+                                marginTop: '5%'
                             }}>
-                            <TextInput
+                                <TextInput
                                     placeholder="Task description to be entered here ...."
                                     multiline={true}
-                                    numberOfLines={4}  
-                                    onFocus={()=>{this.setState({isDesSet : true});}}   
+                                    numberOfLines={4}
+                                    onChangeText={text => this.setState({ taskDetail: text })}
+                                    onFocus={() => { this.setState({ isDesSet: true }); }}
+                                    onBlur={() => { if (this.state.taskDetail.length < 1) this.setState({ isDesSet: false }); }}
                                     style={{
-                                        fontSize:16
-                                    }} 
+                                        fontSize: 16
+                                    }}
                                 />
                             </View>
                             <View>
                                 {
                                     this.state.isDesSet ? null :
-                                    <View style={{flexDirection:'row'}}>
-                                        <Icon
-                                            name='warning'
-                                            type='font-awesome'
-                                            color='red'
-                                            style={{
-                                                height:24,width:25
-                                            }}
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Icon
+                                                name='warning'
+                                                type='font-awesome'
+                                                color='red'
+                                                style={{
+                                                    height: 24, width: 25
+                                                }}
                                             />
-                                        <Text style={{
-                                            color:'red',
-                                            fontSize:18
-                                        }}>This is a required field ...</Text>
-                                    </View>
-                                    
+                                            <Text style={{
+                                                color: 'red',
+                                                fontSize: 18
+                                            }}>This is a required field ...</Text>
+                                        </View>
+
                                 }
                             </View>
-                             {/* Task type */}
-                             <View style={{
-                                 marginTop:'5%',
-                                 borderWidth:2, 
-                                 borderColor:'lightgray',
-                                 width:150,
-                                 borderRadius:7,
-                             }}>
+                            {/* Task type */}
+                            <View style={{
+                                marginTop: '5%',
+                                borderWidth: 2,
+                                borderColor: 'lightgray',
+                                width: 200,
+                                borderRadius: 7,
+                            }}>
                                 <Picker
-                                    selectedValue={this.state.selectedValue}
-                                    style={{ height: 50, width: 150 }}
-                                    onValueChange={(itemValue, itemIndex) =>{ this.setState({ selectedValue: itemValue }); this.setState({isTypeSet : true});}}
+                                    selectedValue={this.state.category}
+                                    style={{ height: 50, width: 200 }}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        this.setState({ category: itemValue });
+                                        if (this.state.category != null)
+                                            this.setState({ isTypeSet: false });
+                                        else
+                                            this.setState({ isTypeSet: true })
+                                    }}
                                 >
-                                    <Picker.Item label="Task Type " value="none" />
+                                    <Picker.Item label="Task Category" value={null} />
                                     <Picker.Item label="Personal" value="personal" />
-                                    <Picker.Item label="office" value="office" />
+                                    <Picker.Item label="work" value="work" />
                                     <Picker.Item label="Shopping" value="shopping" />
-                                    <Picker.Item label="Other" value="other" />
+                                    <Picker.Item label="Other" value="others" />
                                 </Picker>
-                             </View>
-                             <View>
+                            </View>
+                            <View>
                                 {
                                     this.state.isTypeSet ? null :
-                                    <View style={{flexDirection:'row'}}>
-                                        <Icon
-                                            name='warning'
-                                            type='font-awesome'
-                                            color='red'
-                                            style={{
-                                                height:24,width:25
-                                            }}
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Icon
+                                                name='warning'
+                                                type='font-awesome'
+                                                color='red'
+                                                style={{
+                                                    height: 24, width: 25
+                                                }}
                                             />
-                                        <Text style={{
-                                            color:'red',
-                                            fontSize:18
-                                        }}>This is a required field ...</Text>
-                                    </View>
-                                    
+                                            <Text style={{
+                                                color: 'red',
+                                                fontSize: 18
+                                            }}>This is a required field ...</Text>
+                                        </View>
+
                                 }
                             </View>
-                             {/* Task status */}
-                             <View style={{
-                                 marginTop:'7%',
-                                 borderWidth:2, 
-                                 width:150,
-                                 borderRadius:7,
-                                 borderColor:'lightgray',
-                             }}>
+                            {/* Task status */}
+                            <View style={{
+                                marginTop: '7%',
+                                borderWidth: 2,
+                                width: 200,
+                                borderRadius: 7,
+                                borderColor: 'lightgray',
+                            }}>
                                 <Picker
-                                    selectedValue={this.state.selectedStatus}
-                                    style={{height: 50, width: 150}}
-                                    onValueChange={(itemValue, itemIndex) => {this.setState({selectedStatus: itemValue}); this.setState({isStatusSet : true});}}
+                                    selectedValue={this.state.taskStatus}
+                                    style={{ height: 50, width: 200 }}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        this.setState({ taskStatus: itemValue });
+                                        if (this.state.taskStatus != null)
+                                            this.setState({ isStatusSet: false });
+                                        else
+                                            this.setState({ isStatusSet: true })
+                                    }}
                                 >
-                                    <Picker.Item label="Task Status" value="none" />
+                                    <Picker.Item label="Task Status" value={null} />
                                     <Picker.Item label="New" value="new" />
-                                    <Picker.Item label="In-Progress" value="inprogress" />
-                                    <Picker.Item label="Complete" value="complete" />
+                                    <Picker.Item label="In-Progress" value="ongoing" />
+                                    <Picker.Item label="Complete" value="completed" />
                                 </Picker>
-                             </View>
-                             <View>
+                            </View>
+                            <View>
                                 {
                                     this.state.isStatusSet ? null :
-                                    <View style={{flexDirection:'row'}}>
-                                        <Icon
-                                            name='warning'
-                                            type='font-awesome'
-                                            color='red'
-                                            style={{
-                                                height:24,width:25
-                                            }}
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Icon
+                                                name='warning'
+                                                type='font-awesome'
+                                                color='red'
+                                                style={{
+                                                    height: 24, width: 25
+                                                }}
                                             />
-                                        <Text style={{
-                                            color:'red',
-                                            fontSize:18
-                                        }}>This is a required field ...</Text>
-                                    </View>
-                                    
+                                            <Text style={{
+                                                color: 'red',
+                                                fontSize: 18
+                                            }}>This is a required field ...</Text>
+                                        </View>
+
                                 }
                             </View>
-                             {/* Due date calender */}
-                             <View style={{
-                                 marginTop:'10%',
+                            {/* Due date calender */}
+                            <View style={{
+                                marginTop: '10%',
 
-                             }}>
-                             <DatePicker
-                                style={{
-                                    width: 150,
-                                    borderWidth:1,
-                                    borderRadius:6,
-                                    borderColor:'lightgray',}}
-                                date={this.state.date}
-                                mode="date"
-                                placeholder="Due date"
-                                format="DD-MM-YYYY"
-                                minDate={new Date(Date.now())}
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
-                                onDateChange={(date) => {this.setState({date: date});this.setState({isDateSet : true});}}
-                            />
-                             </View>
-                             <View>
+                            }}>
+                                <DatePicker
+                                    style={{
+                                        width: 150,
+                                        borderWidth: 1,
+                                        borderRadius: 6,
+                                        borderColor: 'lightgray',
+                                    }}
+                                    date={this.state.dueDate}
+                                    mode="date"
+                                    placeholder="Due date"
+                                    format="DD-MM-YYYY"
+                                    minDate={new Date(Date.now())}
+                                    confirmBtnText="Confirm"
+                                    cancelBtnText="Cancel"
+                                    onDateChange={(date) => { this.setState({ dueDate: date, isDateSet: true }); }}
+                                />
+                            </View>
+                            <View>
                                 {
                                     this.state.isDateSet ? null :
-                                    <View style={{flexDirection:'row'}}>
-                                        <Icon
-                                            name='warning'
-                                            type='font-awesome'
-                                            color='red'
-                                            style={{
-                                                height:24,width:25
-                                            }}
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Icon
+                                                name='warning'
+                                                type='font-awesome'
+                                                color='red'
+                                                style={{
+                                                    height: 24, width: 25
+                                                }}
                                             />
-                                        <Text style={{
-                                            color:'red',
-                                            fontSize:18
-                                        }}>This is a required field ...</Text>
-                                    </View>
-                                    
+                                            <Text style={{
+                                                color: 'red',
+                                                fontSize: 18
+                                            }}>This is a required field ...</Text>
+                                        </View>
+
                                 }
                             </View>
-                             {/* Submit and cancel button */}
-                             <View style={{
-                                 flexDirection:'row',
-                                 alignItems:'center',
-                                 alignContent:'center',
-                                 alignSelf:'center',
-                                 marginTop:'10%'
-                             }}>
-                                 <TouchableOpacity style={styles.addCancelButton}>
+                            {/* Submit and cancel button */}
+                            <View style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                alignContent: 'center',
+                                alignSelf: 'center',
+                                marginTop: '10%'
+                            }}>
+                                <TouchableOpacity style={styles.addCancelButton}>
                                     <Text style={styles.addCancelText}>Add Task</Text>
-                                 </TouchableOpacity>
+                                </TouchableOpacity>
 
-                                 <TouchableOpacity style={styles.addCancelButton}>
+                                <TouchableOpacity style={styles.addCancelButton} onPress={() => task.closeModal(this)}>
                                     <Text style={styles.addCancelText}>Cancel</Text>
-                                 </TouchableOpacity>
-                             </View>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </Card>
                 </Modal>
