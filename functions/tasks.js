@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 // these functions will interact with task management related functions
 exports.closeModal = (thisObj) => {
     thisObj.setState((prevState) => {
@@ -10,13 +11,16 @@ exports.closeModal = (thisObj) => {
             category: null,
             taskStatus: null,
             dueDate: null,
-            isHeaderSet: false,
-            isDesSet: false,
-            isTypeSet: false,
-            isStatusSet: false,
-            isDateSet: false
+            isHeaderSet: true,
+            isDesSet: true,
+            isTypeSet: true,
+            isStatusSet: true,
+            isDateSet: true
         }
         return newState;
     });
 }
 
+exports.addTask = (thisObj) => {
+    console.log("in add");
+}

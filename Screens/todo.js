@@ -17,11 +17,12 @@ export default class main extends React.Component {
             category: null,
             taskStatus: null,
             dueDate: null,
-            isHeaderSet: false,
-            isDesSet: false,
-            isTypeSet: false,
-            isStatusSet: false,
-            isDateSet: false
+            isHeaderSet: true,
+            isDesSet: true,
+            isTypeSet: true,
+            isStatusSet: true,
+            isDateSet: true,
+            buttonDisable: true
         };
     }
 
@@ -39,6 +40,17 @@ export default class main extends React.Component {
         this._menu.show();
     };
 
+    buttonStatus(){
+        if(this.state.isHeaderSet && this.state.isDesSet && this.state.isStatusSet && this.state.isTypeSet && this.state.isDateSet)
+        {
+            if(this.state.taskHeading=='' || this.state.taskDetail=='' || this.state.category==null || this.state.taskStatus==null|| this.state.dueDate==null)
+            {
+                return false;
+            }
+            return true;
+        }   
+        return false;                                
+    };
     UNSAFE_componentWillMount() {
         this.state.users = [
             {
@@ -242,13 +254,14 @@ export default class main extends React.Component {
                                     selectedValue={this.state.category}
                                     style={{ height: 50, width: 200 }}
                                     onValueChange={(itemValue, itemIndex) => {
-                                        this.setState({ category: itemValue });
-                                        if (this.state.category != null)
-                                            this.setState({ isTypeSet: false });
+                                        this.setState({category: itemValue});
+                                        if (itemValue != null)
+                                            this.setState({ isTypeSet: true });
                                         else
-                                            this.setState({ isTypeSet: true })
+                                            this.setState({ isTypeSet: false });
                                     }}
                                 >
+                                    
                                     <Picker.Item label="Task Category" value={null} />
                                     <Picker.Item label="Personal" value="personal" />
                                     <Picker.Item label="work" value="work" />
@@ -287,12 +300,13 @@ export default class main extends React.Component {
                                 <Picker
                                     selectedValue={this.state.taskStatus}
                                     style={{ height: 50, width: 200 }}
+                                    
                                     onValueChange={(itemValue, itemIndex) => {
                                         this.setState({ taskStatus: itemValue });
-                                        if (this.state.taskStatus != null)
-                                            this.setState({ isStatusSet: false });
+                                        if (itemValue != null)
+                                            this.setState({ isStatusSet: true });
                                         else
-                                            this.setState({ isStatusSet: true })
+                                            this.setState({ isStatusSet: false })
                                     }}
                                 >
                                     <Picker.Item label="Task Status" value={null} />
@@ -371,7 +385,8 @@ export default class main extends React.Component {
                                 alignSelf: 'center',
                                 marginTop: '10%'
                             }}>
-                                <TouchableOpacity style={styles.addCancelButton}>
+                                
+                                <TouchableOpacity disabled={!this.buttonStatus()} style={styles.addCancelButton} onPress={() => task.addTask(this)}>
                                     <Text style={styles.addCancelText}>Add Task</Text>
                                 </TouchableOpacity>
 
