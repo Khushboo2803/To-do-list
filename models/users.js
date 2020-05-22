@@ -15,7 +15,7 @@ module.exports = mongoose.model('userSchema', new Schema({
         required: true
     },
     otp: {
-        type: string,
+        type: String,
         minlength: 6,
         maxlength: 6
     },
