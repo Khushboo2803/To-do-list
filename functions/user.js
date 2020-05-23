@@ -1,5 +1,7 @@
 // This will handle user related functions
 // function to implement signup user
+import axios from 'axios';
+
 exports.signupValidation = async (email, password, username = null) => {
     const expression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (expression.test(email) === false) {
@@ -17,7 +19,55 @@ exports.signupValidation = async (email, password, username = null) => {
     return true;
 }
 
-//function to verify otp
-exports.verifyOTP = (email, otp) => {
+//function to register user 
+exports.register = async(email, user, password) => {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: 'https://stackhack.herokuapp.com/register',
+            data: {
+              "register" :{
+                "email" : email,
+                "name" : user,
+                "password": password
+              }
+            }
+          });
+          console.log(response.data);
+          console.log(response.data.data.id);
+          if(response.data.message=="sucessfully registerd")
+          {
+              return response.data.data.id;
+          }
+          else{
+              return false;
+          }
+    }
+    catch(error)
+    {
+        console.log(error.message);
+    }
+}
 
+//function to verify otp
+exports.verifyOTP = async(id, otp) => {
+        const response = await axios({
+            method: 'post',
+            url: 'https://stackhack.herokuapp.com/verify',
+            data: {
+                "verify" : {
+                    "id" : id,
+                    "otp": otp
+                }
+            }
+           });
+            console.log(response.data);
+            if(response.data.response)
+            {
+                return response.data.data._sid;
+            }
+            else{
+                return false;
+            }
+    
 }

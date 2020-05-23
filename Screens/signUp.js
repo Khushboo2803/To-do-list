@@ -22,7 +22,8 @@ export default class signUp extends React.Component {
             height: '',
             dialogBox: false,
             otp: '',
-            resendBox: false
+            resendBox: false,
+            id: ''
         };
     }
     interval = '';
@@ -64,11 +65,17 @@ export default class signUp extends React.Component {
     onSubmitPress = async () => {
         this.setState({ resendBox: false });
         if (await user.signupValidation(this.state.email, this.state.password, this.state.username)) {
-            this.setState({ dialogBox: true });
-            this.i = 30;
-            this.interval = setInterval(() => {
-                this.setTimer(this.i);
-            }, 1000)
+           const id=await user.register(this.state.email, this.state.username, this.state.password);
+           this.setState({id : id});
+           if(id!=undefined)
+           {
+               this.setState({dialogBox: true});
+               this.i=30;
+               this.interval = setInterval(() => {
+                   this.setTimer(this.i);
+               }, 1000)
+           }
+        console.log(id);
         }
     }
     render() {
@@ -191,10 +198,19 @@ export default class signUp extends React.Component {
 
                                 <Button
                                     title="Verify"
-                                    onPress={() => {
+                                    onPress={async() => {
+                                        clearInterval(this.interval);
                                         this.setState({ dialogBox: false });
-                                        user.verifyOTP(this.state.email, this.state.otp);
-                                        this.props.navigation.navigate('todo');
+                                        const id=await user.verifyOTP(this.state.id, this.state.otp);
+                                        if(id==false)
+                                        {
+                                            Alert.alert("wrong otp");  
+                                        }
+                                        else{
+                                            console.log('validated');
+                                            this.props.navigation.navigate('todo');
+                                        }
+                                        
                                     }}
                                     key="button-1"
                                 />
