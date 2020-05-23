@@ -65,17 +65,18 @@ export default class signUp extends React.Component {
     onSubmitPress = async () => {
         this.setState({ resendBox: false });
         if (await user.signupValidation(this.state.email, this.state.password, this.state.username)) {
-           const id=await user.register(this.state.email, this.state.username, this.state.password);
-           this.setState({id : id});
-           if(id!=undefined)
-           {
-               this.setState({dialogBox: true});
-               this.i=30;
-               this.interval = setInterval(() => {
-                   this.setTimer(this.i);
-               }, 1000)
-           }
-        console.log(id);
+            const id = await user.register(this.state.email, this.state.username, this.state.password);
+            //console.log(`is => ${id}`)
+            this.setState({ id: id });
+            if (id !== undefined) {
+                this.setState({ dialogBox: true });
+                this.i = 30;
+                this.interval = setInterval(() => {
+                    this.setTimer(this.i);
+                }, 1000)
+            }
+            else
+                return
         }
     }
     render() {
@@ -198,19 +199,18 @@ export default class signUp extends React.Component {
 
                                 <Button
                                     title="Verify"
-                                    onPress={async() => {
+                                    onPress={async () => {
                                         clearInterval(this.interval);
                                         this.setState({ dialogBox: false });
-                                        const id=await user.verifyOTP(this.state.id, this.state.otp);
-                                        if(id==false)
-                                        {
-                                            Alert.alert("wrong otp");  
+                                        const id = await user.verifyOTP(this.state.id, this.state.otp);
+                                        if (id == false) {
+                                            Alert.alert("wrong otp");
                                         }
-                                        else{
+                                        else {
                                             console.log('validated');
                                             this.props.navigation.navigate('todo');
                                         }
-                                        
+
                                     }}
                                     key="button-1"
                                 />
