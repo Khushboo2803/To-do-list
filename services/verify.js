@@ -15,7 +15,7 @@ exports.verify = async (req) => {
                     {
                         $set: { isVerified: true },
                         $unset: { otp: verify.otp }
-                    })
+                    });
                 if (response)
                     return new reply.successResponse(code.CODE006, 'successfully verified', { _sid: user._id });
                 else
