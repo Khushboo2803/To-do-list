@@ -7,7 +7,7 @@ exports.resend = async (req, res) => {
         res.send(response);
     } catch (error) {
         if (error instanceof reply.errorResponse)
-            res.status(error.status).send(error)
+            res.send(error)
         else
             res.send(new reply.errorResponse(code.CODE004, error.message, null));
     }
