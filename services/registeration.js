@@ -27,9 +27,9 @@ exports.register = async (req) => {
         const doc = new userModel(register);
         const response = await doc.save();
         if (response)
-            return new reply.successResponse(code.CODE002, 'sucessfully registerd', response)
+            return new reply.successResponse(code.CODE000, 'sucessfully registerd', { id: response._id })
         else
-            return new reply.errorResponse(code.CODE003, 'failed to save in db', null);
+            throw new reply.errorResponse(code.CODE003, 'failed to save in db', null);
     }
     else
         return sendMailtoUser;
@@ -38,6 +38,8 @@ exports.resend = async (req) => {
     const email = await req.body.email;
     const user = await userModel.findOne({ email });
     if (user) {
+        if (user.isVerified)
+            throw new reply.errorResponse(code.CODE005, 'User already verified', null);
         const otp = otpgenerator.generate(6, {
             digits: true,
             alphabets: false,
@@ -48,14 +50,14 @@ exports.resend = async (req) => {
         if (sendMailtoUser.response) {
             const response = await userModel.updateOne({ email }, { $set: { otp: otp } });
             if (response)
-                return new reply.successResponse(code.CODE002, 'otp resend successfully', null)
+                return new reply.successResponse(code.CODE03, 'otp resend successfully', null)
             else
-                return new reply.errorResponse(code.CODE003, 'failed to resend otp', null);
+                throw new reply.errorResponse(code.CODE002, 'failed to resend otp', null);
         }
         else
             return sendMailtoUser;
     }
     else
-        return new reply.errorResponse(code.CODE003, 'no such user exist', null);
+        throw new reply.errorResponse(code.CODE002, 'no such user exist', null);
 
 }
