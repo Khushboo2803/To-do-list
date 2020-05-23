@@ -6,7 +6,7 @@ class errorResponse extends Error {
         this.msg = message;
         this.response = false;
         this.statusName = code.codeName;
-        this.status = code.code;
+        this.statusCode = code.code;
         this.data = data;
     }
 }
@@ -16,7 +16,7 @@ class successResponse {
         this.message = message;
         this.response = true;
         this.statusName = code.codeName;
-        this.status = code.code;
+        this.statusCode = code.code;
         this.data = data;
     }
 }
