@@ -12,6 +12,7 @@
   "dependencies": {
     "@coreui/coreui": "^3.0.0",
     "@popperjs/core": "^2.4.0",
+    "@react-native-community/async-storage": "^1.10.3",
     "@react-native-community/masked-view": "^0.1.7",
     "@react-navigation/native": "^5.1.4",
     "@react-navigation/stack": "^5.2.9",

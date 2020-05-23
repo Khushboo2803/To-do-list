@@ -1,6 +1,7 @@
 // This will handle user related functions
 // function to implement signup user
 import axios from 'axios';
+import { Alert } from 'react-native';
 
 exports.signupValidation = async (email, password, username = null) => {
     const expression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -22,6 +23,7 @@ exports.signupValidation = async (email, password, username = null) => {
 //function to register user 
 exports.register = async(email, user, password) => {
     try {
+        console.log("got password", password);
         const response = await axios({
             method: 'post',
             url: 'https://stackhack.herokuapp.com/register',
@@ -33,8 +35,13 @@ exports.register = async(email, user, password) => {
               }
             }
           });
-          console.log(response.data);
-          console.log(response.data.data.id);
+          console.log(response.data.msg);
+          //console.log(response.data.data.id);
+          if(response.data.response==false)
+          {
+              Alert.alert("User already exist. Please login");
+              return;
+          }
           if(response.data.message=="sucessfully registerd")
           {
               return response.data.data.id;
@@ -61,13 +68,33 @@ exports.verifyOTP = async(id, otp) => {
                 }
             }
            });
-            console.log(response.data);
-            if(response.data.response)
+            if(response.data.msg=="invalid otp")
             {
+                Alert.alert("invalid otp");
+                return false;
+            }
+            else if(response.data.message=="successfully verified")
+            {
+                console.log("sid is ", response.data.data._sid);
                 return response.data.data._sid;
             }
             else{
+                Alert.alert("Internal error");
                 return false;
             }
     
+}
+
+exports.resendOTP = async(email) =>{
+    console.log(email);
+    const response = await axios({
+        method: 'post',
+        url: 'https://stackhack.herokuapp.com/resend',
+        data: {
+            "resend" : {
+                "email" : email
+            }
+        }
+       });
+        console.log(response.data);
 }

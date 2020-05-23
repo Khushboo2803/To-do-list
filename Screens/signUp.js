@@ -10,6 +10,7 @@ import Dialog, {
     DialogButton,
     ScaleAnimation
 } from 'react-native-popup-dialog';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class signUp extends React.Component {
     constructor(props) {
@@ -28,9 +29,19 @@ export default class signUp extends React.Component {
     }
     interval = '';
     i = '';
-    UNSAFE_componentWillMount() {
+    async UNSAFE_componentWillMount() {
         this.setState({ width: Dimensions.get('window').width });
         this.setState({ height: Dimensions.get('window').height });
+
+        const user=await AsyncStorage.getItem('user');
+        const id=await AsyncStorage.getItem('id');
+        if(id == '' || id == null)
+        {
+            this.render();
+        }
+        else{
+            this.props.navigation.navigate('todo');
+        }
     }
 
     getDeviceMail() {
@@ -202,12 +213,11 @@ export default class signUp extends React.Component {
                                         clearInterval(this.interval);
                                         this.setState({ dialogBox: false });
                                         const id=await user.verifyOTP(this.state.id, this.state.otp);
-                                        if(id==false)
+                                        if(id!=false)
                                         {
-                                            Alert.alert("wrong otp");  
-                                        }
-                                        else{
                                             console.log('validated');
+                                            await AsyncStorage.setItem('id',id);
+                                            await AsyncStorage.setItem('user', this.state.username);
                                             this.props.navigation.navigate('todo');
                                         }
                                         
@@ -221,7 +231,8 @@ export default class signUp extends React.Component {
                                 }}>
                                     {
                                         this.state.resendBox ?
-                                            <TouchableOpacity onPress={() => {
+                                            <TouchableOpacity onPress={async() => {
+                                                await user.resendOTP(this.state.email);
                                                 this.i = 30;
                                                 this.interval = setInterval(() => {
                                                     this.setTimer(this.i);

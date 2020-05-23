@@ -5,6 +5,7 @@ import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import DatePicker from 'react-native-datepicker';
 import styles from './styles';
 import task from '../functions/tasks';
+import AsyncStorage from '@react-native-community/async-storage';
 export default class main extends React.Component {
     constructor(props) {
         super(props);
@@ -105,7 +106,13 @@ export default class main extends React.Component {
                                 <MenuDivider />
                                 <MenuItem onPress={this.hideMenu}>Account privacy</MenuItem>
                                 <MenuDivider />
-                                <MenuItem onPress={this.hideMenu}>logout</MenuItem>
+                                <MenuItem onPress={async()=>{
+                                    await AsyncStorage.removeItem('id');
+                                    await AsyncStorage.removeItem('user');
+                                    this.props.navigation.navigate('signup');
+                                    this.hideMenu
+                                }   
+                                }>logout</MenuItem>
                             </Menu>
                         </View>
                     </View>
