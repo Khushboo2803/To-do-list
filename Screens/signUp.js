@@ -213,17 +213,9 @@ export default class signUp extends React.Component {
                                     onPress={async () => {
                                         clearInterval(this.interval);
                                         this.setState({ dialogBox: false });
-<<<<<<< HEAD
                                         const id=await user.verifyOTP(this.state.id, this.state.otp);
                                         if(id!=false)
                                         {
-=======
-                                        const id = await user.verifyOTP(this.state.id, this.state.otp);
-                                        if (id == false) {
-                                            Alert.alert("wrong otp");
-                                        }
-                                        else {
->>>>>>> ae31351a03d595b305caab25fd9bbaee77f2ab88
                                             console.log('validated');
                                             await AsyncStorage.setItem('id',id);
                                             await AsyncStorage.setItem('user', this.state.username);

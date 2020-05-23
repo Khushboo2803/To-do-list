@@ -34,7 +34,6 @@ exports.register = async (email, user, password) => {
                     "password": password
                 }
             }
-<<<<<<< HEAD
           });
           console.log(response.data.msg);
           //console.log(response.data.data.id);
@@ -50,21 +49,6 @@ exports.register = async (email, user, password) => {
           else{
               return false;
           }
-=======
-        });
-        console.log(response.data);
-        //console.log(response.data.data.id);
-        if (response.data.response == true) {
-            return response.data.data.id;
-        }
-        else {
-            if (response.data.msg)
-                alert(response.data.msg)
-            if (response.data.message)
-                alert(response.data.message);
-            return undefined;
-        }
->>>>>>> ae31351a03d595b305caab25fd9bbaee77f2ab88
     }
     catch (error) {
         console.log(error.message);
@@ -72,7 +56,6 @@ exports.register = async (email, user, password) => {
 }
 
 //function to verify otp
-<<<<<<< HEAD
 exports.verifyOTP = async(id, otp) => {
         const response = await axios({
             method: 'post',
@@ -113,31 +96,4 @@ exports.resendOTP = async(email) =>{
         }
        });
         console.log(response.data);
-=======
-exports.verifyOTP = async (id, otp) => {
-    console.log(id, otp)
-    const resp = await axios.post('https://stackhack.herokuapp.com/verify', {
-        "verify": {
-            "id": id,
-            "otp": otp
-        }
-    });
-    console.log(resp);
-    return false;
-    // const response = await axios({
-    //     method: 'post',
-    //     url: 'https://stackhack.herokuapp.com/verify',
-    //     data: {
-
-    //     }
-    // });
-    // console.log(response.data);
-    // if (response.data.response) {
-    //     return response.data.data._sid;
-    // }
-    // else {
-    //     return false;
-    // }
-
->>>>>>> ae31351a03d595b305caab25fd9bbaee77f2ab88
 }
