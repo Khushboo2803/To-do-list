@@ -1,31 +1,35 @@
 const codes = {
     CODE000: {
         code: 200,
-        codeName: 'User Successfully registered'
+        codeName: 'RECORD SAVED'
     },
     CODE001: {
-        code: 404,
-        codeName: 'NOT FOUND'
+        code: 200,
+        codeName: 'EMAIL SENT SUCCESSFULLY'
     },
     CODE002: {
-        code: 406,
-        codeName: 'User not verified'
+        code: 500,
+        codeName: 'REQUEST FAILURE'
     },
     CODE003: {
-        code: 405,
-        codeName: 'User Already Exist, Please Login'
+        code: 200,
+        codeName: 'RECORD UPDATED'
     },
     CODE004: {
-        code: 500,
-        codeName: 'Internal Error'
+        code: 405,
+        codeName: 'NOT ALLOWED'
     },
     CODE005: {
-        code: 200,
-        codeName: 'Authenticated'
+        code: 406,
+        codeName: 'NOT ACCEPTABLE'
     },
     CODE006: {
+        code: 401,
+        codeName: 'UNAUTHORIZED'
+    },
+    CODE007: {
         code: 200,
-        codeName: 'SUCCESS'
+        codeName: 'AUTHORIZED'
     }
 }
 module.exports = codes;

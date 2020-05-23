@@ -8,7 +8,7 @@ exports.verify = async (req) => {
     //console.log(user)
     if (user) {
         if (user.isVerified)
-            return new reply.errorResponse(code.CODE005, 'user already verified', null)
+            throw new reply.errorResponse(code.CODE004, 'user already verified', null)
         else {
             if (user.otp == verify.otp) {
                 const response = await userModel.updateOne({ _id: verify.id },
@@ -17,14 +17,14 @@ exports.verify = async (req) => {
                         $unset: { otp: verify.otp }
                     })
                 if (response)
-                    return new reply.successResponse(code.CODE006, 'successfully verified', { _sid: user._id });
+                    return new reply.successResponse(code.CODE003, 'successfully verified', { _sid: user._id });
                 else
-                    return new reply.errorResponse(code.CODE005, 'failed to verify', null)
+                    throw new reply.errorResponse(code.CODE002, 'failed to verify', null)
             }
             else
-                return new reply.errorResponse(code.CODE005, 'invalid otp', null)
+                throw new reply.errorResponse(code.CODE005, 'invalid otp', null)
         }
     }
     else
-        return new reply.errorResponse(code.CODE005, 'invalid user id', null)
+        throw new reply.errorResponse(code.CODE006, 'invalid user id', null)
 }
