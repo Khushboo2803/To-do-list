@@ -36,6 +36,8 @@ exports.register = async (req) => {
 }
 exports.resend = async (req) => {
     const id = await req.body.id;
+    console.log(id);
+
     const user = await userModel.findById(id);
     if (user) {
         if (user.isVerified)
@@ -46,9 +48,9 @@ exports.resend = async (req) => {
             specialChars: false,
             upperCase: false
         });
-        const sendMailtoUser = await sendEmail.sendOtp(email, otp);
+        const sendMailtoUser = await sendEmail.sendOtp(user.email, otp);
         if (sendMailtoUser.response) {
-            const response = await userModel.updateOne({ email }, { $set: { otp: otp } });
+            const response = await userModel.updateOne({ email: user.email }, { $set: { otp: otp } });
             if (response)
                 return new reply.successResponse(code.CODE03, 'otp resend successfully', null)
             else
