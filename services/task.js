@@ -5,13 +5,12 @@ exports.allTask = async (req) => {
 	const author = await req.params.author;
 	const tasks = await taskModel.find({ author })
 	if (tasks) {
-		console.log('suucc')
-		return new reply.successResponse(code.CODE004, 'task fetched successfully ', { taskItems: tasks });
+		return new reply.successResponse(code.CODE007, 'task fetched successfully ', { taskItems: tasks });
 	}
 
 	else {
 		console.log('throw error')
-		throw new reply.errorResponse(code.CODE001, 'no tasks to dispay', null)
+		throw new reply.errorResponse(code.CODE004, 'invalid authour request', null)
 	}
 }
 
@@ -19,10 +18,10 @@ exports.getCompletedTask = async (req) => {
 	const author = await req.params.author;
 	const completedTasks = await taskModel.find({ author, taskStatus: 'completed' });
 	if (completedTasks)
-		return new reply.successResponse(code.CODE004, 'completed task fetched successfully ', { taskItems: completedTasks });
+		return new reply.successResponse(code.CODE007, 'completed task fetched successfully ', { taskItems: completedTasks });
 
 	else
-		throw new reply.errorResponse(code.CODE001, 'no tasks completed', null)
+		throw new reply.errorResponse(code.CODE002, 'no tasks completed', null)
 }
 
 exports.getCurrentTask = async (req) => {
@@ -35,10 +34,10 @@ exports.getCurrentTask = async (req) => {
 	});
 
 	if (taskList)
-		return new reply.successResponse(code.CODE004, 'tasks fetched successfully ', { taskItems: taskList });
+		return new reply.successResponse(code.CODE007, 'tasks fetched successfully ', { taskItems: taskList });
 
 	else
-		throw new reply.errorResponse(code.CODE001, 'no tasks for now', null)
+		throw new reply.errorResponse(code.CODE007, 'no tasks for now', null)
 }
 
 exports.addTask = async (req) => {
@@ -47,10 +46,10 @@ exports.addTask = async (req) => {
 	const obj = new taskModel(task);
 	const respone = await obj.save();
 	if (respone) {
-		return new reply.successResponse(code.CODE004, 'tasks added successfully ', { taskItems: respone });
+		return new reply.successResponse(code.CODE000, 'tasks added successfully ', { taskItems: respone });
 	}
 	else
-		throw new reply.errorResponse(code.CODE001, 'no tasks for now', null)
+		throw new reply.errorResponse(code.CODE002, 'fail to save task', null)
 }
 
 exports.updateTask = async (req) => {
@@ -58,17 +57,17 @@ exports.updateTask = async (req) => {
 	const { update } = await req.body;
 	const task = await taskModel.updateOne({ _id: taskId }, { $set: update });
 	if (task.nModified)
-		return new reply.successResponse(code.CODE004, 'tasks updated successfully ', { taskItems: task });
+		return new reply.successResponse(code.CODE003, 'tasks updated successfully ', null);
 	else
-		throw new reply.errorResponse(code.CODE001, 'failed to update task', null)
+		throw new reply.errorResponse(code.CODE002, 'failed to update task', null)
 }
 
 exports.deleteTask = async (req) => {
 	const { taskId, author } = await req.params;
 	const response = await taskModel.deleteOne({ _id: taskId, author });
-	console.log(response);
+	//console.log(response);
 	if (response.deletedCount)
-		return new reply.successResponse(code.CODE004, 'deleted successfully', null);
+		return new reply.successResponse(code.CODE007, 'deleted successfully', null);
 	else
-		throw new reply.errorResponse(code.CODE001, 'No such task', null)
+		throw new reply.errorResponse(code.CODE002, 'No such task', null)
 }

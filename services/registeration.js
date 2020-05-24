@@ -35,8 +35,8 @@ exports.register = async (req) => {
         return sendMailtoUser;
 }
 exports.resend = async (req) => {
-    const email = await req.body.email;
-    const user = await userModel.findOne({ email });
+    const id = await req.body.id;
+    const user = await userModel.findById(id);
     if (user) {
         if (user.isVerified)
             throw new reply.errorResponse(code.CODE005, 'User already verified', null);
