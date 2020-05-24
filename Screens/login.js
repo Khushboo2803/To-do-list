@@ -24,15 +24,15 @@ export default class login extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-        this.setState({ width: Dimensions.get('window').width });
-        this.setState({ height: Dimensions.get('window').height });
+        
     }
 
     loginUser = async () => {
-
+        {/* function called on login press */}
         if (await user.signupValidation(this.state.email, this.state.password, "default")) {
+            {/*if format of input is correct */}
             const res = await user.login(this.state.email.toLowerCase(), this.state.password);
-            console.log("result after login",res);
+            {/* res is the response we get from backend */}
             if (res !== false) {
                 AsyncStorage.setItem('id', res._sid);
                 AsyncStorage.setItem('user', res.name);
@@ -156,8 +156,8 @@ export default class login extends React.Component {
                                 />
                                 </View>
                             </DialogContent>
-
                         </Dialog>
+                        {/* forget password dialog box ends here */}
                     
                 </View>
             </ImageBackground>
