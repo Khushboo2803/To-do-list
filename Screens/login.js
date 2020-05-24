@@ -22,7 +22,9 @@ export default class login extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-        console.log("heyyyyy");
+        BackHandler.addEventListener('hardwareBackPress', ()=>{
+
+        })
     }
 
     loginUser = async () => {
@@ -48,7 +50,19 @@ export default class login extends React.Component {
                 style={{ height: Dimensions.get('screen').height, 
                 width: Dimensions.get('screen').width }}>
                 <View>
-
+                    <View style={{
+                        marginTop:'10%',
+                        alignSelf:'center'
+                    }}>
+                        <Text style={{
+                            fontSize:26,
+                            fontWeight:'bold',
+                            fontFamily:'monospace',
+                            textShadowRadius: 90,
+                            textShadowColor: 'green',
+                            color:'black'
+                        }}> Login for Todo-List</Text>
+                    </View>
                     {/* email text input view */}
                     <View style={styles.email}>
                         <Image source={require('../assets/email.png')}
@@ -98,15 +112,29 @@ export default class login extends React.Component {
                             </Text>
                         </TouchableOpacity>
                     </View>
+                         {/* forget passwords ends here */}
 
                     <View style={styles.submitButton}>
 
                         <TouchableOpacity onPress={() => this.loginUser()}>
-                            <Text style={styles.text}>>>Login </Text>
+                            <Text style={styles.text}>   Login </Text>
                         </TouchableOpacity>
                     </View>
-                    {/* forget passwords ends here */}
 
+                    <Text style={{
+                        marginLeft: '45%',
+                        fontFamily: 'monospace',
+                        fontSize: 16,
+                        color: 'white'
+                    }}>OR</Text>
+
+                    <View style={styles.loginButton}>
+
+                        <TouchableOpacity onPress={() => this.loginUser()}>
+                            <Text style={styles.text}>>>Register</Text>
+                        </TouchableOpacity>
+                    </View>
+                    
                     {/* forget password dialog box {callable only when user press forget password button} */}
                     
                     <Dialog onTouchOutside={()=>{

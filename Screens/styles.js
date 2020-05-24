@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         marginLeft: '10%',
         borderRadius: 8,
-        marginTop: '45%',
+        marginTop: '29%',
         backgroundColor: 'white'
     },
     user: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     submitButton: {
-        width: width * 0.35,
+        width: width * 0.42,
         height: height * 0.06,
         borderWidth: 4,
         borderRadius: 9,
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         marginLeft: '33%',
         backgroundColor: 'dodgerblue',
         borderColor: 'midnightblue',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     icon: {
         height: 30,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         marginLeft: 2
     },
     loginButton: {
-        width: width * 0.35,
+        width: width * 0.42,
         height: height * 0.06,
         borderWidth: 4,
         borderRadius: 9,
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
         fontSize: 23,
         fontWeight: 'bold',
         color: 'mistyrose',
-        fontFamily: 'monospace'
+        fontFamily: 'monospace',
+        textAlign:'center'
     },
     addButton: {
         display: "flex",

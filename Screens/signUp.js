@@ -79,8 +79,25 @@ export default class signUp extends React.Component {
                     height: Dimensions.get('screen').height,
                     width: Dimensions.get('screen').width
                 }}>
-                    {/* Email view starts */}
+
+                    
                 <View>
+
+                <View style={{
+                        marginTop:'10%',
+                        alignSelf:'center'
+                    }}>
+                        <Text style={{
+                            fontSize:26,
+                            fontWeight:'bold',
+                            fontFamily:'monospace',
+                            textShadowRadius: 90,
+                            textShadowColor: 'green',
+                            color:'black'
+                        }}> Sign-Up for Todo-List</Text>
+                    </View>
+
+                    {/* Email view starts */}
                     <View style={styles.email}>
                         <Image source={require('../assets/email.png')}
                             style={styles.icon} />
@@ -136,14 +153,14 @@ export default class signUp extends React.Component {
                     <View style={styles.submitButton}>
 
                         <TouchableOpacity onPress={() => { this.onSubmitPress() }}>
-                            <Text style={styles.text}>>>Submit </Text>
+                            <Text style={styles.text}>  Submit</Text>
                         </TouchableOpacity>
                     </View>
                     <Text style={{
-                        marginLeft: '45%',
+                        marginLeft: '48%',
                         fontFamily: 'monospace',
                         fontSize: 16,
-                        color: 'white'
+                        color: 'black'
                     }}>OR</Text>
 
                     {/* login button */}

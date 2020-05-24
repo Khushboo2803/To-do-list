@@ -134,3 +134,20 @@ exports.forgetPass = async(email) =>{
          Alert.alert("Email not registered. Please Sign-Up first");
      }
 }
+
+exports.updatePassword=async(id, oldpass, newpass)=>
+{
+    console.log("got mail ", id);
+    const response = await axios({
+        method: 'post',
+        url: 'https://stackhack.herokuapp.com/password/update',
+        data: {
+            "update": {
+                "id": id,
+                "currentPassword": oldpass,
+                "newPassword": newpass
+            }
+        }
+    });
+    return response.data.response;
+}
