@@ -52,7 +52,7 @@ exports.resend = async (req) => {
         if (sendMailtoUser.response) {
             const response = await userModel.updateOne({ email: user.email }, { $set: { otp: otp } });
             if (response)
-                return new reply.successResponse(code.CODE03, 'otp resend successfully', null)
+                return new reply.successResponse(code.CODE003, 'otp resend successfully', null)
             else
                 throw new reply.errorResponse(code.CODE002, 'failed to resend otp', null);
         }
