@@ -20,7 +20,7 @@ exports.login = async (req) => {
 }
 
 exports.forgotPassword = async (req) => {
-    const email = await req.body.email;
+    const email = await req.body.forgot.email;
     const user = await userModel.findOne({ email });
     if (user) {
         if (user.isVerified == false)
@@ -31,6 +31,7 @@ exports.forgotPassword = async (req) => {
             specialChars: false,
             upperCase: true
         });
+        console.log(tempPassword)
         const sendTempPass = await sendEmail.sendPassword(email, tempPassword);
         //const sendMailtoUser = true;
         if (sendTempPass.response) {
