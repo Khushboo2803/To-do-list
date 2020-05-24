@@ -33,13 +33,12 @@ export default class signUp extends React.Component {
         this.setState({ width: Dimensions.get('window').width });
         this.setState({ height: Dimensions.get('window').height });
 
-        const user=await AsyncStorage.getItem('user');
-        const id=await AsyncStorage.getItem('id');
-        if(id == '' || id == null)
-        {
+        const user = await AsyncStorage.getItem('user');
+        const id = await AsyncStorage.getItem('id');
+        if (id == '' || id == null) {
             this.render();
         }
-        else{
+        else {
             this.props.navigation.navigate('todo');
         }
     }
@@ -213,11 +212,10 @@ export default class signUp extends React.Component {
                                     onPress={async () => {
                                         clearInterval(this.interval);
                                         this.setState({ dialogBox: false });
-                                        const id=await user.verifyOTP(this.state.id, this.state.otp);
-                                        if(id!=false)
-                                        {
+                                        const id = await user.verifyOTP(this.state.id, this.state.otp);
+                                        if (id != false) {
                                             console.log('validated');
-                                            await AsyncStorage.setItem('id',id);
+                                            await AsyncStorage.setItem('id', id);
                                             await AsyncStorage.setItem('user', this.state.username);
                                             this.props.navigation.navigate('todo');
                                         }
@@ -232,8 +230,8 @@ export default class signUp extends React.Component {
                                 }}>
                                     {
                                         this.state.resendBox ?
-                                            <TouchableOpacity onPress={async() => {
-                                                await user.resendOTP(this.state.email);
+                                            <TouchableOpacity onPress={async () => {
+                                                await user.resendOTP(this.state.id);
                                                 this.i = 30;
                                                 this.interval = setInterval(() => {
                                                     this.setTimer(this.i);
