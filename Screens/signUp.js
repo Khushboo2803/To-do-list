@@ -43,24 +43,6 @@ export default class signUp extends React.Component {
         }
     }
 
-    getDeviceMail() {
-        Alert.alert("signup module here");
-    }
-
-    setEmail(mail) {
-        this.setState({ email: mail });
-    }
-    setUser(user) {
-        this.setState({ username: user });
-    }
-    setPass(pass) {
-        this.setState({ password: pass });
-    }
-
-    setOTP(otp) {
-        this.setState({ otp: otp });
-    }
-
     setTimer(i) {
         if (this.i == 30) {
             this.setState({ resendBox: false })
@@ -75,7 +57,7 @@ export default class signUp extends React.Component {
     onSubmitPress = async () => {
         this.setState({ resendBox: false });
         if (await user.signupValidation(this.state.email, this.state.password, this.state.username)) {
-            const id = await user.register(this.state.email, this.state.username, this.state.password);
+            const id = await user.register(this.state.email.toLowerCase(), this.state.username, this.state.password);
             //console.log(`is => ${id}`)
             this.setState({ id: id });
             if (id !== undefined) {
@@ -103,7 +85,7 @@ export default class signUp extends React.Component {
                         <TextInput
                             placeholder="Enter your email id here                 "
                             underlineColorAndroid="transparent"
-                            onChangeText={text => this.setEmail(text)}
+                            onChangeText={text => this.setState({ email: text })}
                             defaultValue={this.state.email}
                             style={{
                                 color: 'navy',
@@ -118,7 +100,7 @@ export default class signUp extends React.Component {
                         <TextInput
                             placeholder="Enter your name here                 "
                             underlineColorAndroid="transparent"
-                            onChangeText={text => this.setUser(text)}
+                            onChangeText={text => this.setState({ user: text })}
                             defaultValue={this.state.username}
                             style={{
                                 color: 'navy',
@@ -133,7 +115,7 @@ export default class signUp extends React.Component {
                         <TextInput
                             placeholder="Enter your password here                 "
                             underlineColorAndroid="transparent"
-                            onChangeText={text => this.setPass(text)}
+                            onChangeText={text => this.setState({ password: text })}
                             defaultValue={this.state.password}
                             secureTextEntry={true}
                             style={{
@@ -198,7 +180,7 @@ export default class signUp extends React.Component {
                                 <TextInput
                                     placeholder="OTP is sent to your email                 "
                                     underlineColorAndroid="transparent"
-                                    onChangeText={text => this.setOTP(text)}
+                                    onChangeText={text => this.setState({ otp: text })}
                                     defaultValue={this.state.otp}
                                     keyboardType='numeric'
                                     style={{

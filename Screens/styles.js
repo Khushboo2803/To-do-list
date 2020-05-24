@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         height: height * 0.06,
         borderWidth: 4,
         borderRadius: 9,
-        marginTop: '20%',
+        marginTop: '10%',
         marginLeft: '33%',
         backgroundColor: 'dodgerblue',
         borderColor: 'midnightblue',
@@ -88,7 +88,17 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'red',
         shadowColor: 'grey',
-        shadowOffset: 5
+        //shadowOffset: 5
+    },
+    forgetText :
+    {
+        fontStyle:'italic',
+        color:'navy',
+        fontWeight:'bold',
+        fontSize:20,
+        textDecorationLine:'underline',
+        textShadowRadius:90,
+        textShadowColor:'white'
     }
 });
 export default styles;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker } from 'react-native';
+import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker, BackHandler } from 'react-native';
 import { Card, Icon, FormLabel } from 'react-native-elements';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import DatePicker from 'react-native-datepicker';
@@ -51,6 +51,9 @@ export default class main extends React.Component {
         return false;
     };
     UNSAFE_componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', ()=>{
+            BackHandler.exitApp();
+        });
         this.state.users = [
             {
                 _id: '5ec4aefe1fae4a1148774948',
@@ -71,6 +74,12 @@ export default class main extends React.Component {
         ]
     }
 
+    componentWillUnmount()
+    {
+        BackHandler.removeEventListener('hardwareBackPress',()=>{
+            BackHandler.exitApp();
+        } );
+    }
     modifyTask(task) {
         console.log(task)
     }
@@ -109,12 +118,15 @@ export default class main extends React.Component {
                                 <MenuDivider />
                                 <MenuItem onPress={this.hideMenu}>Completed task</MenuItem>
                                 <MenuDivider />
-                                <MenuItem onPress={this.hideMenu}>Account privacy</MenuItem>
+                                <MenuItem onPress={this.hideMenu}>Update password</MenuItem>
                                 <MenuDivider />
                                 <MenuItem onPress={async () => {
                                     await AsyncStorage.removeItem('id');
                                     await AsyncStorage.removeItem('user');
                                     this.props.navigation.navigate('signup');
+                                    BackHandler.removeEventListener('hardwareBackPress',()=>{
+                                        BackHandler.exitApp();
+                                    });
                                     this.hideMenu
                                 }
                                 }>logout</MenuItem>
