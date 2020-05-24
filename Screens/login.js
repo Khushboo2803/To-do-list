@@ -18,16 +18,16 @@ export default class login extends React.Component {
         this.setState({ height: Dimensions.get('window').height });
     }
 
-    setEmail(mail) {
-        this.setState({ email: mail });
-    }
-    setPass(pass) {
-        this.setState({ password: pass });
-    }
+    loginUser = async () => {
 
-    onSubmitPress = async () => {
         if (await user.signupValidation(this.state.email, this.state.password, "default")) {
-            Alert.alert("got true");
+            const res = await user.login(this.state.email, this.state.password);
+            console.log(res);
+            if (res !== false) {
+                this.props.navigation.navigate('todo');
+            }
+            else
+                return;
         }
 
     }
@@ -42,7 +42,7 @@ export default class login extends React.Component {
                         <TextInput
                             placeholder="Enter your email id here                 "
                             underlineColorAndroid="transparent"
-                            onChangeText={text => this.setEmail(text)}
+                            onChangeText={text => this.setState({ email: text })}
                             defaultValue={this.state.email}
                             style={{
                                 color: 'navy',
@@ -57,7 +57,7 @@ export default class login extends React.Component {
                         <TextInput
                             placeholder="Enter your password here                 "
                             underlineColorAndroid="transparent"
-                            onChangeText={text => this.setPass(text)}
+                            onChangeText={text => this.setState({ password: text })}
                             defaultValue={this.state.password}
                             secureTextEntry={true}
                             style={{
@@ -69,7 +69,7 @@ export default class login extends React.Component {
 
                     <View style={styles.submitButton}>
 
-                        <TouchableOpacity onPress={() => { this.onSubmitPress() }}>
+                        <TouchableOpacity onPress={() => this.loginUser()}>
                             <Text style={styles.text}>>>Login </Text>
                         </TouchableOpacity>
                     </View>

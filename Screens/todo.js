@@ -41,34 +41,39 @@ export default class main extends React.Component {
         this._menu.show();
     };
 
-    buttonStatus(){
-        if(this.state.isHeaderSet && this.state.isDesSet && this.state.isStatusSet && this.state.isTypeSet && this.state.isDateSet)
-        {
-            if(this.state.taskHeading=='' || this.state.taskDetail=='' || this.state.category==null || this.state.taskStatus==null|| this.state.dueDate==null)
-            {
+    buttonStatus() {
+        if (this.state.isHeaderSet && this.state.isDesSet && this.state.isStatusSet && this.state.isTypeSet && this.state.isDateSet) {
+            if (this.state.taskHeading == '' || this.state.taskDetail == '' || this.state.category == null || this.state.taskStatus == null || this.state.dueDate == null) {
                 return false;
             }
             return true;
-        }   
-        return false;                                
+        }
+        return false;
     };
     UNSAFE_componentWillMount() {
         this.state.users = [
             {
+                _id: '5ec4aefe1fae4a1148774948',
                 taskHeading: 'Buy groceries',
-                detail: 'you have to buy groceries and some sweets ',
+                taskDetail: 'you have to buy groceries and some sweets ',
                 dueDate: '22/7/12',
-                status: 'new'
+                taskStatus: 'ongoing',
+                category: "personal"
             },
             {
-                taskHeading: 'To do list',
-                detail: 'Woow my code  ',
+                _id: '5ec4aefe1fae4a1148774949',
+                taskHeading: 'Buy Sweets',
+                taskDetail: 'you have to buy groceries and some sweets ',
                 dueDate: '22/7/12',
-                status: 'new'
+                taskStatus: 'new',
+                category: "personal"
             },
         ]
     }
 
+    modifyTask(task) {
+        console.log(task)
+    }
     render() {
         return (
 
@@ -106,12 +111,12 @@ export default class main extends React.Component {
                                 <MenuDivider />
                                 <MenuItem onPress={this.hideMenu}>Account privacy</MenuItem>
                                 <MenuDivider />
-                                <MenuItem onPress={async()=>{
+                                <MenuItem onPress={async () => {
                                     await AsyncStorage.removeItem('id');
                                     await AsyncStorage.removeItem('user');
                                     this.props.navigation.navigate('signup');
                                     this.hideMenu
-                                }   
+                                }
                                 }>logout</MenuItem>
                             </Menu>
                         </View>
@@ -120,23 +125,12 @@ export default class main extends React.Component {
                         {
                             this.state.users.map((user, index) => {
                                 return (
-                                    <Card title={user.taskHeading} featuredTitle={'&times;'} key={index}>
-                                        <View>
-                                            {/* Title  */}
-                                            <View
-                                                style={{ flexDirection: 'row' }}>
-                                                <Text>
-                                                    {user.taskHeading}
-                                                </Text>
-                                                <View style={{ marginLeft: '60%' }}>
-                                                    <Text style={{
-                                                        fontSize: 26,
-                                                        color: 'red',
-                                                        fontWeight: 'bold'
-                                                    }}> &times;</Text>
-                                                </View>
-                                            </View>
-                                        </View>
+                                    <Card
+                                        title={user.taskHeading}
+                                        key={index}>
+                                        <Text style={styles.deteleTask}
+                                            onPress={() => this.modifyTask(user)}> &times;</Text>
+
                                     </Card>
                                 )
                             })
@@ -261,14 +255,14 @@ export default class main extends React.Component {
                                     selectedValue={this.state.category}
                                     style={{ height: 50, width: 200 }}
                                     onValueChange={(itemValue, itemIndex) => {
-                                        this.setState({category: itemValue});
+                                        this.setState({ category: itemValue });
                                         if (itemValue != null)
                                             this.setState({ isTypeSet: true });
                                         else
                                             this.setState({ isTypeSet: false });
                                     }}
                                 >
-                                    
+
                                     <Picker.Item label="Task Category" value={null} />
                                     <Picker.Item label="Personal" value="personal" />
                                     <Picker.Item label="work" value="work" />
@@ -307,7 +301,7 @@ export default class main extends React.Component {
                                 <Picker
                                     selectedValue={this.state.taskStatus}
                                     style={{ height: 50, width: 200 }}
-                                    
+
                                     onValueChange={(itemValue, itemIndex) => {
                                         this.setState({ taskStatus: itemValue });
                                         if (itemValue != null)
@@ -392,7 +386,7 @@ export default class main extends React.Component {
                                 alignSelf: 'center',
                                 marginTop: '10%'
                             }}>
-                                
+
                                 <TouchableOpacity disabled={!this.buttonStatus()} style={styles.addCancelButton} onPress={() => task.addTask(this)}>
                                     <Text style={styles.addCancelText}>Add Task</Text>
                                 </TouchableOpacity>

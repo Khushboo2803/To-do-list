@@ -93,3 +93,27 @@ exports.resendOTP = async (id) => {
     });
     console.log(response.data);
 }
+
+exports.login = async (email, password) => {
+    const response = await axios({
+        method: 'post',
+        url: 'https://stackhack.herokuapp.com/login',
+        data: {
+            user: {
+                "email": email,
+                "password": password
+            }
+        }
+    });
+    if (response.data.response)
+        return response.data.data;
+    else {
+        if (response.data.msg)
+            alert(response.data.msg);
+        if (response.data.message)
+            alert(response.data.message);
+        return false;
+    }
+    console.log(response.data);
+    return false;
+}
