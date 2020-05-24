@@ -15,6 +15,7 @@ app.use(bodyParser.json())
 
 const routes = {
     login: require('./routes/login'),
+    password: require('./routes/password'),
     register: require('./routes/registeration'),
     resend: require('./routes/resend'),
     verify: require('./routes/verify'),
@@ -25,7 +26,8 @@ app.use('/login', routes.login);
 app.use('/register', routes.register);
 app.use('/verify', routes.verify);
 app.use('/resend', routes.resend);
-app.use('/task', routes.task)
+app.use('/task', routes.task);
+app.use('/password', routes.password);
 app.use('*', (req, res) => {
     res.json({
         status: 'error',
