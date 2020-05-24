@@ -91,7 +91,6 @@ exports.resendOTP = async (id) => {
     });
     console.log(response.data);
 }
-<<<<<<< HEAD
 
 exports.login = async (email, password) => {
     const response = await axios({
@@ -116,5 +115,3 @@ exports.login = async (email, password) => {
     console.log(response.data);
     return false;
 }
-=======
->>>>>>> 6687d6936fcc7761fb9cbdda194189934d03d1fd
