@@ -4,8 +4,10 @@ const code = require('../response/codes')
 exports.resend = async (req, res) => {
     try {
         const response = await resendService.resend(req);
+        console.log(response)
         res.send(response);
     } catch (error) {
+        console.log(error)
         if (error instanceof reply.errorResponse)
             res.send(error)
         else
