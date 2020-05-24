@@ -16,7 +16,7 @@ exports.login = async (req) => {
         }
     }
     else
-        throw new reply.errorResponse(code.CODE006, 'Invalid User/Password', null)
+        throw new reply.errorResponse(code.CODE006, 'Invalid Email/Password', null)
 }
 
 exports.forgotPassword = async (req) => {
