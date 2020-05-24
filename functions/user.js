@@ -3,9 +3,7 @@
 import axios from 'axios';
 import { Alert } from 'react-native';
 
-const api = axios.create({
-    baseURL: 'https://stackhack.herokuapp.com/'
-});
+
 exports.signupValidation = async (email, password, username = null) => {
     const expression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (expression.test(email) === false) {
