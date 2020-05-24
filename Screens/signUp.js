@@ -76,8 +76,8 @@ export default class signUp extends React.Component {
         return (
             <ImageBackground source={require('../assets/signUp.jpg')}
                 style={{
-                    height: this.state.height,
-                    width: this.state.width
+                    height: Dimensions.get('screen').height,
+                    width: Dimensions.get('screen').width
                 }}>
                     {/* Email view starts */}
                 <View>

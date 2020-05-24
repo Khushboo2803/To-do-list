@@ -17,8 +17,6 @@ export default class login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            width: '',
-            height: '',
             dialogBox: false
         };
     }
@@ -47,7 +45,8 @@ export default class login extends React.Component {
     render() {
         return (
             <ImageBackground source={require('../assets/login.jpg')}
-                style={{ height: this.state.height, width: this.state.width }}>
+                style={{ height: Dimensions.get('screen').height, 
+                width: Dimensions.get('screen').width }}>
                 <View>
 
                     {/* email text input view */}
