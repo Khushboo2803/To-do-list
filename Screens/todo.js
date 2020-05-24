@@ -25,9 +25,9 @@ export default class main extends React.Component {
             isDateSet: true,
             buttonDisable: true,
             dialogBox: false,
-            oldpass:'',
-            newpass:'',
-            newpassConfirm:''
+            oldpass: '',
+            newpass: '',
+            newpassConfirm: ''
         };
     }
 
@@ -94,6 +94,7 @@ export default class main extends React.Component {
                     height: Dimensions.get('screen').height,
                     width: Dimensions.get('screen').width
                 }}>
+                {/* todo main screen */}
                 <View>
                     <View style={{
                         height: Dimensions.get('screen').height * 0.07,
@@ -106,6 +107,7 @@ export default class main extends React.Component {
                                 fontSize: 36,
                                 fontWeight: 'bold'
                             }}> TO-DO List</Text>
+                        {/* menu in todo screen */}
                         <View>
                             <Menu
                                 ref={this.setMenuRef}
@@ -121,9 +123,9 @@ export default class main extends React.Component {
                                 <MenuDivider />
                                 <MenuItem onPress={this.hideMenu}>Completed task</MenuItem>
                                 <MenuDivider />
-                                <MenuItem onPress={()=>{
+                                <MenuItem onPress={() => {
                                     this.hideMenu
-                                    this.setState({dialogBox:true})
+                                    this.setState({ dialogBox: true })
                                 }}>Update password</MenuItem>
                                 <MenuDivider />
                                 <MenuItem onPress={async () => {
@@ -139,6 +141,7 @@ export default class main extends React.Component {
                             </Menu>
                         </View>
                     </View>
+                    {/* cards for rendering task */}
                     <View>
                         {
                             this.state.users.map((user, index) => {
@@ -163,6 +166,7 @@ export default class main extends React.Component {
                         }
                     </View>
                 </View>
+                {/*add task button */}
                 <View style={styles.addButton}>
                     <Icon
                         reverse
@@ -173,6 +177,7 @@ export default class main extends React.Component {
                         onPress={() => this.setState({ showModal: true })}
                     />
                 </View>
+                {/* add task modal */}
                 <Modal
                     transparent={true}
                     animationType={"slide"}
@@ -428,68 +433,68 @@ export default class main extends React.Component {
 
                 {/* Update password request */}
                 <Dialog onTouchOutside={() => {
-                        this.setState({ dialogBox: true });
+                    this.setState({ dialogBox: true });
+                }}
+                    width={0.9}
+                    visible={this.state.dialogBox}
+                    dialogAnimation={new ScaleAnimation()}
+                    onHardwareBackPress={() => {
+                        BackHandler.exitApp();
+                        clearInterval(this.interval);
+                        console.log('onHardwareBackPress');
+                        this.setState({ dialogBox: false });
+                        return true;
                     }}
-                        width={0.9}
-                        visible={this.state.dialogBox}
-                        dialogAnimation={new ScaleAnimation()}
-                        onHardwareBackPress={() => {
-                            BackHandler.exitApp();
-                            clearInterval(this.interval);
-                            console.log('onHardwareBackPress');
-                            this.setState({ dialogBox: false });
-                            return true;
-                        }}
-                        dialogTitle={
-                            <DialogTitle
-                                title="Enter OTP"
-                                hasTitleBar={false}
+                    dialogTitle={
+                        <DialogTitle
+                            title="Enter OTP"
+                            hasTitleBar={false}
+                        />
+                    }
+                    actions={
+                        [
+                            <DialogButton
+                                text="DISMISS"
+                                onPress={() => {
+                                    this.setState({ dialogBox: false });
+                                }}
+                                key="button-1"
+                            />,
+                        ]
+                    }>
+                    <DialogContent>
+                        <View>
+
+                            <TextInput
+                                placeholder="Enter current password                 "
+                                underlineColorAndroid="transparent"
+                                onChangeText={text => this.setState({ oldpass: text })}
+                                defaultValue={this.state.oldpass}
+                                style={{
+                                    color: 'navy',
+                                    fontFamily: 'monospace'
+                                }}
                             />
-                        }
-                        actions={
-                            [
-                                <DialogButton
-                                    text="DISMISS"
-                                    onPress={() => {
-                                        this.setState({ dialogBox: false });
-                                    }}
-                                    key="button-1"
-                                />,
-                            ]
-                        }>
-                        <DialogContent>
-                            <View>
 
-                                <TextInput
-                                    placeholder="Enter current password                 "
-                                    underlineColorAndroid="transparent"
-                                    onChangeText={text => this.setState({ oldpass: text })}
-                                    defaultValue={this.state.oldpass}
-                                    style={{
-                                        color: 'navy',
-                                        fontFamily: 'monospace'
-                                    }}
-                                />
+                            <Button
+                                title="Verify"
+                                onPress={async () => {
+                                    clearInterval(this.interval);
+                                    this.setState({ dialogBox: false });
+                                    const id = await user.verifyOTP(this.state.id, this.state.otp);
+                                    if (id != false) {
+                                        console.log('validated');
+                                        await AsyncStorage.setItem('id', id);
+                                        await AsyncStorage.setItem('user', this.state.username);
+                                        this.props.navigation.navigate('todo');
+                                    }
 
-                                <Button
-                                    title="Verify"
-                                    onPress={async () => {
-                                        clearInterval(this.interval);
-                                        this.setState({ dialogBox: false });
-                                        const id = await user.verifyOTP(this.state.id, this.state.otp);
-                                        if (id != false) {
-                                            console.log('validated');
-                                            await AsyncStorage.setItem('id', id);
-                                            await AsyncStorage.setItem('user', this.state.username);
-                                            this.props.navigation.navigate('todo');
-                                        }
-
-                                    }}
-                                    key="button-1"
-                                />
-                            </View>
-                        </DialogContent>
-                    </Dialog>
+                                }}
+                                key="button-1"
+                            />
+                        </View>
+                    </DialogContent>
+                </Dialog>
             </ImageBackground>
         );
     }
