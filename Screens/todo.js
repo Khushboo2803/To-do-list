@@ -1,6 +1,6 @@
 import React from 'react';
 import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker } from 'react-native';
-import { Card, Icon, FormLabel } from 'react-native-elements';
+import { Card, Icon, FormLabel, PricingCard, Button } from 'react-native-elements';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import DatePicker from 'react-native-datepicker';
 import styles from './styles';
@@ -130,7 +130,15 @@ export default class main extends React.Component {
                                         key={index}>
                                         <Text style={styles.deteleTask}
                                             onPress={() => this.modifyTask(user)}> &times;</Text>
-
+                                        <PricingCard
+                                            color="#4f9deb"
+                                            title={null}
+                                            titleStyle={{ height: 0 }}
+                                            pricingStyle={{ height: 0 }}
+                                            info={[`Task: ${user.taskDetail}`, `Due Date : ${user.dueDate}`, `Task Status : ${user.taskStatus}`, `Category : ${user.category}`]}
+                                            button={{ title: "nn", buttonStyle: { display: "none" } }}
+                                        />
+                                        <Button></Button>
                                     </Card>
                                 )
                             })
@@ -139,6 +147,7 @@ export default class main extends React.Component {
                 </View>
                 <View style={styles.addButton}>
                     <Icon
+                        reverse
                         raised
                         name='plus'
                         type='font-awesome'

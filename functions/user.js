@@ -112,6 +112,4 @@ exports.login = async (email, password) => {
             alert(response.data.message);
         return false;
     }
-    console.log(response.data);
-    return false;
 }

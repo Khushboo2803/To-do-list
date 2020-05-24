@@ -87,8 +87,7 @@ const styles = StyleSheet.create({
         right: 0,
         fontSize: 20,
         color: 'red',
-        shadowColor: 'grey',
-        shadowOffset: 5
+        shadowColor: 'grey'
     }
 });
 export default styles;
