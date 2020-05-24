@@ -24,15 +24,15 @@ export default class login extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-        
+        console.log("heyyyyy");
     }
 
     loginUser = async () => {
-        {/* function called on login press */}
+        /* function called on login press */
         if (await user.signupValidation(this.state.email, this.state.password, "default")) {
-            {/*if format of input is correct */}
+            /*if format of input is correct */
             const res = await user.login(this.state.email.toLowerCase(), this.state.password);
-            {/* res is the response we get from backend */}
+            /* res is the response we get from backend */
             if (res !== false) {
                 // if the user exist
                 AsyncStorage.setItem('id', res._sid);
@@ -148,7 +148,6 @@ export default class login extends React.Component {
                                     onChangeText={text => this.setState({ email: text })}
                                     defaultValue={this.state.email}
                                     keyboardType='email-address'
-                                    numberOfLines={2}
                                     style={{
                                         color: 'navy',
                                         fontSize:13

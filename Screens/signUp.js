@@ -28,20 +28,20 @@ export default class signUp extends React.Component {
     interval = '';
     i = '';
     async UNSAFE_componentWillMount() {
-        {/** check if user is already logged in */}
+        /** check if user is already logged in */
         const user = await AsyncStorage.getItem('user');
         const id = await AsyncStorage.getItem('id');
         if (id == '' || id == null) {
             this.render();
         }
         else {
-            {/** if id found in device storage then navigate to todo screen */}
+            /** if id found in device storage then navigate to todo screen */
             this.props.navigation.navigate('todo');
         }
     }
 
     setTimer(i) {
-        {/** Timer set to enable resend option for otp */}
+        /** Timer set to enable resend option for otp */
         if (this.i == 30) {
             this.setState({ resendBox: false })
         }
@@ -53,12 +53,12 @@ export default class signUp extends React.Component {
         this.i = this.i - 1;
     }
     onSubmitPress = async () => {
-        {/** user requests to sign-up */}
+        /** user requests to sign-up */
         this.setState({ resendBox: false });
         if (await user.signupValidation(this.state.email, this.state.password, this.state.username)) {
-            {/** Inside 'if' if all fields are in correct format */}
+            /** Inside 'if' if all fields are in correct format */
             const id = await user.register(this.state.email.toLowerCase(), this.state.username, this.state.password);
-            {/** On success, get user id */}
+            /** On success, get user id */
             this.setState({ id: id });
             if (id !== undefined) {
                 {/** Ask for OTP */}
@@ -104,7 +104,7 @@ export default class signUp extends React.Component {
                         <TextInput
                             placeholder="Enter your name here                 "
                             underlineColorAndroid="transparent"
-                            onChangeText={text => this.setState({ user: text })}
+                            onChangeText={text => this.setState({ username: text })}
                             defaultValue={this.state.username}
                             style={{
                                 color: 'navy',

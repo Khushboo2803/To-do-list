@@ -5,6 +5,13 @@ import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import DatePicker from 'react-native-datepicker';
 import styles from './styles';
 import task from '../functions/tasks';
+import Dialog, {
+    DialogTitle,
+    DialogContent,
+    DialogFooter,
+    DialogButton,
+    ScaleAnimation
+} from 'react-native-popup-dialog';
 import AsyncStorage from '@react-native-community/async-storage';
 export default class main extends React.Component {
     constructor(props) {
