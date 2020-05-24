@@ -34,7 +34,7 @@ exports.sendPassword = async (email, password) => {
         from: `"${process.env.EMAILNAME}" <${process.env.MAILSENDER}>`,
         to: email,
         subject: `Temporary Password for To-Do-List App`,
-        html: ` <p> Temporary Password  for login to your accoint is ${password}.
+        html: ` <p> Temporary Password  for login to your account is ${password}.
                 <br> Please change the passowrd on next login </p>`
     }).then(data => {
         //console.log(data);
