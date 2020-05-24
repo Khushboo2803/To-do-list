@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 // these functions will interact with task management related functions
 exports.closeModal = (thisObj) => {
     thisObj.setState((prevState) => {
