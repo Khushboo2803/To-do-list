@@ -34,6 +34,7 @@ export default class login extends React.Component {
             const res = await user.login(this.state.email.toLowerCase(), this.state.password);
             {/* res is the response we get from backend */}
             if (res !== false) {
+                // if the user exist
                 AsyncStorage.setItem('id', res._sid);
                 AsyncStorage.setItem('user', res.name);
                 this.props.navigation.navigate('todo');
@@ -48,6 +49,8 @@ export default class login extends React.Component {
             <ImageBackground source={require('../assets/login.jpg')}
                 style={{ height: this.state.height, width: this.state.width }}>
                 <View>
+
+                    {/* email text input view */}
                     <View style={styles.email}>
                         <Image source={require('../assets/email.png')}
                             style={styles.icon} />
@@ -55,6 +58,7 @@ export default class login extends React.Component {
                             placeholder="Enter your email id here                 "
                             underlineColorAndroid="transparent"
                             onChangeText={text => this.setState({ email: text })}
+                            keyboardType='email-address'
                             defaultValue={this.state.email}
                             style={{
                                 color: 'navy',
@@ -62,7 +66,9 @@ export default class login extends React.Component {
                             }}
                         />
                     </View>
+                    {/* Email TextInput ends here */}
 
+                    {/* password textinput view */}
                     <View style={styles.user}>
                         <Image source={require('../assets/pass.png')}
                             style={styles.icon} />
@@ -78,6 +84,7 @@ export default class login extends React.Component {
                             }}
                         />
                     </View>
+                    {/* password textinput view ends here */}
 
                     {/* forget password */}
                     <View style={{
@@ -99,8 +106,9 @@ export default class login extends React.Component {
                             <Text style={styles.text}>>>Login </Text>
                         </TouchableOpacity>
                     </View>
+                    {/* forget passwords ends here */}
 
-                    {/* forget password dialog box  */}
+                    {/* forget password dialog box {callable only when user press forget password button} */}
                     
                     <Dialog onTouchOutside={()=>{
                         this.setState({ dialogBox: false });
@@ -131,7 +139,7 @@ export default class login extends React.Component {
                                 />,
                             ]
                         }>
-
+                            {/* dialog box body */}
                             <DialogContent>
                                 <View>
                                 <TextInput
@@ -156,6 +164,7 @@ export default class login extends React.Component {
                                 />
                                 </View>
                             </DialogContent>
+                            {/* dialog box body ends here */}
                         </Dialog>
                         {/* forget password dialog box ends here */}
                     
