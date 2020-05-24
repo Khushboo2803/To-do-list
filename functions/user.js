@@ -3,7 +3,6 @@
 import axios from 'axios';
 import { Alert } from 'react-native';
 
-
 exports.signupValidation = async (email, password, username = null) => {
     const expression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (expression.test(email) === false) {
@@ -112,4 +111,26 @@ exports.login = async (email, password) => {
             alert(response.data.message);
         return false;
     }
+}
+
+// forget password
+exports.forgetPass = async(email) =>{
+    console.log("got mail ", email);
+    const response = await axios({
+        method: 'post',
+        url: 'https://stackhack.herokuapp.com/password/forgot',
+        data: {
+            "forgot" : {
+                "email" : email
+              }
+        }
+    });
+    console.log(response.data);
+     if(response.data.response)
+     {
+         Alert.alert("Temporary password sent to your mail");
+     }
+     else{
+         Alert.alert("Email not registered. Please Sign-Up first");
+     }
 }

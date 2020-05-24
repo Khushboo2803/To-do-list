@@ -19,8 +19,6 @@ export default class signUp extends React.Component {
             username: null,
             email: '',
             password: '',
-            width: '',
-            height: '',
             dialogBox: false,
             otp: '',
             resendBox: false,
@@ -30,38 +28,20 @@ export default class signUp extends React.Component {
     interval = '';
     i = '';
     async UNSAFE_componentWillMount() {
-        this.setState({ width: Dimensions.get('window').width });
-        this.setState({ height: Dimensions.get('window').height });
-
+        {/** check if user is already logged in */}
         const user = await AsyncStorage.getItem('user');
         const id = await AsyncStorage.getItem('id');
         if (id == '' || id == null) {
             this.render();
         }
         else {
+            {/** if id found in device storage then navigate to todo screen */}
             this.props.navigation.navigate('todo');
         }
     }
 
-    getDeviceMail() {
-        Alert.alert("signup module here");
-    }
-
-    setEmail(mail) {
-        this.setState({ email: mail });
-    }
-    setUser(user) {
-        this.setState({ username: user });
-    }
-    setPass(pass) {
-        this.setState({ password: pass });
-    }
-
-    setOTP(otp) {
-        this.setState({ otp: otp });
-    }
-
     setTimer(i) {
+        {/** Timer set to enable resend option for otp */}
         if (this.i == 30) {
             this.setState({ resendBox: false })
         }
@@ -73,12 +53,15 @@ export default class signUp extends React.Component {
         this.i = this.i - 1;
     }
     onSubmitPress = async () => {
+        {/** user requests to sign-up */}
         this.setState({ resendBox: false });
         if (await user.signupValidation(this.state.email, this.state.password, this.state.username)) {
-            const id = await user.register(this.state.email, this.state.username, this.state.password);
-            //console.log(`is => ${id}`)
+            {/** Inside 'if' if all fields are in correct format */}
+            const id = await user.register(this.state.email.toLowerCase(), this.state.username, this.state.password);
+            {/** On success, get user id */}
             this.setState({ id: id });
             if (id !== undefined) {
+                {/** Ask for OTP */}
                 this.setState({ dialogBox: true });
                 this.i = 30;
                 this.interval = setInterval(() => {
@@ -96,6 +79,7 @@ export default class signUp extends React.Component {
                     height: this.state.height,
                     width: this.state.width
                 }}>
+                    {/* Email view starts */}
                 <View>
                     <View style={styles.email}>
                         <Image source={require('../assets/email.png')}
@@ -103,7 +87,7 @@ export default class signUp extends React.Component {
                         <TextInput
                             placeholder="Enter your email id here                 "
                             underlineColorAndroid="transparent"
-                            onChangeText={text => this.setEmail(text)}
+                            onChangeText={text => this.setState({ email: text })}
                             defaultValue={this.state.email}
                             style={{
                                 color: 'navy',
@@ -111,14 +95,16 @@ export default class signUp extends React.Component {
                             }}
                         />
                     </View>
+                        {/* Email view ends here */}
 
+                        {/* User view starts */}
                     <View style={styles.user}>
                         <Image source={require('../assets/user.jpg')}
                             style={styles.icon} />
                         <TextInput
                             placeholder="Enter your name here                 "
                             underlineColorAndroid="transparent"
-                            onChangeText={text => this.setUser(text)}
+                            onChangeText={text => this.setState({ user: text })}
                             defaultValue={this.state.username}
                             style={{
                                 color: 'navy',
@@ -126,14 +112,16 @@ export default class signUp extends React.Component {
                             }}
                         />
                     </View>
+                        {/* User view ends here */}
 
+                        {/* Password view starts */}
                     <View style={styles.user}>
                         <Image source={require('../assets/pass.png')}
                             style={styles.icon} />
                         <TextInput
                             placeholder="Enter your password here                 "
                             underlineColorAndroid="transparent"
-                            onChangeText={text => this.setPass(text)}
+                            onChangeText={text => this.setState({ password: text })}
                             defaultValue={this.state.password}
                             secureTextEntry={true}
                             style={{
@@ -142,7 +130,9 @@ export default class signUp extends React.Component {
                             }}
                         />
                     </View>
+                        {/* password view ends here */}
 
+                        {/* submit button */}
                     <View style={styles.submitButton}>
 
                         <TouchableOpacity onPress={() => { this.onSubmitPress() }}>
@@ -156,12 +146,14 @@ export default class signUp extends React.Component {
                         color: 'white'
                     }}>OR</Text>
 
+                    {/* login button */}
                     <View style={styles.loginButton}>
                         <TouchableOpacity onPress={() => { this.props.navigation.navigate('login') }}>
                             <Text style={styles.text}>>>Login </Text>
                         </TouchableOpacity>
                     </View>
 
+                    {/* OTP dialog box */}
                     <Dialog onTouchOutside={() => {
                         this.setState({ dialogBox: true });
                     }}
@@ -198,7 +190,7 @@ export default class signUp extends React.Component {
                                 <TextInput
                                     placeholder="OTP is sent to your email                 "
                                     underlineColorAndroid="transparent"
-                                    onChangeText={text => this.setOTP(text)}
+                                    onChangeText={text => this.setState({ otp: text })}
                                     defaultValue={this.state.otp}
                                     keyboardType='numeric'
                                     style={{
@@ -244,6 +236,7 @@ export default class signUp extends React.Component {
                             </View>
                         </DialogContent>
                     </Dialog>
+                    {/* OTP dialog box ends here */}
 
                 </View>
             </ImageBackground>
