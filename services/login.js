@@ -12,7 +12,7 @@ exports.login = async (req) => {
         if (!isUser.isVerified)
             throw new reply.errorResponse(code.CODE004, 'user not verified', null);
         else {
-            return new reply.successResponse(code.CODE007, 'successfully logged in ', { _sid: isUser._id });
+            return new reply.successResponse(code.CODE007, 'successfully logged in ', { _sid: isUser._id, name: isUser.name });
         }
     }
     else
