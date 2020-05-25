@@ -34,18 +34,17 @@ exports.register = async (email, user, password) => {
                 }
             }
         });
-        console.log(response);
+        console.log(response.data);
         //console.log(response.data.data.id);
         if (response.data.response == false) {
-            Alert.alert("User already exist. Please login");
-            return;
-        }
-        if (response.data.message == "sucessfully registerd") {
-            return response.data.data.id;
-        }
-        else {
+            if (response.data.message)
+                alert(response.data.message);
+            if (response.data.msg)
+                alert(response.data.msg);
             return false;
         }
+        else
+            return response.data.data.id;
     }
     catch (error) {
         console.log(error.message);
@@ -114,29 +113,27 @@ exports.login = async (email, password) => {
 }
 
 // forget password
-exports.forgetPass = async(email) =>{
+exports.forgetPass = async (email) => {
     console.log("got mail ", email);
     const response = await axios({
         method: 'post',
         url: 'https://stackhack.herokuapp.com/password/forgot',
         data: {
-            "forgot" : {
-                "email" : email
-              }
+            "forgot": {
+                "email": email
+            }
         }
     });
     console.log(response.data);
-     if(response.data.response)
-     {
-         Alert.alert("Temporary password sent to your mail");
-     }
-     else{
-         Alert.alert("Email not registered. Please Sign-Up first");
-     }
+    if (response.data.response) {
+        Alert.alert("Temporary password sent to your mail");
+    }
+    else {
+        Alert.alert("Email not registered. Please Sign-Up first");
+    }
 }
 
-exports.updatePassword=async(id, oldpass, newpass)=>
-{
+exports.updatePassword = async (id, oldpass, newpass) => {
     console.log("got mail ", id);
     const response = await axios({
         method: 'post',
