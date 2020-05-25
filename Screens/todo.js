@@ -197,28 +197,55 @@ export default class main extends React.Component {
                             this.state.users.map((user, index) => {
                                 return (
                                     <Card
-                                    containerStyle
-                                        title={user.taskHeading}
+                                    containerStyle={{
+                                        borderRadius:9,
+                                        borderWidth:2,
+                                        borderColor:'brown',
+                                    }}
+                                    titleStyle={{
+                                        fontSize:20,
+                                        color:'brown',
+                                        textDecorationLine:'underline'
+                                    }}
+                                    title={user.taskHeading.toUpperCase()}
                                         key={index}>
-                                        <Text style={styles.deteleTask}
-                                            onPress={() => this.modifyTask(user)}> &times;</Text>
-                                        <PricingCard
-                                            color="#4f9deb"
-                                            title={null}
+                                            <View style={styles.deteleTask}>
+                                                <Icon    
+                                                    name='trash'
+                                                    type='font-awesome'
+                                                    color='brown'
+                                                    size={23}  
+                                                    onPress={() => this.modifyTask(user)}
+                                                />
+                                            </View>
+                                            <PricingCard
+                                        infoStyle={{
+                                            color:'black',
+                                        }}
+                                        containerStyle={{
+                                            borderRadius:4,
+                                            borderColor:'green',
+                                        }}
                                             titleStyle={{ height: 0 }}
                                             pricingStyle={{ height: 0 }}
                                             info={[`Task: ${user.taskDetail}`, `Due Date : ${user.dueDate}`, `Task Status : ${user.taskStatus}`, `Category : ${user.category}`]}
                                             button={{ title: "nn", buttonStyle: { display: "none" } }}
                                         />
                                         
-                                        <TouchableOpacity>
-                                        <View style={{
-                                            height:20,
-                                            backgroundColor:'green',
-                                            borderRadius:4
-                                        }}></View>
-                                        </TouchableOpacity>
-                                        
+                                        <View style={{flexDirection:'row',
+                                    alignSelf:'center'}}>
+                                            <TouchableOpacity>
+                                                <View style={styles.updateButton}>
+                                                    <Text style={styles.updateText}>Update</Text>
+                                                </View>
+                                            </TouchableOpacity>
+
+                                            <TouchableOpacity>
+                                                <View style={styles.updateButton}>
+                                                    <Text style={styles.updateText}>Complete</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
 
                                     </Card>
                                 );
