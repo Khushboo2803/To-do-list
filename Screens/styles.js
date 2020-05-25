@@ -98,6 +98,22 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         textShadowRadius: 90,
         textShadowColor: 'white'
+    },
+    updateButton:{
+        height:30,
+        width:80,
+        backgroundColor:'green',
+        borderRadius:4,
+        borderColor:'black',
+        borderWidth:1,
+        marginHorizontal:'5%'
+    },
+    updateText:{
+        color:'white',
+        alignSelf:'center',
+        fontSize:16,
+        fontFamily:'monospace',
+        fontWeight:'bold'
     }
 });
 export default styles;
