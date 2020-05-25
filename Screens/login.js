@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, ImageBackground, Dimensions, StyleSheet, View, Image, TextInput, TouchableOpacity, Alert, Button, BackHandler} from 'react-native';
+import { Text, ImageBackground, Dimensions, StyleSheet, View, Image, TextInput, TouchableOpacity, Alert, Button, BackHandler } from 'react-native';
 import styles from './styles.js';
 import user from '../functions/user';
 import Dialog, {
@@ -22,7 +22,7 @@ export default class login extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-        
+
     }
 
     loginUser = async () => {
@@ -45,20 +45,22 @@ export default class login extends React.Component {
     render() {
         return (
             <ImageBackground source={require('../assets/login.jpg')}
-                style={{ height: Dimensions.get('screen').height, 
-                width: Dimensions.get('screen').width }}>
+                style={{
+                    height: Dimensions.get('screen').height,
+                    width: Dimensions.get('screen').width
+                }}>
                 <View>
                     <View style={{
-                        marginTop:'10%',
-                        alignSelf:'center'
+                        marginTop: '10%',
+                        alignSelf: 'center'
                     }}>
                         <Text style={{
-                            fontSize:26,
-                            fontWeight:'bold',
-                            fontFamily:'monospace',
+                            fontSize: 26,
+                            fontWeight: 'bold',
+                            fontFamily: 'monospace',
                             textShadowRadius: 90,
                             textShadowColor: 'green',
-                            color:'black'
+                            color: 'black'
                         }}> Login for Todo-List</Text>
                     </View>
                     {/* email text input view */}
@@ -99,21 +101,20 @@ export default class login extends React.Component {
 
                     {/* forget password */}
                     <View style={{
-                        marginLeft:'43%',
-                        marginTop:'5%'
+                        marginLeft: '43%',
+                        marginTop: '5%'
                     }}>
-                        <TouchableOpacity onPress={()=>{
-                            this.setState({dialogBox: true});
+                        <TouchableOpacity onPress={() => {
+                            this.setState({ dialogBox: true });
                         }}>
                             <Text style={styles.forgetText}>
-                            Forget Password ?
+                                Forget Password ?
                             </Text>
                         </TouchableOpacity>
                     </View>
-                         {/* forget passwords ends here */}
+                    {/* forget passwords ends here */}
 
                     <View style={styles.submitButton}>
-
                         <TouchableOpacity onPress={() => this.loginUser()}>
                             <Text style={styles.text}>   Login </Text>
                         </TouchableOpacity>
@@ -127,18 +128,17 @@ export default class login extends React.Component {
                     }}>OR</Text>
 
                     <View style={styles.loginButton}>
-
-                        <TouchableOpacity onPress={this.props.navigation.navigate('signup')}>
+                        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
                             <Text style={styles.text}>>>Register</Text>
                         </TouchableOpacity>
                     </View>
-                    
+
                     {/* forget password dialog box {callable only when user press forget password button} */}
-                    
-                    <Dialog onTouchOutside={()=>{
+
+                    <Dialog onTouchOutside={() => {
                         this.setState({ dialogBox: false });
                     }}
-                    width={0.9}
+                        width={0.9}
                         visible={this.state.dialogBox}
                         dialogAnimation={new ScaleAnimation()}
                         onHardwareBackPress={() => {
@@ -164,9 +164,9 @@ export default class login extends React.Component {
                                 />,
                             ]
                         }>
-                            {/* dialog box body */}
-                            <DialogContent>
-                                <View>
+                        {/* dialog box body */}
+                        <DialogContent>
+                            <View>
                                 <TextInput
                                     placeholder="Temporary password will be sent to your email                            "
                                     underlineColorAndroid="transparent"
@@ -175,23 +175,23 @@ export default class login extends React.Component {
                                     keyboardType='email-address'
                                     style={{
                                         color: 'navy',
-                                        fontSize:13
+                                        fontSize: 13
                                     }}
                                 />
                                 <Button
                                     title="Reset Password"
                                     onPress={async () => {
                                         await user.forgetPass(this.state.email.toLowerCase());
-                                        this.setState({email : ''});
+                                        this.setState({ email: '' });
                                     }}
                                     key="button-1"
                                 />
-                                </View>
-                            </DialogContent>
-                            {/* dialog box body ends here */}
-                        </Dialog>
-                        {/* forget password dialog box ends here */}
-                    
+                            </View>
+                        </DialogContent>
+                        {/* dialog box body ends here */}
+                    </Dialog>
+                    {/* forget password dialog box ends here */}
+
                 </View>
             </ImageBackground>
         );
