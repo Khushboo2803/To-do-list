@@ -165,7 +165,7 @@ export default class signUp extends React.Component {
 
                     {/* login button */}
                     <View style={styles.loginButton}>
-                        <TouchableOpacity onPress={() => { this.props.navigation.navigate('login') }}>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('login')}>
                             <Text style={styles.text}>>>Login </Text>
                         </TouchableOpacity>
                     </View>

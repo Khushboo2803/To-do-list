@@ -1,11 +1,8 @@
 import React from 'react';
-import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker, BackHandler, Alert } from 'react-native';
-import { Card, Icon, FormLabel, PricingCard, Button } from 'react-native-elements';
+import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker, BackHandler, Alert} from 'react-native';
+import { Card, Icon, PricingCard, Button } from 'react-native-elements';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import DatePicker from 'react-native-datepicker';
-import styles from './styles';
-import user from '../functions/user';
-import task from '../functions/tasks';
 import Dialog, {
     DialogTitle,
     DialogContent,
@@ -13,7 +10,12 @@ import Dialog, {
     DialogButton,
     ScaleAnimation
 } from 'react-native-popup-dialog';
+import styles from './styles';
+import user from '../functions/user';
+import task from '../functions/tasks';
+import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
+
 export default class main extends React.Component {
     constructor(props) {
         super(props);
@@ -36,7 +38,8 @@ export default class main extends React.Component {
             oldpass: '',
             newpass: '',
             newpassConfirm: '',
-            id:''
+            id:'',
+            user:''
         };
     }
 
@@ -55,6 +58,7 @@ export default class main extends React.Component {
     };
 
     buttonStatus() {
+        {/** Add button (of add task) status check  If every field is filled enable add button*/}
         if (this.state.isHeaderSet && this.state.isDesSet && this.state.isStatusSet && this.state.isTypeSet && this.state.isDateSet) {
             if (this.state.taskHeading == '' || this.state.taskDetail == '' || this.state.category == null || this.state.taskStatus == null || this.state.dueDate == null) {
                 return false;
@@ -64,9 +68,20 @@ export default class main extends React.Component {
         return false;
     };
     async UNSAFE_componentWillMount() {
-        BackHandler.addEventListener('hardwareBackPress', () => {
-            BackHandler.exitApp();
-        });
+        {/** If backpress, exit from the app */}
+         BackHandler.addEventListener('hardwareBackPress', () => {
+             BackHandler.exitApp();
+         });
+         {/** Get user tasks from the database */}
+         this.setUser();
+         {/** Get user name from the phone storage */}
+         const user = await AsyncStorage.getItem('user');
+         this.setState({user: user});
+         
+    }
+
+    setUser =async()=>
+    {
         const id=await AsyncStorage.getItem('id');
         this.setState({id:id});
         this.state.users = [
@@ -86,9 +101,16 @@ export default class main extends React.Component {
                 taskStatus: 'new',
                 category: "personal"
             },
+            {
+                _id: '5ec4aefe1fae4a1148774949',
+                taskHeading: 'Buy Sweets',
+                taskDetail: 'you have to buy groceries and some sweets ',
+                dueDate: '22/7/12',
+                taskStatus: 'new',
+                category: "personal"
+            },
         ]
     }
-
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', () => {
             BackHandler.exitApp();
@@ -106,6 +128,8 @@ export default class main extends React.Component {
                     width: Dimensions.get('screen').width
                 }}>
                 {/* todo main screen */}
+                <ScrollView>
+                
                 <View>
                     <View style={{
                         height: Dimensions.get('screen').height * 0.07,
@@ -130,6 +154,8 @@ export default class main extends React.Component {
                                     </TouchableOpacity>
                                 }
                             >
+                                <MenuItem><Text>
+                                {this.state.user}</Text></MenuItem>
                                 <MenuItem onPress={this.hideMenu}>Incomplete Task</MenuItem>
                                 <MenuDivider />
                                 <MenuItem onPress={this.hideMenu}>Completed task</MenuItem>
@@ -152,7 +178,9 @@ export default class main extends React.Component {
                             </Menu>
                         </View>
                     </View>
+                    </View>
                     {/* cards for rendering task */}
+                    
                     <View>
                         {
                             this.state.users.map((user, index) => {
@@ -172,11 +200,13 @@ export default class main extends React.Component {
                                         />
                                         <Button></Button>
                                     </Card>
-                                )
+                                );
                             })
                         }
                     </View>
-                </View>
+                   
+                
+                </ScrollView>
                 {/*add task button */}
                 <View style={styles.addButton}>
                     <Icon

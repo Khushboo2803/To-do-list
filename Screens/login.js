@@ -22,9 +22,7 @@ export default class login extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-        BackHandler.addEventListener('hardwareBackPress', ()=>{
-
-        })
+        
     }
 
     loginUser = async () => {
@@ -130,7 +128,7 @@ export default class login extends React.Component {
 
                     <View style={styles.loginButton}>
 
-                        <TouchableOpacity onPress={() => this.loginUser()}>
+                        <TouchableOpacity onPress={this.props.navigation.navigate('signup')}>
                             <Text style={styles.text}>>>Register</Text>
                         </TouchableOpacity>
                     </View>
