@@ -58,13 +58,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'mistyrose',
         fontFamily: 'monospace',
-        textAlign:'center'
+        textAlign: 'center'
     },
     addButton: {
         display: "flex",
         position: "absolute",
-        bottom: '2%',
-        right: '2%'
+        bottom: '3%',
+        right: '3%'
     },
     addCancelButton: {
         borderWidth: 2,
@@ -85,9 +85,9 @@ const styles = StyleSheet.create({
     },
     deteleTask: {
         position: "absolute",
-        right:0,
-        top:0,
-           
+        right: 0,
+        top: 0,
+
     },
     forgetText:
     {
@@ -99,21 +99,21 @@ const styles = StyleSheet.create({
         textShadowRadius: 90,
         textShadowColor: 'white'
     },
-    updateButton:{
-        height:30,
-        width:90,
-        backgroundColor:'green',
-        borderRadius:4,
-        borderColor:'black',
-        borderWidth:1,
-        marginHorizontal:'5%'
+    updateButton: {
+        height: 30,
+        width: 90,
+        backgroundColor: 'green',
+        borderRadius: 4,
+        borderColor: 'black',
+        borderWidth: 1,
+        marginHorizontal: '5%'
     },
-    updateText:{
-        color:'white',
-        alignSelf:'center',
-        fontSize:16,
-        fontFamily:'monospace',
-        fontWeight:'bold'
+    updateText: {
+        color: 'white',
+        alignSelf: 'center',
+        fontSize: 16,
+        fontFamily: 'monospace',
+        fontWeight: 'bold'
     }
 });
 export default styles;
