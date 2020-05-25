@@ -17,8 +17,8 @@ export default class signUp extends React.Component {
         super()
         this.state = {
             username: null,
-            email: '',
-            password: '',
+            email: null,
+            password: null,
             dialogBox: false,
             otp: '',
             resendBox: false,
@@ -60,16 +60,23 @@ export default class signUp extends React.Component {
             const id = await user.register(this.state.email.toLowerCase(), this.state.username, this.state.password);
             /** On success, get user id */
             this.setState({ id: id });
-            if (id !== undefined) {
-                {/** Ask for OTP */}
+            if (id !== false) {
+                {/** Ask for OTP */ }
                 this.setState({ dialogBox: true });
                 this.i = 30;
                 this.interval = setInterval(() => {
                     this.setTimer(this.i);
                 }, 1000)
             }
-            else
+            else {
+                this.setState({
+                    email: null,
+                    username: null,
+                    password: null
+                });
                 return
+            }
+
         }
     }
     render() {
@@ -79,21 +86,18 @@ export default class signUp extends React.Component {
                     height: Dimensions.get('screen').height,
                     width: Dimensions.get('screen').width
                 }}>
-
-                    
                 <View>
-
-                <View style={{
-                        marginTop:'10%',
-                        alignSelf:'center'
+                    <View style={{
+                        marginTop: '10%',
+                        alignSelf: 'center'
                     }}>
                         <Text style={{
-                            fontSize:26,
-                            fontWeight:'bold',
-                            fontFamily:'monospace',
+                            fontSize: 26,
+                            fontWeight: 'bold',
+                            fontFamily: 'monospace',
                             textShadowRadius: 90,
                             textShadowColor: 'green',
-                            color:'black'
+                            color: 'black'
                         }}> Sign-Up for Todo-List</Text>
                     </View>
 
@@ -112,9 +116,9 @@ export default class signUp extends React.Component {
                             }}
                         />
                     </View>
-                        {/* Email view ends here */}
+                    {/* Email view ends here */}
 
-                        {/* User view starts */}
+                    {/* User view starts */}
                     <View style={styles.user}>
                         <Image source={require('../assets/user.jpg')}
                             style={styles.icon} />
@@ -129,9 +133,9 @@ export default class signUp extends React.Component {
                             }}
                         />
                     </View>
-                        {/* User view ends here */}
+                    {/* User view ends here */}
 
-                        {/* Password view starts */}
+                    {/* Password view starts */}
                     <View style={styles.user}>
                         <Image source={require('../assets/pass.png')}
                             style={styles.icon} />
@@ -147,11 +151,10 @@ export default class signUp extends React.Component {
                             }}
                         />
                     </View>
-                        {/* password view ends here */}
+                    {/* password view ends here */}
 
-                        {/* submit button */}
+                    {/* submit button */}
                     <View style={styles.submitButton}>
-
                         <TouchableOpacity onPress={() => { this.onSubmitPress() }}>
                             <Text style={styles.text}>  Submit</Text>
                         </TouchableOpacity>
