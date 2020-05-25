@@ -85,11 +85,9 @@ const styles = StyleSheet.create({
     },
     deteleTask: {
         position: "absolute",
-        right: 0,
-        fontSize: 20,
-        color: 'red',
-        shadowColor: 'grey',
-        //shadowOffset: 5
+        right:0,
+        top:0,
+           
     },
     forgetText:
     {

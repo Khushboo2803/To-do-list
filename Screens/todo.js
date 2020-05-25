@@ -122,10 +122,11 @@ export default class main extends React.Component {
     render() {
         return (
 
-            <ImageBackground source={require('../assets/todo.png')}
+            <ImageBackground source={require('../assets/todonew.png')}
                 style={{
                     height: Dimensions.get('screen').height,
-                    width: Dimensions.get('screen').width
+                    width: Dimensions.get('screen').width,
+                    
                 }}>
                 {/* todo main screen */}
                 <ScrollView>
@@ -134,14 +135,17 @@ export default class main extends React.Component {
                     <View style={{
                         height: Dimensions.get('screen').height * 0.07,
                         borderWidth: 3,
-                        backgroundColor: 'slateblue',
-                        flexDirection: 'row'
+                        backgroundColor: 'darkseagreen',
+                        flexDirection: 'row',
+                        borderColor:'black'
                     }}>
                         <Text
                             style={{
                                 fontSize: 36,
-                                fontWeight: 'bold'
-                            }}> TO-DO List</Text>
+                                fontWeight: '900',
+                                textShadowRadius:20,
+                                textShadowColor:'gainsboro'
+                            }}> To-do List</Text>
                         {/* menu in todo screen */}
                         <View>
                             <Menu
@@ -149,12 +153,20 @@ export default class main extends React.Component {
                                 button={
                                     <TouchableOpacity onPress={this.showMenu}>
                                         <Image source={require('../assets/menu.jpg')}
-                                            style={{ height: 43, width: 45, marginLeft: '52%', borderRadius: 98, marginTop: 2 }}
+                                            style={{ height: 43, width: 45, marginLeft: '56%', borderRadius: 98, marginTop: 2 }}
                                         />
                                     </TouchableOpacity>
                                 }
                             >
-                                <MenuItem><Text>
+                                <MenuItem onPress={
+                                    this.hideMenu
+                                }>
+                                <Text style={{
+                                    fontSize:20,
+                                    color: 'blue',
+                                    textShadowRadius:20,
+                                    textDecorationLine:'underline'
+                                }}>
                                 {this.state.user}</Text></MenuItem>
                                 <MenuItem onPress={this.hideMenu}>Incomplete Task</MenuItem>
                                 <MenuDivider />
@@ -186,11 +198,39 @@ export default class main extends React.Component {
                             this.state.users.map((user, index) => {
                                 return (
                                     <Card
-                                        title={user.taskHeading}
+                                    containerStyle={{
+                                        borderRadius:9,
+                                        borderWidth:2,
+                                        borderColor:'brown',
+                                    }}
+                                    titleStyle={{
+                                        fontSize:20,
+                                        color:'brown',
+                                        textDecorationLine:'underline'
+                                    }}
+                                        title={user.taskHeading.toUpperCase()}
                                         key={index}>
-                                        <Text style={styles.deteleTask}
-                                            onPress={() => this.modifyTask(user)}> &times;</Text>
+                                            <View style={styles.deteleTask}>
+                                            <Icon
+                                                
+                                                name='trash'
+                                                type='font-awesome'
+                                                color='brown'
+                                                size={23}
+                                                
+                                                onPress={() => this.modifyTask(user)}
+                                            />
+                                            </View>
+                                        
                                         <PricingCard
+                                        infoStyle={{
+                                            color:'black'
+                                        }}
+                                        containerStyle={{
+                                            borderRadius:4,
+                                            borderColor:'green',
+                                        }}
+                                        
                                             color="#4f9deb"
                                             title={null}
                                             titleStyle={{ height: 0 }}
@@ -198,7 +238,48 @@ export default class main extends React.Component {
                                             info={[`Task: ${user.taskDetail}`, `Due Date : ${user.dueDate}`, `Task Status : ${user.taskStatus}`, `Category : ${user.category}`]}
                                             button={{ title: "nn", buttonStyle: { display: "none" } }}
                                         />
-                                        <Button></Button>
+                                        
+                                        <View style={{flexDirection:'row',
+                                    alignSelf:'center'}}>
+                                        <TouchableOpacity>
+                                        <View style={{
+                                            height:30,
+                                            width:80,
+                                            backgroundColor:'green',
+                                            borderRadius:4,
+                                            borderColor:'black',
+                                            marginRight:'20%',
+                                            borderWidth:1
+                                        }}>
+                                            <Text style={{
+                                                color:'white',
+                                                alignSelf:'center',
+                                                fontSize:16,
+                                                fontFamily:'monospace',
+                                                fontWeight:'bold'
+                                            }}>Update</Text></View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity>
+                                        <View style={{
+                                            height:30,
+                                            width:80,
+                                            backgroundColor:'green',
+                                            borderRadius:4,
+                                            borderColor:'black',
+                                            
+                                            borderWidth:1
+                                        }}>
+                                            <Text style={{
+                                                color:'white',
+                                                alignSelf:'center',
+                                                fontSize:16,
+                                                fontFamily:'monospace',
+                                                fontWeight:'bold'
+                                            }}>Complete</Text></View>
+                                        </TouchableOpacity>
+                                        </View>
+                                        
+
                                     </Card>
                                 );
                             })
@@ -214,7 +295,7 @@ export default class main extends React.Component {
                         raised
                         name='plus'
                         type='font-awesome'
-                        color='#f50'
+                        color='forestgreen'
                         onPress={() => this.setState({ showModal: true })}
                     />
                 </View>
