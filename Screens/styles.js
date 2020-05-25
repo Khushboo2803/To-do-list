@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     addButton: {
         display: "flex",
         position: "absolute",
-        bottom: '10%',
-        right: '3%'
+        bottom: '2%',
+        right: '2%'
     },
     addCancelButton: {
         borderWidth: 2,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     },
     updateButton:{
         height:30,
-        width:80,
+        width:90,
         backgroundColor:'green',
         borderRadius:4,
         borderColor:'black',
