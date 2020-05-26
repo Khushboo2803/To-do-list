@@ -100,7 +100,7 @@ export default class main extends React.Component {
         {/** Get user name from the phone storage */ }
         const user = await AsyncStorage.getItem('user');
         this.setState({ user: user });
-
+        
     }
 
     setUser = async () => {

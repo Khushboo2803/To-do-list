@@ -81,3 +81,15 @@ exports.addTask = async (thisObj) => {
     }
 }
 
+exports.getCurrentTask = async() =>
+{
+    const userId = await AsyncStorage.getItem('id');
+    const taskResponse = await axios({
+        method: 'post',
+        url: `https://stackhack.herokuapp.com/task/${userId}/tasks`,
+        data: { task }
+    })
+
+    console.log(" taskResponse is ",taskResponse );
+}
+
