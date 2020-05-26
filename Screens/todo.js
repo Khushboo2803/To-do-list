@@ -15,7 +15,6 @@ import user from '../functions/user';
 import task from '../functions/tasks';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 function Error() {
     {/** This function is called when any field left empty in add task modal */ }
@@ -35,6 +34,84 @@ function Error() {
             }}>
                 This is a required field ...
                 </Text>
+        </View>
+    );
+}
+
+function BlankTask()
+{
+    return(
+        <View style={{
+            height:250,
+            width:260,
+            alignSelf:'center',
+            backgroundColor:'white',
+            borderRadius:10,
+            marginTop:'52%',
+            borderWidth:3,
+            borderColor:'brown',
+        }}
+        >
+            <View style={{
+                flexDirection:'row',
+                alignSelf:'center',
+                marginTop:'10%'
+            }}>
+                <Icon
+                    name='emoticon-excited-outline'
+                    type='material-community'
+                    color='darkorange'
+                    size={50}
+                />
+                <Icon
+                    name='emoticon-wink-outline'
+                    type='material-community'
+                    color='goldenrod'
+                    size={50}
+                />
+                <Icon
+                    name='emoticon-tongue-outline'
+                    type='material-community'
+                    color='lightcoral'
+                    size={50}
+                />
+                <Icon
+                    name='emoticon-cool-outline'
+                    type='material-community'
+                    color='black'
+                    size={50}
+                />
+            </View>
+            <View style={{
+                marginTop:'2%',
+                alignSelf:'center',
+                borderWidth:2,
+                borderColor:'green',
+                borderRadius:4,
+                height:140,
+                width:220
+            }}>
+                <Text style={{
+                    alignSelf:'center',
+                    fontSize:20,
+                    color:'green',
+                    fontFamily:'monospace',
+                    fontWeight:'bold',
+                    marginTop:'10%'
+                }}>
+                    Wohooo !!!!
+                </Text>
+                <Text style={{
+                    alignSelf:'center',
+                    fontSize:20,
+                    color:'green',
+                    fontFamily:'monospace',
+                    fontWeight:'bold',
+                    marginTop:'5%'
+                }}>
+                    NO TASK TO DO...
+                </Text>
+            </View>
         </View>
     );
 }
@@ -61,7 +138,8 @@ export default class main extends React.Component {
             newpass: '',
             newpassConfirm: '',
             id: '',
-            user: ''
+            user: '',
+            buttonText:''
         };
     }
 
@@ -102,49 +180,28 @@ export default class main extends React.Component {
         this.setState({ user: user });
         
     }
-
     setUser = async () => {
-        const id = await AsyncStorage.getItem('id');
-        this.setState({ id: id });
-        this.state.users = [
-            {
-                _id: '5ec4aefe1fae4a1148774948',
-                taskHeading: 'Buy groceries',
-                taskDetail: 'you have to buy groceries and some sweets ',
-                dueDate: '22/7/12',
-                taskStatus: 'ongoing',
-                category: "personal"
-            },
-            {
-                _id: '5ec4aefe1fae4a1148774949',
-                taskHeading: 'Buy Sweets',
-                taskDetail: 'you have to buy groceries and some sweets ',
-                dueDate: '22/7/12',
-                taskStatus: 'new',
-                category: "personal"
-            },
-            {
-                _id: '5ec4aefe1fae4a1148774949',
-                taskHeading: 'Buy Sweets',
-                taskDetail: 'you have to buy groceries and some sweets ',
-                dueDate: '22/7/12',
-                taskStatus: 'new',
-                category: "personal"
-            },
-        ]
+        const tasks=await task.getCurrentTask();
+        this.setState({users : tasks});
     }
 
+    // componentDidUpdate()
+    // {
+    //     this.setUser();
+    // }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', () => {
             BackHandler.exitApp();
         });
     }
-    modifyTask(task) {
-        console.log(task)
+
+    changebg()
+    {
+        this.setState({uri : require('../assets/todo.png')});
     }
     render() {
         return (
-            <ImageBackground source={require('../assets/todonew.png')}
+            <ImageBackground source={this.state.uri}
                 style={{
                     height: '100%',
                     width: '100%'
@@ -233,68 +290,86 @@ export default class main extends React.Component {
 
                 {/* cards render here */}
                 <ScrollView>
-                    <View>
-                        {
-                            this.state.users.map((user, index) => {
-                                return (
-                                    <Card
-                                        containerStyle={{
-                                            borderRadius: 9,
-                                            borderWidth: 2,
-                                            borderColor: 'brown',
-                                        }}
-                                        titleStyle={{
-                                            fontSize: 20,
-                                            color: 'brown',
-                                            textDecorationLine: 'underline'
-                                        }}
-                                        title={user.taskHeading.toUpperCase()}
-                                        key={index}>
-                                        <View style={styles.deteleTask}>
-                                            <Icon
-                                                name='trash'
-                                                type='font-awesome'
-                                                color='brown'
-                                                size={23}
-                                                onPress={() => this.modifyTask(user)}
-                                            />
-                                        </View>
-                                        <PricingCard
-                                            infoStyle={{
-                                                color: 'black',
-                                            }}
+                    {
+                        this.state.users.length>0 ?
+                        <ScrollView>
+                        <View>
+                            {
+                                this.state.users.map((user, index) => {
+                                    return (
+                                        <Card
                                             containerStyle={{
-                                                borderRadius: 4,
-                                                borderColor: 'green',
+                                                borderRadius: 9,
+                                                borderWidth: 2,
+                                                borderColor: 'brown',
                                             }}
-                                            titleStyle={{ height: 0 }}
-                                            pricingStyle={{ height: 0 }}
-                                            info={[`Task: ${user.taskDetail}`, `Due Date : ${user.dueDate}`, `Task Status : ${user.taskStatus}`, `Category : ${user.category}`]}
-                                            button={{ title: "nn", buttonStyle: { display: "none" } }}
-                                        />
+                                            titleStyle={{
+                                                fontSize: 20,
+                                                color: 'brown',
+                                                textDecorationLine: 'underline'
+                                            }}
+                                            title={user.taskHeading.toUpperCase()}
+                                            key={index}>
+                                            <View style={styles.deteleTask}>
+                                                <Icon
+                                                    name='trash'
+                                                    type='font-awesome'
+                                                    color='brown'
+                                                    size={23}
+                                                    onPress={() => task.deleteTask(this.state.users[index])}
+                                                />
+                                            </View>
+                                            <PricingCard
+                                                infoStyle={{
+                                                    color: 'black',
+                                                }}
+                                                containerStyle={{
+                                                    borderRadius: 4,
+                                                    borderColor: 'green',
+                                                }}
+                                                titleStyle={{ height: 0 }}
+                                                pricingStyle={{ height: 0 }}
+                                                info={[`Task: ${user.taskDetail}`, `Due Date : ${user.dueDate}`, `Task Status : ${user.taskStatus}`, `Category : ${user.category}`]}
+                                                button={{ title: "nn", buttonStyle: { display: "none" } }}
+                                            />
 
-                                        <View style={{
-                                            flexDirection: 'row',
-                                            alignSelf: 'center'
-                                        }}>
-                                            <TouchableOpacity>
-                                                <View style={styles.updateButton}>
-                                                    <Text style={styles.updateText}>Update</Text>
-                                                </View>
-                                            </TouchableOpacity>
+                                            <View style={{
+                                                flexDirection: 'row',
+                                                alignSelf: 'center'
+                                            }}>
+                                                <TouchableOpacity onPress={
+                                                    ()=>{
+                                                        this.setState({buttonText:'Update Task'});
+                                                        this.setState({taskHeading: this.state.users[index].taskHeading });
+                                                        this.setState({showModal :true});
+                                                    }
+                                                }>
+                                                    <View style={styles.updateButton}>
+                                                        <Text style={styles.updateText}>Update</Text>
+                                                    </View>
+                                                </TouchableOpacity>
 
-                                            <TouchableOpacity>
-                                                <View style={styles.updateButton}>
-                                                    <Text style={styles.updateText}>Complete</Text>
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
+                                                <TouchableOpacity>
+                                                    <View style={styles.updateButton}>
+                                                        <Text style={styles.updateText}>Complete</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
 
-                                    </Card>
-                                );
-                            })
-                        }
-                    </View>
+                                        </Card>
+                                    );
+                                })
+                            }
+                        </View>
+                    </ScrollView> : 
+                    <ImageBackground source={require('../assets/todo.png')}
+                    style={{
+                        height:Dimensions.get('screen').height*0.84,
+                        width: Dimensions.get('screen').width
+                    }}>
+                        <BlankTask/>
+                    </ImageBackground>
+                    }
                 </ScrollView>
                 {/* card render ends here */}
 
@@ -306,7 +381,10 @@ export default class main extends React.Component {
                         name='plus'
                         type='font-awesome'
                         color='forestgreen'
-                        onPress={() => this.setState({ showModal: true })}
+                        onPress={() => {
+                            this.setState({buttonText : 'Add Task'});
+                            this.setState({ showModal: true })
+                        }}
                     />
                 </View>
                 {/* add task button ends here */}
@@ -483,7 +561,7 @@ export default class main extends React.Component {
                                 marginTop: '10%'
                             }}>
                                 <TouchableOpacity disabled={!this.buttonStatus()} style={styles.addCancelButton} onPress={() => task.addTask(this)}>
-                                    <Text style={styles.addCancelText}>Add Task</Text>
+                                    <Text style={styles.addCancelText}>{this.state.buttonText}</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={styles.addCancelButton} onPress={() => task.closeModal(this)}>

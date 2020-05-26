@@ -1,5 +1,6 @@
 import axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage';
+import { Alert } from 'react-native';
 // these functions will interact with task management related functions
 exports.closeModal = async (thisObj) => {
     return thisObj.setState((prevState) => {
@@ -18,6 +19,18 @@ exports.closeModal = async (thisObj) => {
         }
         return newState;
     });
+}
+
+exports.getCurrentTask = async() =>
+{
+     const userId = await AsyncStorage.getItem('id');
+     const taskResponse = await axios({
+         method: 'post',
+         url: `https://stackhack.herokuapp.com/task/${userId}/tasks`,
+     });
+
+     console.log(" taskResponse is ",taskResponse.data.data.taskItems);
+     return taskResponse.data.data.taskItems;
 }
 
 exports.addTask = async (thisObj) => {
@@ -81,15 +94,28 @@ exports.addTask = async (thisObj) => {
     }
 }
 
-exports.getCurrentTask = async() =>
-{
-    const userId = await AsyncStorage.getItem('id');
-    const taskResponse = await axios({
-        method: 'post',
-        url: `https://stackhack.herokuapp.com/task/${userId}/tasks`,
-        data: { task }
-    })
+exports.deleteTask = async(task) =>{
+    console.log("in delete task ", task);
+    Alert.alert("Delete Task", "Are you sure you want to delete task \'" + task.taskHeading +"\' ?", 
+    [
+        {
+            text : "Yes",
+            onPress : async()=>{
+                    const userId = await AsyncStorage.getItem('id');
+                    const taskResponse = await axios({
+                    method: 'post',
+                    url: `https://stackhack.herokuapp.com/task/${userId}/delete/${task._id}`,
+            });
+            }
+        },
+        {
+            text: "No"
+        }
+        
+        
+    ]);
 
-    console.log(" taskResponse is ",taskResponse );
 }
+
+
 
