@@ -139,7 +139,8 @@ export default class main extends React.Component {
             newpassConfirm: '',
             id: '',
             user: '',
-            buttonText:''
+            buttonText:'',
+            taskID:''
         };
     }
 
@@ -185,10 +186,10 @@ export default class main extends React.Component {
         this.setState({users : tasks});
     }
 
-    // componentDidUpdate()
-    // {
-    //     this.setUser();
-    // }
+    componentDidUpdate()
+     {
+         this.setUser();
+     }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', () => {
             BackHandler.exitApp();
@@ -201,7 +202,7 @@ export default class main extends React.Component {
     }
     render() {
         return (
-            <ImageBackground source={this.state.uri}
+            <ImageBackground source={require('../assets/todonew.png')}
                 style={{
                     height: '100%',
                     width: '100%'
@@ -250,13 +251,21 @@ export default class main extends React.Component {
                             </MenuItem>
 
                             {/* menu item 2 */}
-                            <MenuItem onPress={this.hideMenu}>
+                            <MenuItem onPress={
+                                ()=>{
+                                    this.props.navigation.navigate('todo');
+                                    this.hideMenu();
+                                }
+                                }>
                                 Incomplete tasks
                                 </MenuItem>
                             <MenuDivider />
 
                             {/* menu item 3 */}
-                            <MenuItem onPress={this.hideMenu}>
+                            <MenuItem onPress={()=>{
+                                this.props.navigation.navigate('complete');
+                                this.hideMenu();
+                            }}>
                                 Complete tasks
                                 </MenuItem>
                             <MenuDivider />
@@ -309,7 +318,7 @@ export default class main extends React.Component {
                                                 textDecorationLine: 'underline'
                                             }}
                                             title={user.taskHeading.toUpperCase()}
-                                            key={index}>
+                                            key={user._id}>
                                             <View style={styles.deteleTask}>
                                                 <Icon
                                                     name='trash'
@@ -339,9 +348,17 @@ export default class main extends React.Component {
                                             }}>
                                                 <TouchableOpacity onPress={
                                                     ()=>{
-                                                        this.setState({buttonText:'Update Task'});
-                                                        this.setState({taskHeading: this.state.users[index].taskHeading });
-                                                        this.setState({showModal :true});
+                                                        this.setState(
+                                                            {
+                                                                buttonText:'Update Task',
+                                                                taskHeading: user.taskHeading,
+                                                                taskDetail: user.taskDetail,
+                                                                category: user.category,
+                                                                taskStatus: user.taskStatus,
+                                                                dueDate: user.dueDate,
+                                                                showModal :true,
+                                                                taskID: user._id
+                                                            });
                                                     }
                                                 }>
                                                     <View style={styles.updateButton}>
@@ -421,12 +438,15 @@ export default class main extends React.Component {
                                     underlineColorAndroid="transparent"
                                     onChangeText={text => this.setState({ taskHeading: text })}
                                     defaultValue={this.state.taskHeading}
+                                    editable={!(this.state.buttonText=="Update Task")}
                                     onFocus={() => { this.setState({ isHeaderSet: true }); }}
                                     onBlur={() => { if (this.state.taskHeading.length < 1) this.setState({ isHeaderSet: false }); }}
                                     style={{
                                         fontFamily: 'monospace',
-                                        fontSize: 20
+                                        fontSize: 20,
+                                        textAlign:'center'
                                     }}
+                                    
                                 />
                                 <View>
                                     {
@@ -446,6 +466,7 @@ export default class main extends React.Component {
                                     placeholder="Task description to be entered here ...."
                                     multiline={true}
                                     numberOfLines={4}
+                                    defaultValue={this.state.taskDetail}
                                     onChangeText={text => this.setState({ taskDetail: text })}
                                     onFocus={() => { this.setState({ isDesSet: true }); }}
                                     onBlur={() => { if (this.state.taskDetail.length < 1) this.setState({ isDesSet: false }); }}
@@ -560,7 +581,26 @@ export default class main extends React.Component {
                                 alignSelf: 'center',
                                 marginTop: '10%'
                             }}>
-                                <TouchableOpacity disabled={!this.buttonStatus()} style={styles.addCancelButton} onPress={() => task.addTask(this)}>
+                                <TouchableOpacity disabled={!this.buttonStatus()} style={styles.addCancelButton} 
+                                onPress={async() => {
+                                    if(this.state.buttonText=="Add Task")
+                                    {
+                                        await task.addTask(this);
+                                        this.setState({showModal: false});
+                                    }
+                                    else{
+                                        const taskObj={
+                                            id: this.state.taskID,
+                                            taskHeading: this.state.taskHeading,
+                                            taskDetail: this.state.taskDetail,
+                                            taskStatus: this.state.taskStatus,
+                                            category: this.state.category,
+                                            dueDate: this.state.dueDate
+                                        };
+                                        await task.updateTask(taskObj);
+                                        this.setState({showModal: false});
+                                    }
+                                }}>
                                     <Text style={styles.addCancelText}>{this.state.buttonText}</Text>
                                 </TouchableOpacity>
 

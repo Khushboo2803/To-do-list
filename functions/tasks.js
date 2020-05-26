@@ -117,5 +117,27 @@ exports.deleteTask = async(task) =>{
 
 }
 
+exports.updateTask = async(task) =>
+{
+     const userId = await AsyncStorage.getItem('id');
+     const taskResponse = await axios({
+         method: 'post',
+         url: `https://stackhack.herokuapp.com/task/${userId}/update/${task.id}`,
+         data:{
+            "update" : task
+         }
+     })
+    console.log("task we got is ", taskResponse.data);
+}
+
+exports.getCompletedTask = async() =>
+{
+    const userId = await AsyncStorage.getItem('id');
+     const taskResponse = await axios({
+         method: 'post',
+         url: `https://stackhack.herokuapp.com/task/${userId}/completed`,
+     })
+    return taskResponse.data.data.taskItems;
+}
 
 
