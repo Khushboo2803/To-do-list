@@ -12,28 +12,27 @@ import Dialog, {
 } from 'react-native-popup-dialog';
 import styles from './styles';
 import user from '../functions/user';
-import task from '../functions/tasks';
+import taskApi from '../functions/tasks';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 
-function BlankTask()
-{
-    return(
+function BlankTask() {
+    return (
         <View style={{
-            height:250,
-            width:260,
-            alignSelf:'center',
-            backgroundColor:'white',
-            borderRadius:10,
-            marginTop:'52%',
-            borderWidth:3,
-            borderColor:'brown',
+            height: 250,
+            width: 260,
+            alignSelf: 'center',
+            backgroundColor: 'white',
+            borderRadius: 10,
+            marginTop: '52%',
+            borderWidth: 3,
+            borderColor: 'brown',
         }}
         >
             <View style={{
-                flexDirection:'row',
-                alignSelf:'center',
-                marginTop:'10%'
+                flexDirection: 'row',
+                alignSelf: 'center',
+                marginTop: '10%'
             }}>
                 <Icon
                     name='emoticon-cry-outline'
@@ -61,46 +60,45 @@ function BlankTask()
                 />
             </View>
             <View style={{
-                marginTop:'2%',
-                alignSelf:'center',
-                borderWidth:2,
-                borderColor:'green',
-                borderRadius:4,
-                height:140,
-                width:220
+                marginTop: '2%',
+                alignSelf: 'center',
+                borderWidth: 2,
+                borderColor: 'green',
+                borderRadius: 4,
+                height: 140,
+                width: 220
             }}>
                 <Text style={{
-                    alignSelf:'center',
-                    fontSize:20,
-                    color:'green',
-                    fontFamily:'monospace',
-                    fontWeight:'bold',
-                    marginTop:'10%'
+                    alignSelf: 'center',
+                    fontSize: 20,
+                    color: 'green',
+                    fontFamily: 'monospace',
+                    fontWeight: 'bold',
+                    marginTop: '10%'
                 }}>
                     AWWW !!!!
                 </Text>
                 <Text style={{
-                    alignSelf:'center',
-                    fontSize:20,
-                    color:'green',
-                    fontFamily:'monospace',
-                    fontWeight:'bold',
-                    marginTop:'5%',
-                    textAlign:'center'
+                    alignSelf: 'center',
+                    fontSize: 20,
+                    color: 'green',
+                    fontFamily: 'monospace',
+                    fontWeight: 'bold',
+                    marginTop: '5%',
+                    textAlign: 'center'
                 }}>
-                    YOU HAVEN'T COMPLETED ANY TASK. 
+                    YOU HAVEN'T COMPLETED ANY TASK.
                 </Text>
             </View>
         </View>
     );
 }
 
-export default class CompleteTask extends React.Component
-{
+export default class CompleteTask extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
+            tasks: [],
             dropmenu: false,
             showModal: false,
             buttonDisable: true,
@@ -110,8 +108,8 @@ export default class CompleteTask extends React.Component
             newpassConfirm: '',
             id: '',
             user: '',
-            buttonText:'',
-            taskID:''
+            buttonText: '',
+            taskID: ''
         };
     }
 
@@ -129,8 +127,7 @@ export default class CompleteTask extends React.Component
         this._menu.show();
     };
 
-    async UNSAFE_componentWillMount()
-    {
+    async UNSAFE_componentWillMount() {
         BackHandler.addEventListener('hardwareBackPress', () => {
             BackHandler.exitApp();
         });
@@ -141,14 +138,28 @@ export default class CompleteTask extends React.Component
         this.setState({ user: user });
     }
 
-    componentDidUpdate()
-     {
-         this.setUser();
-     }
-     
+    confirmDelete(task) {
+        console.log('item to dlelete is ', task);
+
+        Alert.alert("Delete Task", `Are you sure you want to delete task ' ${task.taskHeading} '?`, [
+            {
+                text: 'Yes',
+                onPress: async () => {
+                    const res = await taskApi.deleteTask(task);
+                    console.log(res)
+                    if (res == true)
+                        this.setUser();
+                }
+            },
+            {
+                text: 'No'
+            }
+        ])
+    }
+
     setUser = async () => {
-        const tasks=await task.getCompletedTask();
-        this.setState({users : tasks});
+        const taskItems = await taskApi.getCompletedTask();
+        this.setState({ tasks: taskItems });
     }
 
     componentWillUnmount() {
@@ -156,15 +167,14 @@ export default class CompleteTask extends React.Component
             BackHandler.exitApp();
         });
     }
-    render()
-    {
-        return(
+    render() {
+        return (
             <ImageBackground source={require('../assets/todonew.png')}
                 style={{
                     height: '100%',
                     width: '100%'
                 }}>
-                    {/* header starts */}
+                {/* header starts */}
                 <View>
                     <View style={{
                         height: Dimensions.get('screen').height * 0.07,
@@ -208,7 +218,7 @@ export default class CompleteTask extends React.Component
                             </MenuItem>
 
                             {/* menu item 2 */}
-                            <MenuItem onPress={()=>{
+                            <MenuItem onPress={() => {
                                 this.props.navigation.navigate('todo');
                                 this.hideMenu();
                             }}>
@@ -217,7 +227,7 @@ export default class CompleteTask extends React.Component
                             <MenuDivider />
 
                             {/* menu item 3 */}
-                            <MenuItem onPress={()=>{
+                            <MenuItem onPress={() => {
                                 this.props.navigation.navigate('complete');
                                 this.hideMenu
                             }}>
@@ -255,61 +265,64 @@ export default class CompleteTask extends React.Component
                 {/* cards render here */}
                 <ScrollView>
                     {
-                        this.state.users.length>0 ?
-                        <ScrollView>
-                        <View>
-                            {
-                                this.state.users.map((user, index) => {
-                                    return (
-                                        <Card
-                                            containerStyle={{
-                                                borderRadius: 9,
-                                                borderWidth: 2,
-                                                borderColor: 'brown',
-                                            }}
-                                            titleStyle={{
-                                                fontSize: 20,
-                                                color: 'brown',
-                                                textDecorationLine: 'underline'
-                                            }}
-                                            title={user.taskHeading.toUpperCase()}
-                                            key={user._id}>
-                                            <View style={styles.deteleTask}>
-                                                <Icon
-                                                    name='trash'
-                                                    type='font-awesome'
-                                                    color='brown'
-                                                    size={23}
-                                                    onPress={() => task.deleteTask(this.state.users[index])}
-                                                />
-                                            </View>
-                                            <PricingCard
-                                                infoStyle={{
-                                                    color: 'black',
-                                                }}
-                                                containerStyle={{
-                                                    borderRadius: 4,
-                                                    borderColor: 'green',
-                                                }}
-                                                titleStyle={{ height: 0 }}
-                                                pricingStyle={{ height: 0 }}
-                                                info={[`Task: ${user.taskDetail}`, `Due Date : ${user.dueDate}`, `Task Status : ${user.taskStatus}`, `Category : ${user.category}`]}
-                                                button={{ title: "nn", buttonStyle: { display: "none" } }}
-                                            />
+                        this.state.tasks.length > 0 ?
+                            <ScrollView>
+                                <View>
+                                    {
+                                        this.state.tasks.map((taskItem, index) => {
+                                            return (
+                                                <Card
+                                                    containerStyle={{
+                                                        borderRadius: 9,
+                                                        borderWidth: 2,
+                                                        borderColor: 'brown',
+                                                    }}
+                                                    titleStyle={{
+                                                        fontSize: 20,
+                                                        color: 'brown',
+                                                        textDecorationLine: 'underline'
+                                                    }}
+                                                    title={taskItem.taskHeading.toUpperCase()}
+                                                    key={taskItem._id}>
+                                                    <View style={styles.deteleTask}>
+                                                        <Icon
+                                                            name='trash'
+                                                            type='font-awesome'
+                                                            color='brown'
+                                                            size={23}
+                                                            onPress={() => this.confirmDelete(taskItem)}
+                                                        />
+                                                    </View>
+                                                    <PricingCard
+                                                        infoStyle={{
+                                                            color: 'black',
+                                                        }}
+                                                        containerStyle={{
+                                                            borderRadius: 4,
+                                                            borderColor: 'green',
+                                                        }}
+                                                        titleStyle={{ height: 0 }}
+                                                        pricingStyle={{ height: 0 }}
+                                                        info={[`Task: ${taskItem.taskDetail}`,
+                                                        `Due Date : ${taskItem.dueDate}`,
+                                                        `Task Status : ${taskItem.taskStatus}`,
+                                                        `Category : ${taskItem.category}`]}
+                                                        button={{ title: "nn", buttonStyle: { display: "none" } }}
+                                                    />
 
-                                        </Card>
-                                    );
-                                })
-                            }
-                        </View>
-                    </ScrollView> : 
-                    <ImageBackground source={require('../assets/todo.png')}
-                    style={{
-                        height:Dimensions.get('screen').height*0.84,
-                        width: Dimensions.get('screen').width
-                    }}>
-                        <BlankTask/>
-                    </ImageBackground>
+                                                </Card>
+                                            );
+                                        })
+                                    }
+                                </View>
+                            </ScrollView> :
+                            <ImageBackground source={require('../assets/todolist.jpg')}
+                                style={{
+                                    height: Dimensions.get('screen').height,
+                                    width: Dimensions.get('screen').width
+                                }}>
+                                <BlankTask />
+                            </ImageBackground>
                     }
                 </ScrollView>
                 {/* card render ends here */}

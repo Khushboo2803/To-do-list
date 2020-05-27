@@ -12,7 +12,7 @@ import Dialog, {
 } from 'react-native-popup-dialog';
 import styles from './styles';
 import user from '../functions/user';
-import task from '../functions/tasks';
+import taskApi from '../functions/tasks';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -38,24 +38,23 @@ function Error() {
     );
 }
 
-function BlankTask()
-{
-    return(
+function BlankTask() {
+    return (
         <View style={{
-            height:250,
-            width:260,
-            alignSelf:'center',
-            backgroundColor:'white',
-            borderRadius:10,
-            marginTop:'52%',
-            borderWidth:3,
-            borderColor:'brown',
+            height: 250,
+            width: 260,
+            alignSelf: 'center',
+            backgroundColor: 'white',
+            borderRadius: 10,
+            marginTop: '52%',
+            borderWidth: 3,
+            borderColor: 'brown',
         }}
         >
             <View style={{
-                flexDirection:'row',
-                alignSelf:'center',
-                marginTop:'10%'
+                flexDirection: 'row',
+                alignSelf: 'center',
+                marginTop: '10%'
             }}>
                 <Icon
                     name='emoticon-excited-outline'
@@ -83,31 +82,31 @@ function BlankTask()
                 />
             </View>
             <View style={{
-                marginTop:'2%',
-                alignSelf:'center',
-                borderWidth:2,
-                borderColor:'green',
-                borderRadius:4,
-                height:140,
-                width:220
+                marginTop: '2%',
+                alignSelf: 'center',
+                borderWidth: 2,
+                borderColor: 'green',
+                borderRadius: 4,
+                height: 140,
+                width: 220
             }}>
                 <Text style={{
-                    alignSelf:'center',
-                    fontSize:20,
-                    color:'green',
-                    fontFamily:'monospace',
-                    fontWeight:'bold',
-                    marginTop:'10%'
+                    alignSelf: 'center',
+                    fontSize: 20,
+                    color: 'green',
+                    fontFamily: 'monospace',
+                    fontWeight: 'bold',
+                    marginTop: '10%'
                 }}>
                     Wohooo !!!!
                 </Text>
                 <Text style={{
-                    alignSelf:'center',
-                    fontSize:20,
-                    color:'green',
-                    fontFamily:'monospace',
-                    fontWeight:'bold',
-                    marginTop:'5%'
+                    alignSelf: 'center',
+                    fontSize: 20,
+                    color: 'green',
+                    fontFamily: 'monospace',
+                    fontWeight: 'bold',
+                    marginTop: '5%'
                 }}>
                     NO TASK TO DO...
                 </Text>
@@ -119,7 +118,7 @@ export default class main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
+            tasks: [],
             dropmenu: false,
             showModal: false,
             taskHeading: '',
@@ -139,8 +138,8 @@ export default class main extends React.Component {
             newpassConfirm: '',
             id: '',
             user: '',
-            buttonText:'',
-            taskID:''
+            buttonText: '',
+            taskID: ''
         };
     }
 
@@ -179,26 +178,51 @@ export default class main extends React.Component {
         {/** Get user name from the phone storage */ }
         const user = await AsyncStorage.getItem('user');
         this.setState({ user: user });
-        
+
     }
     setUser = async () => {
-        const tasks=await task.getCurrentTask();
-        this.setState({users : tasks});
+        const userTasks = await taskApi.getCurrentTask();
+        this.setState({ tasks: userTasks });
     }
 
-    componentDidUpdate()
-     {
-         this.setUser();
-     }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', () => {
             BackHandler.exitApp();
         });
     }
 
-    changebg()
-    {
-        this.setState({uri : require('../assets/todo.png')});
+    changebg() {
+        this.setState({ uri: require('../assets/todolist.jpg') });
+    }
+
+    confirmDelete(task) {
+        console.log('item to dlelete is ', task);
+
+        Alert.alert("Delete Task", `Are you sure you want to delete task ' ${task.taskHeading} '?`, [
+            {
+                text: 'Yes',
+                onPress: async () => {
+                    const res = await taskApi.deleteTask(task);
+                    console.log(res)
+                    if (res == true)
+                        this.setUser();
+                }
+            },
+            {
+                text: 'No'
+            }
+        ])
+    }
+
+    completeTask(task) {
+        console.log(task);
+        task.id = task._id;
+        task.taskStatus = "complete";
+        async function a() { return await taskApi.updateTask(task) };
+        a().then(data => {
+            if (data === true)
+                this.setUser();
+        }).catch(err => console.log(err));
     }
     render() {
         return (
@@ -252,17 +276,17 @@ export default class main extends React.Component {
 
                             {/* menu item 2 */}
                             <MenuItem onPress={
-                                ()=>{
+                                () => {
                                     this.props.navigation.navigate('todo');
                                     this.hideMenu();
                                 }
-                                }>
+                            }>
                                 Incomplete tasks
                                 </MenuItem>
                             <MenuDivider />
 
                             {/* menu item 3 */}
-                            <MenuItem onPress={()=>{
+                            <MenuItem onPress={() => {
                                 this.props.navigation.navigate('complete');
                                 this.hideMenu();
                             }}>
@@ -300,92 +324,95 @@ export default class main extends React.Component {
                 {/* cards render here */}
                 <ScrollView>
                     {
-                        this.state.users.length>0 ?
-                        <ScrollView>
-                        <View>
-                            {
-                                this.state.users.map((user, index) => {
-                                    return (
-                                        <Card
-                                            containerStyle={{
-                                                borderRadius: 9,
-                                                borderWidth: 2,
-                                                borderColor: 'brown',
-                                            }}
-                                            titleStyle={{
-                                                fontSize: 20,
-                                                color: 'brown',
-                                                textDecorationLine: 'underline'
-                                            }}
-                                            title={user.taskHeading.toUpperCase()}
-                                            key={user._id}>
-                                            <View style={styles.deteleTask}>
-                                                <Icon
-                                                    name='trash'
-                                                    type='font-awesome'
-                                                    color='brown'
-                                                    size={23}
-                                                    onPress={() => task.deleteTask(this.state.users[index])}
-                                                />
-                                            </View>
-                                            <PricingCard
-                                                infoStyle={{
-                                                    color: 'black',
-                                                }}
-                                                containerStyle={{
-                                                    borderRadius: 4,
-                                                    borderColor: 'green',
-                                                }}
-                                                titleStyle={{ height: 0 }}
-                                                pricingStyle={{ height: 0 }}
-                                                info={[`Task: ${user.taskDetail}`, `Due Date : ${user.dueDate}`, `Task Status : ${user.taskStatus}`, `Category : ${user.category}`]}
-                                                button={{ title: "nn", buttonStyle: { display: "none" } }}
-                                            />
-
-                                            <View style={{
-                                                flexDirection: 'row',
-                                                alignSelf: 'center'
-                                            }}>
-                                                <TouchableOpacity onPress={
-                                                    ()=>{
-                                                        this.setState(
-                                                            {
-                                                                buttonText:'Update Task',
-                                                                taskHeading: user.taskHeading,
-                                                                taskDetail: user.taskDetail,
-                                                                category: user.category,
-                                                                taskStatus: user.taskStatus,
-                                                                dueDate: user.dueDate,
-                                                                showModal :true,
-                                                                taskID: user._id
-                                                            });
-                                                    }
-                                                }>
-                                                    <View style={styles.updateButton}>
-                                                        <Text style={styles.updateText}>Update</Text>
+                        this.state.tasks.length > 0 ?
+                            <ScrollView>
+                                <View>
+                                    {
+                                        this.state.tasks.map((taskItem, index) => {
+                                            return (
+                                                <Card
+                                                    containerStyle={{
+                                                        borderRadius: 9,
+                                                        borderWidth: 2,
+                                                        borderColor: 'brown',
+                                                    }}
+                                                    titleStyle={{
+                                                        fontSize: 20,
+                                                        color: 'brown',
+                                                        textDecorationLine: 'underline'
+                                                    }}
+                                                    title={taskItem.taskHeading.toUpperCase()}
+                                                    key={taskItem._id}>
+                                                    <View style={styles.deteleTask}>
+                                                        <Icon
+                                                            name='trash'
+                                                            type='font-awesome'
+                                                            color='brown'
+                                                            size={23}
+                                                            onPress={() => this.confirmDelete(taskItem)}
+                                                        />
                                                     </View>
-                                                </TouchableOpacity>
+                                                    <PricingCard
+                                                        infoStyle={{
+                                                            color: 'black',
+                                                        }}
+                                                        containerStyle={{
+                                                            borderRadius: 4,
+                                                            borderColor: 'green',
+                                                        }}
+                                                        titleStyle={{ height: 0 }}
+                                                        pricingStyle={{ height: 0 }}
+                                                        info={[`Task: ${taskItem.taskDetail}`,
+                                                        `Due Date : ${taskItem.dueDate}`,
+                                                        `Task Status : ${taskItem.taskStatus}`,
+                                                        `Category : ${taskItem.category}`]}
+                                                        button={{ title: "nn", buttonStyle: { display: "none" } }}
+                                                    />
 
-                                                <TouchableOpacity>
-                                                    <View style={styles.updateButton}>
-                                                        <Text style={styles.updateText}>Complete</Text>
+                                                    <View style={{
+                                                        flexDirection: 'row',
+                                                        alignSelf: 'center'
+                                                    }}>
+                                                        <TouchableOpacity onPress={
+                                                            () => {
+                                                                this.setState(
+                                                                    {
+                                                                        buttonText: 'Update',
+                                                                        taskHeading: taskItem.taskHeading,
+                                                                        taskDetail: taskItem.taskDetail,
+                                                                        category: taskItem.category,
+                                                                        taskStatus: taskItem.taskStatus,
+                                                                        dueDate: taskItem.dueDate,
+                                                                        showModal: true,
+                                                                        taskID: taskItem._id
+                                                                    });
+                                                            }
+                                                        }>
+                                                            <View style={styles.updateButton}>
+                                                                <Text style={styles.updateText}>Update</Text>
+                                                            </View>
+                                                        </TouchableOpacity>
+
+                                                        <TouchableOpacity onPress={() => this.completeTask(taskItem)}>
+                                                            <View style={styles.updateButton}>
+                                                                <Text style={styles.updateText}>Complete</Text>
+                                                            </View>
+                                                        </TouchableOpacity>
                                                     </View>
-                                                </TouchableOpacity>
-                                            </View>
 
-                                        </Card>
-                                    );
-                                })
-                            }
-                        </View>
-                    </ScrollView> : 
-                    <ImageBackground source={require('../assets/todo.png')}
-                    style={{
-                        height:Dimensions.get('screen').height*0.84,
-                        width: Dimensions.get('screen').width
-                    }}>
-                        <BlankTask/>
-                    </ImageBackground>
+                                                </Card>
+                                            );
+                                        })
+                                    }
+                                </View>
+                            </ScrollView> :
+                            <ImageBackground source={require('../assets/todolist.jpg')}
+                                style={{
+                                    height: Dimensions.get('screen').height,
+                                    width: Dimensions.get('screen').width
+                                }}>
+                                <BlankTask />
+                            </ImageBackground>
                     }
                 </ScrollView>
                 {/* card render ends here */}
@@ -399,7 +426,7 @@ export default class main extends React.Component {
                         type='font-awesome'
                         color='forestgreen'
                         onPress={() => {
-                            this.setState({buttonText : 'Add Task'});
+                            this.setState({ buttonText: 'Add Task' });
                             this.setState({ showModal: true })
                         }}
                     />
@@ -438,15 +465,14 @@ export default class main extends React.Component {
                                     underlineColorAndroid="transparent"
                                     onChangeText={text => this.setState({ taskHeading: text })}
                                     defaultValue={this.state.taskHeading}
-                                    editable={!(this.state.buttonText=="Update Task")}
+                                    editable={!(this.state.buttonText == "Update")}
                                     onFocus={() => { this.setState({ isHeaderSet: true }); }}
                                     onBlur={() => { if (this.state.taskHeading.length < 1) this.setState({ isHeaderSet: false }); }}
                                     style={{
                                         fontFamily: 'monospace',
                                         fontSize: 20,
-                                        textAlign:'center'
+                                        textAlign: 'center'
                                     }}
-                                    
                                 />
                                 <View>
                                     {
@@ -581,30 +607,31 @@ export default class main extends React.Component {
                                 alignSelf: 'center',
                                 marginTop: '10%'
                             }}>
-                                <TouchableOpacity disabled={!this.buttonStatus()} style={styles.addCancelButton} 
-                                onPress={async() => {
-                                    if(this.state.buttonText=="Add Task")
-                                    {
-                                        await task.addTask(this);
-                                        this.setState({showModal: false});
-                                    }
-                                    else{
-                                        const taskObj={
-                                            id: this.state.taskID,
-                                            taskHeading: this.state.taskHeading,
-                                            taskDetail: this.state.taskDetail,
-                                            taskStatus: this.state.taskStatus,
-                                            category: this.state.category,
-                                            dueDate: this.state.dueDate
-                                        };
-                                        await task.updateTask(taskObj);
-                                        this.setState({showModal: false});
-                                    }
-                                }}>
+                                <TouchableOpacity disabled={!this.buttonStatus()} style={styles.addCancelButton}
+                                    onPress={async () => {
+                                        if (this.state.buttonText == "Add Task") {
+                                            await taskApi.addTask(this);
+                                            this.setState({ showModal: false });
+                                            this.setUser()
+                                        }
+                                        else {
+                                            const taskObj = {
+                                                id: this.state.taskID,
+                                                taskHeading: this.state.taskHeading,
+                                                taskDetail: this.state.taskDetail,
+                                                taskStatus: this.state.taskStatus,
+                                                category: this.state.category,
+                                                dueDate: this.state.dueDate
+                                            };
+                                            await taskApi.updateTask(taskObj);
+                                            this.setState({ showModal: false });
+                                            this.setUser();
+                                        }
+                                    }}>
                                     <Text style={styles.addCancelText}>{this.state.buttonText}</Text>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.addCancelButton} onPress={() => task.closeModal(this)}>
+                                <TouchableOpacity style={styles.addCancelButton} onPress={() => taskApi.closeModal(this)}>
                                     <Text style={styles.addCancelText}>Cancel</Text>
                                 </TouchableOpacity>
                             </View>
@@ -719,7 +746,6 @@ export default class main extends React.Component {
                 </Dialog>
                 {/* update password dialog ends here */}
             </ImageBackground>
-
         );
     }
 }

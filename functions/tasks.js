@@ -21,16 +21,15 @@ exports.closeModal = async (thisObj) => {
     });
 }
 
-exports.getCurrentTask = async() =>
-{
-     const userId = await AsyncStorage.getItem('id');
-     const taskResponse = await axios({
-         method: 'post',
-         url: `https://stackhack.herokuapp.com/task/${userId}/tasks`,
-     });
+exports.getCurrentTask = async () => {
+    const userId = await AsyncStorage.getItem('id');
+    const taskResponse = await axios({
+        method: 'post',
+        url: `https://stackhack.herokuapp.com/task/${userId}/tasks`,
+    });
 
-     console.log(" taskResponse is ",taskResponse.data.data.taskItems);
-     return taskResponse.data.data.taskItems;
+    console.log(" taskResponse is ", taskResponse.data.data.taskItems);
+    return taskResponse.data.data.taskItems;
 }
 
 exports.addTask = async (thisObj) => {
@@ -51,8 +50,8 @@ exports.addTask = async (thisObj) => {
         task["_id"] = taskResponse.data.data.taskItems._id;
         return thisObj.setState((prevState) => {
             //console.log(task)
-            let users = prevState.users;
-            users[users.length] = task;
+            let tasks = prevState.tasks;
+            tasks[tasks.length] = task;
             //console.log(users)
             const newState = {
                 showModal: false,
@@ -94,49 +93,55 @@ exports.addTask = async (thisObj) => {
     }
 }
 
-exports.deleteTask = async(task) =>{
+exports.deleteTask = async (task) => {
     console.log("in delete task ", task);
-    Alert.alert("Delete Task", "Are you sure you want to delete task \'" + task.taskHeading +"\' ?", 
-    [
-        {
-            text : "Yes",
-            onPress : async()=>{
-                    const userId = await AsyncStorage.getItem('id');
-                    const taskResponse = await axios({
-                    method: 'post',
-                    url: `https://stackhack.herokuapp.com/task/${userId}/delete/${task._id}`,
-            });
-            }
-        },
-        {
-            text: "No"
-        }
-        
-        
-    ]);
-
-}
-
-exports.updateTask = async(task) =>
-{
-     const userId = await AsyncStorage.getItem('id');
-     const taskResponse = await axios({
-         method: 'post',
-         url: `https://stackhack.herokuapp.com/task/${userId}/update/${task.id}`,
-         data:{
-            "update" : task
-         }
-     })
-    console.log("task we got is ", taskResponse.data);
-}
-
-exports.getCompletedTask = async() =>
-{
     const userId = await AsyncStorage.getItem('id');
-     const taskResponse = await axios({
-         method: 'post',
-         url: `https://stackhack.herokuapp.com/task/${userId}/completed`,
-     })
+    const taskResponse = await axios({
+        method: 'post',
+        url: `https://stackhack.herokuapp.com/task/${userId}/delete/${task._id}`,
+    });
+    if (taskResponse.data.response === false) {
+        if (taskResponse.data.msg)
+            alert(taskResponse.data.msg);
+        if (taskResponse.data.message)
+            alert(taskResponse.data.message);
+        return false;
+    }
+    else
+        alert(taskResponse.data.message)
+    return taskResponse.data.response
+}
+
+exports.updateTask = async (task) => {
+    const userId = await AsyncStorage.getItem('id');
+    const taskResponse = await axios({
+        method: 'post',
+        url: `https://stackhack.herokuapp.com/task/${userId}/update/${task.id}`,
+        data: {
+            "update": task
+        }
+    })
+    console.log("task we got is ", taskResponse.data);
+    if (taskResponse.data.response === false) {
+        if (taskResponse.data.msg)
+            alert(taskResponse.data.msg);
+        if (taskResponse.data.message)
+            alert(taskResponse.data.msg);
+        return false;
+    }
+    else {
+        alert(taskResponse.data.message);
+        return true;
+    }
+}
+
+exports.getCompletedTask = async () => {
+    const userId = await AsyncStorage.getItem('id');
+    const taskResponse = await axios({
+        method: 'post',
+        url: `https://stackhack.herokuapp.com/task/${userId}/completed`,
+    })
+    console.log(taskResponse.data);
     return taskResponse.data.data.taskItems;
 }
 
