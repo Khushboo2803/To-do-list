@@ -218,6 +218,25 @@ export default class login extends React.Component {
                     {/* forget password dialog box ends here */}
 
                 </View>
+
+                {/* Share button */}
+                <View style={{
+                    marginLeft:'45%',
+                    marginTop:'10%'
+                }}>
+                <TouchableOpacity onPress={()=>{
+                    user.shareMessage();
+                }}>
+                    <Icon 
+                        raised
+                        reverse
+                        name="share"
+                        type="fontisto"
+                        color="blue"
+                        size={25}
+                    />
+                </TouchableOpacity>
+                </View>
             </ImageBackground>
         );
     }

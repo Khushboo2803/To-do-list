@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker, BackHandler, Alert } from 'react-native';
+import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker, BackHandler, Alert, Share } from 'react-native';
 import { Card, Icon, PricingCard, Button } from 'react-native-elements';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import DatePicker from 'react-native-datepicker';
@@ -10,6 +10,7 @@ import Dialog, {
     DialogButton,
     ScaleAnimation
 } from 'react-native-popup-dialog';
+import Sort from './sortby';
 import styles from './styles';
 import user from '../functions/user';
 import taskApi from '../functions/tasks';
@@ -178,6 +179,7 @@ export default class main extends React.Component {
         {/** Get user name from the phone storage */ }
         const user = await AsyncStorage.getItem('user');
         this.setState({ user: user });
+        Share.share('hello world');
 
     }
     setUser = async () => {
@@ -264,12 +266,25 @@ export default class main extends React.Component {
                                     fontSize: 20,
                                     color: 'blue',
                                     textShadowRadius: 20,
-                                    textDecorationLine: 'underline'
                                 }}>
                                     {this.state.user}
                                 </Text>
                             </MenuItem>
-
+                            
+                            {/* Share message */}
+                            <MenuItem onPress={()=>{
+                                user.shareMessage();
+                                this.hideMenu();
+                            }}>
+                                <Text style={{
+                                    fontFamily:'monospace',
+                                    fontSize:16,
+                                    fontWeight:'bold',
+                                    color:'green',
+                                    textDecorationLine:'underline'
+                                }}>Share With Friends</Text>
+                            </MenuItem>
+                            <MenuDivider/>
                             {/* menu item 2 */}
                             <MenuItem onPress={
                                 () => {
@@ -316,7 +331,8 @@ export default class main extends React.Component {
                     </View>
                 </View>
                 {/* header ends here */}
-
+                {/* Sort by  */}
+                <Sort/>
                 {/* cards render here */}
                 <ScrollView>
                     {
@@ -442,12 +458,15 @@ export default class main extends React.Component {
                         titleStyle={{
                             fontSize: 20,
                             fontWeight: 'bold',
-                            color: 'midnightblue'
+                            color: 'midnightblue',
+                            paddingHorizontal:9,
+                            fontFamily:'monospace'
                         }}
                         containerStyle={{
-                            borderColor: 'midnightblue',
-                            borderRadius: 7,
-                            borderWidth: 1,
+                            borderColor: 'green',
+                            borderRadius: 10,
+                            borderWidth: 4,
+                            marginTop:'20%',
                         }}
                     >
                         <View>

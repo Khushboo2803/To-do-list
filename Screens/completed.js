@@ -10,6 +10,7 @@ import Dialog, {
     DialogButton,
     ScaleAnimation
 } from 'react-native-popup-dialog';
+import Sort from './sortby';
 import styles from './styles';
 import user from '../functions/user';
 import taskApi from '../functions/tasks';
@@ -211,12 +212,25 @@ export default class CompleteTask extends React.Component {
                                     fontSize: 20,
                                     color: 'blue',
                                     textShadowRadius: 20,
-                                    textDecorationLine: 'underline'
                                 }}>
                                     {this.state.user}
                                 </Text>
                             </MenuItem>
 
+                            {/* Share message */}
+                            <MenuItem onPress={()=>{
+                                user.shareMessage();
+                                this.hideMenu();
+                            }}>
+                                <Text style={{
+                                    fontFamily:'monospace',
+                                    fontSize:16,
+                                    fontWeight:'bold',
+                                    color:'green',
+                                    textDecorationLine:'underline'
+                                }}>Share With Friends</Text>
+                            </MenuItem>
+                            <MenuDivider/>
                             {/* menu item 2 */}
                             <MenuItem onPress={() => {
                                 this.props.navigation.navigate('todo');
@@ -261,7 +275,8 @@ export default class CompleteTask extends React.Component {
                     </View>
                 </View>
                 {/* header ends here */}
-
+                {/* Sort By */}
+                <Sort />
                 {/* cards render here */}
                 <ScrollView>
                     {

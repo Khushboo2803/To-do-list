@@ -1,7 +1,7 @@
 // This will handle user related functions
 // function to implement signup user
 import axios from 'axios';
-import { Alert } from 'react-native';
+import { Alert, Share } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 exports.signupValidation = async (email, password, username = null) => {
@@ -149,4 +149,10 @@ exports.updatePassword = async (oldpass, newpass) => {
         }
     });
     return response.data.response;
+}
+
+exports.shareMessage = async() =>{
+    console.log("inside sare");
+    const msg="StackHack 1.0 "+ '\n' +"In this unorganized world, stay organized !" +'\n'+ "Download To-Do App created by \*Khushboo Grover\* and \*Rohit Nayak\* " +'\n'+'\n'+ "https://cutt.ly/stackvapp" +'\n'+'\n' + "Stay Organized!";
+    Share.share({message : msg.toString()}).then(result => console.log(result)).catch(error => console.log(error));
 }

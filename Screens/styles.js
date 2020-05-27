@@ -69,11 +69,11 @@ const styles = StyleSheet.create({
     addCancelButton: {
         borderWidth: 2,
         borderRadius: 3,
-        borderColor: 'steelblue',
+        borderColor: 'red',
         height: 35,
         width: 90,
         marginRight: '7%',
-        backgroundColor: 'steelblue'
+        backgroundColor: 'tomato'
     },
     addCancelText: {
         alignSelf: 'center',
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontFamily: 'monospace',
         marginTop: '4%',
-        color: 'white'
+        color: 'black'
     },
     deteleTask: {
         position: "absolute",
