@@ -10,6 +10,7 @@ import Dialog, {
     DialogButton,
     ScaleAnimation
 } from 'react-native-popup-dialog';
+import { Icon } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class signUp extends React.Component {
@@ -22,7 +23,8 @@ export default class signUp extends React.Component {
             dialogBox: false,
             otp: '',
             resendBox: false,
-            id: ''
+            id: '',
+            textEntry:true
         };
     }
     interval = '';
@@ -78,6 +80,11 @@ export default class signUp extends React.Component {
             }
 
         }
+    }
+    setTextEntry()
+    {
+        this.setState({textEntry : !this.state.textEntry});
+        console.log(this.state.textEntry);
     }
     render() {
         return (
@@ -144,12 +151,26 @@ export default class signUp extends React.Component {
                             underlineColorAndroid="transparent"
                             onChangeText={text => this.setState({ password: text })}
                             defaultValue={this.state.password}
-                            secureTextEntry={true}
+                            secureTextEntry={this.state.textEntry}
                             style={{
                                 color: 'navy',
-                                fontFamily: 'monospace'
+                                fontFamily: 'monospace',
+                                width:Dimensions.get('screen').width*0.6
                             }}
                         />
+                        <TouchableOpacity onPress={()=>{
+                        this.setTextEntry();
+                        }}>  
+                            <Icon
+                                name='eye-slash'
+                                type='font-awesome'
+                                color='blue'
+                                size={25}
+                                style={{
+                                    marginTop:6
+                                }}
+                            />
+                        </TouchableOpacity>
                     </View>
                     {/* password view ends here */}
 

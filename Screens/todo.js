@@ -191,10 +191,6 @@ export default class main extends React.Component {
         });
     }
 
-    changebg() {
-        this.setState({ uri: require('../assets/todolist.jpg') });
-    }
-
     confirmDelete(task) {
         console.log('item to dlelete is ', task);
 
@@ -722,7 +718,7 @@ export default class main extends React.Component {
                                 onPress={async () => {
 
                                     if (this.state.oldpass != '' && this.state.newpassConfirm == this.state.newpass && this.state.newpass != '') {
-                                        const res = await user.updatePassword(this.state.id, this.state.oldpass, this.state.newpass);
+                                        const res = await user.updatePassword(this.state.oldpass, this.state.newpass);
                                         if (res) {
                                             Alert.alert("Password reset successful. Login again with new password");
                                             await AsyncStorage.removeItem('id');

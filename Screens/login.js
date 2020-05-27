@@ -10,6 +10,7 @@ import Dialog, {
     ScaleAnimation
 } from 'react-native-popup-dialog';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Icon } from 'react-native-elements';
 
 export default class login extends React.Component {
     constructor(props) {
@@ -17,12 +18,19 @@ export default class login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            dialogBox: false
+            dialogBox: false,
+            textEntry: true
         };
     }
 
     UNSAFE_componentWillMount() {
 
+    }
+
+    setTextEntry()
+    {
+        this.setState({textEntry : !this.state.textEntry});
+        console.log(this.state.textEntry);
     }
 
     loginUser = async () => {
@@ -82,21 +90,38 @@ export default class login extends React.Component {
                     {/* Email TextInput ends here */}
 
                     {/* password textinput view */}
+                    
                     <View style={styles.user}>
                         <Image source={require('../assets/pass.png')}
                             style={styles.icon} />
+                             
                         <TextInput
                             placeholder="Enter your password here                 "
                             underlineColorAndroid="transparent"
                             onChangeText={text => this.setState({ password: text })}
                             defaultValue={this.state.password}
-                            secureTextEntry={true}
+                            secureTextEntry={this.state.textEntry}
                             style={{
                                 color: 'navy',
-                                fontFamily: 'monospace'
+                                fontFamily: 'monospace',
+                                width:Dimensions.get('screen').width*0.61
                             }}
                         />
+                    <TouchableOpacity onPress={()=>{
+                        this.setTextEntry();
+                    }}>  
+                        <Icon
+                            name='eye-slash'
+                            type='font-awesome'
+                            color='blue'
+                            size={25}
+                            style={{
+                                marginTop:6
+                            }}
+                        />
+                    </TouchableOpacity>
                     </View>
+                    
                     {/* password textinput view ends here */}
 
                     {/* forget password */}

@@ -2,6 +2,7 @@
 // function to implement signup user
 import axios from 'axios';
 import { Alert } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 exports.signupValidation = async (email, password, username = null) => {
     const expression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -133,8 +134,9 @@ exports.forgetPass = async (email) => {
     }
 }
 
-exports.updatePassword = async (id, oldpass, newpass) => {
-    console.log("got mail ", id);
+exports.updatePassword = async (oldpass, newpass) => {
+    const id= await AsyncStorage.getItem('id');
+    console.log('got id as ', id);
     const response = await axios({
         method: 'post',
         url: 'https://stackhack.herokuapp.com/password/update',

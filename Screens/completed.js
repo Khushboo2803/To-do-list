@@ -326,6 +326,112 @@ export default class CompleteTask extends React.Component {
                     }
                 </ScrollView>
                 {/* card render ends here */}
+
+                {/* update password dialog appears here */}
+                <Dialog onTouchOutside={() => {
+                    this.setState({ dialogBox: false });
+                }}
+                    width={0.9}
+                    visible={this.state.dialogBox}
+                    dialogAnimation={new ScaleAnimation()}
+                    onHardwareBackPress={() => {
+                        BackHandler.exitApp();
+                        clearInterval(this.interval);
+                        console.log('onHardwareBackPress');
+                        this.setState({ dialogBox: false });
+                        return true;
+                    }}
+                    dialogTitle={
+                        <DialogTitle
+                            title="Change password"
+                            hasTitleBar={false}
+                        />
+                    }
+                    actions={
+                        [
+                            <DialogButton
+                                text="DISMISS"
+                                onPress={() => {
+                                    this.setState({ dialogBox: false });
+                                }}
+                                key="button-1"
+                            />,
+                        ]
+                    }>
+                    <DialogContent>
+                        <View>
+                            <TextInput
+                                placeholder="Enter current password                 "
+                                underlineColorAndroid="transparent"
+                                onChangeText={text => this.setState({ oldpass: text })}
+                                defaultValue={this.state.oldpass}
+                                style={{
+                                    color: 'navy',
+                                    fontFamily: 'monospace'
+                                }}
+                            />
+
+                            <TextInput
+                                placeholder="Enter new password                 "
+                                underlineColorAndroid="transparent"
+                                onChangeText={text => this.setState({ newpass: text })}
+                                defaultValue={this.state.newpass}
+                                style={{
+                                    color: 'navy',
+                                    fontFamily: 'monospace'
+                                }}
+                            />
+
+                            <TextInput
+                                placeholder="confirm new password                 "
+                                underlineColorAndroid="transparent"
+                                onChangeText={text => this.setState({ newpassConfirm: text })}
+                                defaultValue={this.state.newpassConfirm}
+                                style={{
+                                    color: 'navy',
+                                    fontFamily: 'monospace'
+                                }}
+                            />
+
+                            <View>
+                                {
+                                    this.state.newpass == this.state.newpassConfirm ? null :
+                                        <View style={{ marginTop: '4%' }}>
+                                            <Text style={{
+                                                color: 'red'
+                                            }}>*This field doesn't match with your new password</Text>
+                                        </View>
+                                }
+                            </View>
+
+                            <Button
+                                title="Verify"
+                                onPress={async () => {
+
+                                    if (this.state.oldpass != '' && this.state.newpassConfirm == this.state.newpass && this.state.newpass != '') {
+                                        const res = await user.updatePassword(this.state.oldpass, this.state.newpass);
+                                        if (res) {
+                                            Alert.alert("Password reset successful. Login again with new password");
+                                            await AsyncStorage.removeItem('id');
+                                            await AsyncStorage.removeItem('user');
+                                            this.setState({ oldpass: '', newpass: '', newpassConfirm: '' });
+                                            this.props.navigation.navigate('login');
+                                            this.setState({ dialogBox: false });
+                                        }
+                                        else {
+                                            Alert.alert("You have entered wrong password. Try again.");
+                                            this.setState({ oldpass: '', newpass: '', newpassConfirm: '' });
+                                            this.setState({ dialogBox: false });
+                                        }
+                                    }
+                                }
+                                }
+                                key="button-1"
+                            />
+                        </View>
+                    </DialogContent>
+                </Dialog>
+                {/* update password dialog ends here */}
             </ImageBackground>
         );
     }
