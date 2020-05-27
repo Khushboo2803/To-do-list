@@ -16,9 +16,7 @@ exports.allTask = async (req) => {
 
 exports.getCompletedTask = async (req) => {
 	const author = await req.params.author;
-	console.log(author);
-	const completedTasks = await taskModel.find({ author, taskStatus: 'completed' });
-	console.log(completedTasks);
+	const completedTasks = await taskModel.find({ author, taskStatus: 'complete' });
 	if (completedTasks)
 		return new reply.successResponse(code.CODE007, 'completed task fetched successfully ', { taskItems: completedTasks });
 
