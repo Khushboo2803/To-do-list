@@ -1,7 +1,6 @@
 import React from 'react';
 import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker, BackHandler, Alert } from 'react-native';
 import { Card, Icon, PricingCard, Button } from 'react-native-elements';
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import DatePicker from 'react-native-datepicker';
 import Dialog, {
     DialogTitle,
@@ -16,6 +15,8 @@ import user from '../functions/user';
 import taskApi from '../functions/tasks';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
+
+import MenuBar from './components/menubar'
 
 function BlankTask() {
     return (
@@ -108,25 +109,10 @@ export default class CompleteTask extends React.Component {
             newpass: '',
             newpassConfirm: '',
             id: '',
-            user: '',
             buttonText: '',
             taskID: ''
         };
     }
-
-    _menu = null;
-
-    setMenuRef = ref => {
-        this._menu = ref;
-    };
-
-    hideMenu = () => {
-        this._menu.hide();
-    };
-
-    showMenu = () => {
-        this._menu.show();
-    };
 
     async UNSAFE_componentWillMount() {
         BackHandler.addEventListener('hardwareBackPress', () => {
@@ -175,106 +161,9 @@ export default class CompleteTask extends React.Component {
                     height: '100%',
                     width: '100%'
                 }}>
-                {/* header starts */}
-                <View>
-                    <View style={{
-                        height: Dimensions.get('screen').height * 0.07,
-                        borderWidth: 2,
-                        backgroundColor: 'darkseagreen',
-                        flexDirection: 'row',
-                        borderColor: 'green'
-                    }}>
-                        {/* header text */}
-                        <Text
-                            style={{
-                                fontSize: 36,
-                                fontWeight: '900',
-                                textShadowRadius: 20,
-                                textShadowColor: 'gainsboro'
-                            }}> To-do List</Text>
-
-                        {/* header menu starts here */}
-                        <Menu
-                            ref={this.setMenuRef}
-                            button={
-                                <TouchableOpacity onPress={this.showMenu}>
-                                    <Image source={require('../assets/menu.jpg')}
-                                        style={{ height: 43, width: 45, marginLeft: '56%', borderRadius: 98, marginTop: 2 }}
-                                    />
-                                </TouchableOpacity>
-                            }
-                        >
-                            {/* menu item 1 */}
-                            <MenuItem onPress={
-                                this.hideMenu
-                            }>
-                                <Text style={{
-                                    fontSize: 20,
-                                    color: 'blue',
-                                    textShadowRadius: 20,
-                                }}>
-                                    {this.state.user}
-                                </Text>
-                            </MenuItem>
-
-                            {/* Share message */}
-                            <MenuItem onPress={()=>{
-                                user.shareMessage();
-                                this.hideMenu();
-                            }}>
-                                <Text style={{
-                                    fontFamily:'monospace',
-                                    fontSize:16,
-                                    fontWeight:'bold',
-                                    color:'green',
-                                    textDecorationLine:'underline'
-                                }}>Share With Friends</Text>
-                            </MenuItem>
-                            <MenuDivider/>
-                            {/* menu item 2 */}
-                            <MenuItem onPress={() => {
-                                this.props.navigation.navigate('todo');
-                                this.hideMenu();
-                            }}>
-                                Incomplete tasks
-                                </MenuItem>
-                            <MenuDivider />
-
-                            {/* menu item 3 */}
-                            <MenuItem onPress={() => {
-                                this.props.navigation.navigate('complete');
-                                this.hideMenu
-                            }}>
-                                Complete tasks
-                                </MenuItem>
-                            <MenuDivider />
-
-                            {/* menu item 4 */}
-                            <MenuItem onPress={() => {
-                                this.setState({ dialogBox: true });
-                                this.hideMenu();
-                            }}>
-                                Update Password
-                                </MenuItem>
-                            <MenuDivider />
-
-                            {/* menu item 5 */}
-                            <MenuItem onPress={async () => {
-                                await AsyncStorage.removeItem('id');
-                                await AsyncStorage.removeItem('user');
-                                this.props.navigation.navigate('signup');
-                                BackHandler.removeEventListener('hardwareBackPress', () => {
-                                    BackHandler.exitApp();
-                                });
-                                this.hideMenu
-                            }
-                            }>
-                                Log-out
-                                </MenuItem>
-                        </Menu>
-                    </View>
-                </View>
-                {/* header ends here */}
+                {/* Menu starts */}
+                <MenuBar props={this.props} />
+                {/* Menu end */}
                 {/* Sort By */}
                 <Sort />
                 {/* cards render here */}

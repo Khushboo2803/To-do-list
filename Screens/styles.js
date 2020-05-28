@@ -114,6 +114,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'monospace',
         fontWeight: 'bold'
-    }
+    },
+    filterButton: {
+        display: "flex",
+        position: "absolute",
+        bottom: '7%',
+        right: '3%'
+    },
 });
 export default styles;

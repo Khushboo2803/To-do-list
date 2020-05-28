@@ -135,7 +135,7 @@ exports.forgetPass = async (email) => {
 }
 
 exports.updatePassword = async (oldpass, newpass) => {
-    const id= await AsyncStorage.getItem('id');
+    const id = await AsyncStorage.getItem('id');
     console.log('got id as ', id);
     const response = await axios({
         method: 'post',
@@ -151,8 +151,10 @@ exports.updatePassword = async (oldpass, newpass) => {
     return response.data.response;
 }
 
-exports.shareMessage = async() =>{
+exports.shareMessage = async () => {
     console.log("inside sare");
-    const msg="StackHack 1.0 "+ '\n' +"In this unorganized world, stay organized !" +'\n'+ "Download To-Do App created by \*Khushboo Grover\* and \*Rohit Nayak\* " +'\n'+'\n'+ "https://cutt.ly/stackvapp" +'\n'+'\n' + "Stay Organized!";
-    Share.share({message : msg.toString()}).then(result => console.log(result)).catch(error => console.log(error));
+    const msg = "StackHack 1.0 " + '\n' + "In this unorganized world, stay organized !" + '\n' + "Download To-Do App created by \*Khushboo Grover\* and \*Rohit Nayak\* " + '\n' + '\n' + "https://cutt.ly/stackvapp" + '\n' + '\n' + "Stay Organized!";
+    Share.share({ message: msg.toString() })
+        .then(result => console.log(result))
+        .catch(error => console.log(error));
 }

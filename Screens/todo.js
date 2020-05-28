@@ -1,21 +1,17 @@
 import React from 'react';
-import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker, BackHandler, Alert, Share } from 'react-native';
+import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, BackHandler, Alert, Share } from 'react-native';
 import { Card, Icon, PricingCard, Button } from 'react-native-elements';
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import DatePicker from 'react-native-datepicker';
-import Dialog, {
-    DialogTitle,
-    DialogContent,
-    DialogFooter,
-    DialogButton,
-    ScaleAnimation
-} from 'react-native-popup-dialog';
+import { Picker } from '@react-native-community/picker'
 import Sort from './sortby';
 import styles from './styles';
 import user from '../functions/user';
 import taskApi from '../functions/tasks';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
+
+import MenuBar from './components/menubar'
+
 
 function Error() {
     {/** This function is called when any field left empty in add task modal */ }
@@ -138,25 +134,11 @@ export default class main extends React.Component {
             newpass: '',
             newpassConfirm: '',
             id: '',
-            user: '',
             buttonText: '',
             taskID: ''
         };
+        this.filter = this.filter.bind(this);
     }
-
-    _menu = null;
-
-    setMenuRef = ref => {
-        this._menu = ref;
-    };
-
-    hideMenu = () => {
-        this._menu.hide();
-    };
-
-    showMenu = () => {
-        this._menu.show();
-    };
 
     buttonStatus() {
         {/** Add button (of add task) status check  If every field is filled enable add button*/ }
@@ -179,7 +161,6 @@ export default class main extends React.Component {
         {/** Get user name from the phone storage */ }
         const user = await AsyncStorage.getItem('user');
         this.setState({ user: user });
-        Share.share('hello world');
 
     }
     setUser = async () => {
@@ -222,6 +203,13 @@ export default class main extends React.Component {
                 this.setUser();
         }).catch(err => console.log(err));
     }
+
+    showFilter(sortby) {
+        console.log(sortby);
+    }
+    filter() {
+
+    }
     render() {
         return (
             <ImageBackground source={require('../assets/todonew.png')}
@@ -229,110 +217,9 @@ export default class main extends React.Component {
                     height: '100%',
                     width: '100%'
                 }}>
-                {/* header starts */}
-                <View>
-                    <View style={{
-                        height: Dimensions.get('screen').height * 0.07,
-                        borderWidth: 2,
-                        backgroundColor: 'darkseagreen',
-                        flexDirection: 'row',
-                        borderColor: 'green'
-                    }}>
-                        {/* header text */}
-                        <Text
-                            style={{
-                                fontSize: 36,
-                                fontWeight: '900',
-                                textShadowRadius: 20,
-                                textShadowColor: 'gainsboro'
-                            }}> To-do List</Text>
-
-                        {/* header menu starts here */}
-                        <Menu
-                            ref={this.setMenuRef}
-                            button={
-                                <TouchableOpacity onPress={this.showMenu}>
-                                    <Image source={require('../assets/menu.jpg')}
-                                        style={{ height: 43, width: 45, marginLeft: '56%', borderRadius: 98, marginTop: 2 }}
-                                    />
-                                </TouchableOpacity>
-                            }
-                        >
-                            {/* menu item 1 */}
-                            <MenuItem onPress={
-                                this.hideMenu
-                            }>
-                                <Text style={{
-                                    fontSize: 20,
-                                    color: 'blue',
-                                    textShadowRadius: 20,
-                                }}>
-                                    {this.state.user}
-                                </Text>
-                            </MenuItem>
-                            
-                            {/* Share message */}
-                            <MenuItem onPress={()=>{
-                                user.shareMessage();
-                                this.hideMenu();
-                            }}>
-                                <Text style={{
-                                    fontFamily:'monospace',
-                                    fontSize:16,
-                                    fontWeight:'bold',
-                                    color:'green',
-                                    textDecorationLine:'underline'
-                                }}>Share With Friends</Text>
-                            </MenuItem>
-                            <MenuDivider/>
-                            {/* menu item 2 */}
-                            <MenuItem onPress={
-                                () => {
-                                    this.props.navigation.navigate('todo');
-                                    this.hideMenu();
-                                }
-                            }>
-                                Incomplete tasks
-                                </MenuItem>
-                            <MenuDivider />
-
-                            {/* menu item 3 */}
-                            <MenuItem onPress={() => {
-                                this.props.navigation.navigate('complete');
-                                this.hideMenu();
-                            }}>
-                                Complete tasks
-                                </MenuItem>
-                            <MenuDivider />
-
-                            {/* menu item 4 */}
-                            <MenuItem onPress={() => {
-                                this.setState({ dialogBox: true });
-                                this.hideMenu();
-                            }}>
-                                Update Password
-                                </MenuItem>
-                            <MenuDivider />
-
-                            {/* menu item 5 */}
-                            <MenuItem onPress={async () => {
-                                await AsyncStorage.removeItem('id');
-                                await AsyncStorage.removeItem('user');
-                                this.props.navigation.navigate('signup');
-                                BackHandler.removeEventListener('hardwareBackPress', () => {
-                                    BackHandler.exitApp();
-                                });
-                                this.hideMenu
-                            }
-                            }>
-                                Log-out
-                                </MenuItem>
-                        </Menu>
-                    </View>
-                </View>
-                {/* header ends here */}
-                {/* Sort by  */}
-                <Sort/>
+                {/* Menu starts */}
+                <MenuBar props={this.props} />
+                {/* Menu end */}
                 {/* cards render here */}
                 <ScrollView>
                     {
@@ -445,6 +332,20 @@ export default class main extends React.Component {
                 </View>
                 {/* add task button ends here */}
 
+                {/* sort task button starts here */}
+                <View style={styles.filterButton}>
+                    <Icon
+                        reverse
+                        raised
+                        name='exchange'
+                        type='font-awesome'
+                        color='blue'
+                        iconStyle={{ transform: [{ rotate: '90deg' }] }}
+                        onPress={() => this.showFilter()}
+                    />
+                </View>
+                {/* sprt task button ends here */}
+
                 {/* add task modal starts from here */}
                 <Modal
                     transparent={true}
@@ -459,14 +360,14 @@ export default class main extends React.Component {
                             fontSize: 20,
                             fontWeight: 'bold',
                             color: 'midnightblue',
-                            paddingHorizontal:9,
-                            fontFamily:'monospace'
+                            paddingHorizontal: 9,
+                            fontFamily: 'monospace'
                         }}
                         containerStyle={{
                             borderColor: 'green',
                             borderRadius: 10,
                             borderWidth: 4,
-                            marginTop:'20%',
+                            marginTop: '20%',
                         }}
                     >
                         <View>
@@ -577,7 +478,7 @@ export default class main extends React.Component {
                                     <Picker.Item label="Task Status" value={null} />
                                     <Picker.Item label="New" value="new" />
                                     <Picker.Item label="In-Progress" value="ongoing" />
-                                    <Picker.Item label="Complete" value="completed" />
+                                    <Picker.Item label="Complete" value="complete" />
                                 </Picker>
                             </View>
                             <View>
@@ -656,7 +557,7 @@ export default class main extends React.Component {
                 {/* add task modal ends here */}
 
                 {/* update password dialog appears here */}
-                <Dialog onTouchOutside={() => {
+                {/* <Dialog onTouchOutside={() => {
                     this.setState({ dialogBox: false });
                 }}
                     width={0.9}
@@ -759,7 +660,11 @@ export default class main extends React.Component {
                         </View>
                     </DialogContent>
                 </Dialog>
-                {/* update password dialog ends here */}
+                update password dialog ends here */}
+
+                {/* Sort by  */}
+                {this.state.tasks.length > 0 ? <Sort filter={this.showFilter} /> : null}
+
             </ImageBackground>
         );
     }
