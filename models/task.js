@@ -17,7 +17,7 @@ module.exports = mongoose.model('taskSchema', new Schema({
     },
     taskStatus: {
         type: String,
-        enum: ['new', 'ongoing', 'completed'],
+        enum: ['new', 'ongoing', 'complete'],
         default: 'new'
     },
     author: {
