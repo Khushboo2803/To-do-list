@@ -9,12 +9,15 @@ import Dialog, {
 } from 'react-native-popup-dialog';
 import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker, BackHandler, Alert, Share } from 'react-native';
 
+const height=Dimensions.get('screen').height;
+const width=Dimensions.get('screen').width;
+
 export default function sort()
 {
     const [dialog, setDialog]= useState(false);
     return(
         <View style={{
-            height:30,
+            height:height*0.30,
             width:'100%',
             backgroundColor:'lightgrey',
             flexDirection:'row',
