@@ -24,7 +24,7 @@ export default class signUp extends React.Component {
             otp: '',
             resendBox: false,
             id: '',
-            textEntry:true
+            textEntry: true
         };
     }
     interval = '';
@@ -81,9 +81,8 @@ export default class signUp extends React.Component {
 
         }
     }
-    setTextEntry()
-    {
-        this.setState({textEntry : !this.state.textEntry});
+    setTextEntry() {
+        this.setState({ textEntry: !this.state.textEntry });
         console.log(this.state.textEntry);
     }
     render() {
@@ -155,19 +154,19 @@ export default class signUp extends React.Component {
                             style={{
                                 color: 'navy',
                                 fontFamily: 'monospace',
-                                width:Dimensions.get('screen').width*0.6
+                                width: Dimensions.get('screen').width * 0.6
                             }}
                         />
-                        <TouchableOpacity onPress={()=>{
-                        this.setTextEntry();
-                        }}>  
+                        <TouchableOpacity onPress={() => {
+                            this.setTextEntry();
+                        }}>
                             <Icon
                                 name='eye-slash'
                                 type='font-awesome'
                                 color='blue'
                                 size={25}
                                 style={{
-                                    marginTop:6
+                                    marginTop: 6
                                 }}
                             />
                         </TouchableOpacity>
@@ -189,7 +188,7 @@ export default class signUp extends React.Component {
 
                     {/* login button */}
                     <View style={styles.loginButton}>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('login')}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('login')}>
                             <Text style={styles.text}>>>Login </Text>
                         </TouchableOpacity>
                     </View>
@@ -282,23 +281,22 @@ export default class signUp extends React.Component {
                 </View>
 
                 <View style={{
-                    marginLeft:'45%',
-                    marginTop:'10%'
+                    marginLeft: '45%',
+                    marginTop: '10%'
                 }}>
-                    <TouchableOpacity onPress={()=>{
-                        user.shareMessage();
-                    }}>
-                        <Icon 
-                            raised
-                            reverse
-                            name="share"
-                            type="fontisto"
-                            color="blue"
-                            size={25}
-                        />
-                    </TouchableOpacity>
+                    <Icon
+                        raised
+                        reverse
+                        name="share"
+                        type="fontisto"
+                        color="blue"
+                        size={25}
+                        onPress={() => {
+                            user.shareMessage();
+                        }}
+                    />
                 </View>
-            </ImageBackground>
+            </ImageBackground >
         );
     }
 }

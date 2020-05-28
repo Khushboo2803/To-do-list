@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     addButton: {
         display: "flex",
         position: "absolute",
-        bottom: '3%',
-        right: '3%'
+        bottom: height*0.05,
+        right: width*0.01
     },
     addCancelButton: {
         borderWidth: 2,
@@ -114,6 +114,26 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'monospace',
         fontWeight: 'bold'
+    },
+    filterButton: {
+        alignSelf:'center',
+        borderWidth:2,
+        borderRadius:10,
+        width: Dimensions.get('screen').width*0.30,
+        height: Dimensions.get('screen').height*0.05,
+        backgroundColor:'green',
+        marginTop:10
+
+    },
+    filterView: {
+            height: 35,
+            width: '100%',
+            backgroundColor: 'lightgrey',
+            flexDirection: 'row',
+            left: 2,
+            borderTopWidth:4,
+            borderTopColor:'green',
+            width:width*0.50
     }
 });
 export default styles;

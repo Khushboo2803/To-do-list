@@ -27,9 +27,8 @@ export default class login extends React.Component {
 
     }
 
-    setTextEntry()
-    {
-        this.setState({textEntry : !this.state.textEntry});
+    setTextEntry() {
+        this.setState({ textEntry: !this.state.textEntry });
         console.log(this.state.textEntry);
     }
 
@@ -90,11 +89,11 @@ export default class login extends React.Component {
                     {/* Email TextInput ends here */}
 
                     {/* password textinput view */}
-                    
+
                     <View style={styles.user}>
                         <Image source={require('../assets/pass.png')}
                             style={styles.icon} />
-                             
+
                         <TextInput
                             placeholder="Enter your password here                 "
                             underlineColorAndroid="transparent"
@@ -104,24 +103,24 @@ export default class login extends React.Component {
                             style={{
                                 color: 'navy',
                                 fontFamily: 'monospace',
-                                width:Dimensions.get('screen').width*0.61
+                                width: Dimensions.get('screen').width * 0.61
                             }}
                         />
-                    <TouchableOpacity onPress={()=>{
-                        this.setTextEntry();
-                    }}>  
-                        <Icon
-                            name='eye-slash'
-                            type='font-awesome'
-                            color='blue'
-                            size={25}
-                            style={{
-                                marginTop:6
-                            }}
-                        />
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            this.setTextEntry();
+                        }}>
+                            <Icon
+                                name='eye-slash'
+                                type='font-awesome'
+                                color='blue'
+                                size={25}
+                                style={{
+                                    marginTop: 6
+                                }}
+                            />
+                        </TouchableOpacity>
                     </View>
-                    
+
                     {/* password textinput view ends here */}
 
                     {/* forget password */}
@@ -221,21 +220,20 @@ export default class login extends React.Component {
 
                 {/* Share button */}
                 <View style={{
-                    marginLeft:'45%',
-                    marginTop:'10%'
+                    marginLeft: '45%',
+                    marginTop: '10%'
                 }}>
-                <TouchableOpacity onPress={()=>{
-                    user.shareMessage();
-                }}>
-                    <Icon 
+                    <Icon
                         raised
                         reverse
                         name="share"
                         type="fontisto"
                         color="blue"
                         size={25}
+                        onPress={() => {
+                            user.shareMessage();
+                        }}
                     />
-                </TouchableOpacity>
                 </View>
             </ImageBackground>
         );
