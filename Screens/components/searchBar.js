@@ -44,14 +44,10 @@ export default class searchBar extends React.Component
                         size={40}
                         onPress={()=>{
                             this.props.searchBy(this.state.search);
+                            this.setState({search:''});
                         }}
                     />
                 </TouchableOpacity>
-                <View>
-                    {
-                        this.state.search==''?this.props.searchBy(''):null
-                    }
-                </View>
             </View>
         );
     }

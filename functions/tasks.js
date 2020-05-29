@@ -154,7 +154,7 @@ exports.searchTask = async(SearchObj) => {
             "search": SearchObj
         }
     })
-    console.log(taskResponse.data.data);
+    console.log(taskResponse.data);
     if(taskResponse.data.data.length==0)
     {
         ToastAndroid.show("No match found", ToastAndroid.LONG);

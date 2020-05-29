@@ -1,19 +1,16 @@
 import React from 'react';
-import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, BackHandler, Alert, Share } from 'react-native';
-import { Card, Icon, PricingCard, Button } from 'react-native-elements';
+import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Modal, TextInput, BackHandler, Alert} from 'react-native';
+import { Card, Icon, PricingCard } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import { Picker } from '@react-native-community/picker'
 import Sort from './sortby';
 import styles from './styles';
-import user from '../functions/user';
 import taskApi from '../functions/tasks';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
-
 import MenuBar from './components/menubar';
 import SearchBar from './components/searchBar';
-import sort from './sortby';
-
+import PTRView from 'react-native-pull-to-refresh';
 
 function Error() {
     {/** This function is called when any field left empty in add task modal */ }
@@ -121,7 +118,6 @@ export default class main extends React.Component {
         super(props);
         this.state = {
             tasks: [],
-            dropmenu: false,
             showModal: false,
             taskHeading: '',
             taskDetail: '',
@@ -134,16 +130,18 @@ export default class main extends React.Component {
             isStatusSet: true,
             isDateSet: true,
             buttonDisable: true,
-            dialogBox: false,
-            oldpass: '',
-            newpass: '',
-            newpassConfirm: '',
             id: '',
             buttonText: '',
-            taskID: ''
+            taskID: '',
+            refreshing: false
         };
         this.showFilter = this.showFilter.bind(this);
         this.showSearch = this.showSearch.bind(this);
+    }
+
+    _refresh=async()=>
+    {
+        await this.setUser();
     }
 
     buttonStatus() {
@@ -164,10 +162,6 @@ export default class main extends React.Component {
         });
         {/** Get user tasks from the database */ }
         this.setUser();
-        {/** Get user name from the phone storage */ }
-        const user = await AsyncStorage.getItem('user');
-        this.setState({ user: user });
-
     }
     setUser = async () => {
         const userTasks = await taskApi.getCurrentTask();
@@ -181,8 +175,6 @@ export default class main extends React.Component {
     }
 
     confirmDelete(task) {
-        console.log('item to dlelete is ', task);
-
         Alert.alert("Delete Task", `Are you sure you want to delete task ' ${task.taskHeading} '?`, [
             {
                 text: 'Yes',
@@ -200,7 +192,7 @@ export default class main extends React.Component {
     }
 
     completeTask(task) {
-        console.log(task);
+        {/** mark task as complete */}
         task.id = task._id;
         task.taskStatus = "complete";
         async function a() { return await taskApi.updateTask(task) };
@@ -211,30 +203,35 @@ export default class main extends React.Component {
     }
 
     showFilter(sortby) {
-        console.log(sortby);
+        {/** Sort task */}
             this.setState({tasks: this.state.tasks.sort((a,b)=>(a[sortby].toUpperCase() > b[sortby].toUpperCase())?1:-1)});
             console.log(this.state.tasks); 
     }
 
     getFilteredTask = async(searchObj)=>
     {
-        const new_array=await task.searchTask(searchObj);
+        {/** Filter tasks  */}
+        const new_array=await taskApi.searchTask(searchObj);
         if(new_array!=undefined)
             this.setState({tasks: new_array});
     }
     
     showSearch(search)
     {
-        console.log(search);
-        const findTask={
-            taskHeading:search,
-            category:null,
-            taskStatus: null
+        {/** get task heading to search from user */}
+        if(search!='')
+        {
+            const findTask={
+                taskHeading:search,
+                category:null,
+                taskStatus: null
+            }
+            this.getFilteredTask(findTask);
         }
-        this.getFilteredTask(findTask);
     }
     render() {
         return (
+            
             <ImageBackground source={require('../assets/todonew.png')}
                 style={{
                     height: '100%',
@@ -245,6 +242,7 @@ export default class main extends React.Component {
                 {/* Menu end */}
                 <SearchBar searchBy={this.showSearch}/>
                 {/* cards render here */}
+                <PTRView onRefresh={this._refresh}>
                 <ScrollView>
                     {
                         this.state.tasks.length > 0 ?
@@ -338,6 +336,7 @@ export default class main extends React.Component {
                             </ImageBackground>
                     }
                 </ScrollView>
+                </PTRView>
                 {/* card render ends here */}
 
                 {/* add task button starts here */}
@@ -571,6 +570,7 @@ export default class main extends React.Component {
                 {this.state.tasks.length > 0 ? <Sort filter={this.showFilter} /> : null}
 
             </ImageBackground>
+            
         );
     }
 }

@@ -1,23 +1,14 @@
 import React from 'react';
-import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Image, Modal, TextInput, Picker, BackHandler, Alert } from 'react-native';
-import { Card, Icon, PricingCard, Button } from 'react-native-elements';
-import DatePicker from 'react-native-datepicker';
-import Dialog, {
-    DialogTitle,
-    DialogContent,
-    DialogFooter,
-    DialogButton,
-    ScaleAnimation
-} from 'react-native-popup-dialog';
+import { ImageBackground, Dimensions, View, Text, BackHandler, Alert } from 'react-native';
+import { Card, Icon, PricingCard } from 'react-native-elements';
 import Sort from './sortby';
 import styles from './styles';
-import user from '../functions/user';
-import task from '../functions/tasks';
 import taskApi from '../functions/tasks';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 import MenuBar from './components/menubar'
 import SearchBar from './components/searchBar';
+import PTRView from 'react-native-pull-to-refresh';
 
 function BlankTask() {
     return (
@@ -129,14 +120,11 @@ export default class CompleteTask extends React.Component {
     }
 
     confirmDelete(task) {
-        console.log('item to dlelete is ', task);
-
-        Alert.alert("Delete Task", `Are you sure you want to delete task ' ${task.taskHeading} '?`, [
+        Alert.alert("Delete Task", `Are you sure you want to delete task '${task.taskHeading}'?`, [
             {
                 text: 'Yes',
                 onPress: async () => {
                     const res = await taskApi.deleteTask(task);
-                    console.log(res)
                     if (res == true)
                         this.setUser();
                 }
@@ -150,6 +138,11 @@ export default class CompleteTask extends React.Component {
     setUser = async () => {
         const taskItems = await taskApi.getCompletedTask();
         this.setState({ tasks: taskItems });
+    }
+
+    _refresh=async()=>
+    {
+        await this.setUser();
     }
 
     showFilter(sortby) {
@@ -166,7 +159,7 @@ export default class CompleteTask extends React.Component {
 
     getFilteredTask = async(searchObj)=>
     {
-        const new_array=await task.searchTask(searchObj);
+        const new_array=await taskApi.searchTask(searchObj);
         if(new_array!=undefined)
             this.setState({tasks: new_array});
     }
@@ -194,6 +187,7 @@ export default class CompleteTask extends React.Component {
                 <SearchBar searchBy={this.showSearch}/>
                 {/* Search bar ends here */}
                 {/* cards render here */}
+                < PTRView onRefresh={this._refresh}>
                 <ScrollView>
                     {
                         this.state.tasks.length > 0 ?
@@ -256,6 +250,7 @@ export default class CompleteTask extends React.Component {
                             </ImageBackground>
                     }
                 </ScrollView>
+                </PTRView>
                 {/* card render ends here */}
                 {this.state.tasks.length > 0 ? <Sort filter={this.showFilter} /> : null}
             </ImageBackground>
