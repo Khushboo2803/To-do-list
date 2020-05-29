@@ -80,6 +80,7 @@ exports.search = async (req) => {
 	if (search.taskHeading && search.taskHeading != null) {
 		taskFind.taskHeading = search.taskHeading;
 		response = await taskModel.find({ author: taskFind.author, taskHeading: { "$regex": taskFind.taskHeading, "$option": "i" } });
+		console.log('response is ', response)
 		if (response)
 			return new reply.successResponse(code.CODE007, 'Search success', response);
 		else
