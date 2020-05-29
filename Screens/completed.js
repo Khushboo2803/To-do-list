@@ -12,10 +12,10 @@ import Dialog, {
 import Sort from './sortby';
 import styles from './styles';
 import user from '../functions/user';
+import task from '../functions/tasks';
 import taskApi from '../functions/tasks';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
-
 import MenuBar from './components/menubar'
 import SearchBar from './components/searchBar';
 
@@ -114,6 +114,7 @@ export default class CompleteTask extends React.Component {
             taskID: ''
         };
         this.showFilter = this.showFilter.bind(this);
+        this.showSearch = this.showSearch.bind(this);
     }
 
     async UNSAFE_componentWillMount() {
@@ -162,6 +163,22 @@ export default class CompleteTask extends React.Component {
             BackHandler.exitApp();
         });
     }
+
+    getFilteredTask = async(searchObj)=>
+    {
+        const new_array=await task.searchTask(searchObj);
+        if(new_array!=undefined)
+            this.setState({tasks: new_array});
+    }
+    showSearch(search){
+        console.log(search);
+        const findTask={
+            taskHeading:search,
+            category:null,
+            taskStatus: "complete"
+        }
+        this.getFilteredTask(findTask);
+    }
     render() {
         return (
             <ImageBackground source={require('../assets/todonew.png')}
@@ -174,7 +191,7 @@ export default class CompleteTask extends React.Component {
                 {/* Menu end */}
 
                 {/* Search bar starts here */}
-                <SearchBar />
+                <SearchBar searchBy={this.showSearch}/>
                 {/* Search bar ends here */}
                 {/* cards render here */}
                 <ScrollView>

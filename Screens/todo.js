@@ -215,10 +215,23 @@ export default class main extends React.Component {
             this.setState({tasks: this.state.tasks.sort((a,b)=>(a[sortby].toUpperCase() > b[sortby].toUpperCase())?1:-1)});
             console.log(this.state.tasks); 
     }
+
+    getFilteredTask = async(searchObj)=>
+    {
+        const new_array=await task.searchTask(searchObj);
+        if(new_array!=undefined)
+            this.setState({tasks: new_array});
+    }
     
     showSearch(search)
     {
-        console.log("got search", search);
+        console.log(search);
+        const findTask={
+            taskHeading:search,
+            category:null,
+            taskStatus: null
+        }
+        this.getFilteredTask(findTask);
     }
     render() {
         return (
@@ -230,7 +243,7 @@ export default class main extends React.Component {
                 {/* Menu starts */}
                 <MenuBar props={this.props} />
                 {/* Menu end */}
-                <SearchBar key={this.showSearch}/>
+                <SearchBar searchBy={this.showSearch}/>
                 {/* cards render here */}
                 <ScrollView>
                     {
