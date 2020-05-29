@@ -143,6 +143,7 @@ export default class main extends React.Component {
             taskID: ''
         };
         this.showFilter = this.showFilter.bind(this);
+        this.showSearch = this.showSearch.bind(this);
     }
 
     buttonStatus() {
@@ -214,8 +215,10 @@ export default class main extends React.Component {
             this.setState({tasks: this.state.tasks.sort((a,b)=>(a[sortby].toUpperCase() > b[sortby].toUpperCase())?1:-1)});
             console.log(this.state.tasks); 
     }
-    filter() {
-
+    
+    showSearch(search)
+    {
+        console.log("got search", search);
     }
     render() {
         return (
@@ -227,7 +230,7 @@ export default class main extends React.Component {
                 {/* Menu starts */}
                 <MenuBar props={this.props} />
                 {/* Menu end */}
-                <SearchBar/>
+                <SearchBar key={this.showSearch}/>
                 {/* cards render here */}
                 <ScrollView>
                     {

@@ -9,7 +9,8 @@ export default class searchBar extends React.Component
         super(props);
         this.state = {
             search: '',
-        }
+            screen:''
+        };
     }
     render()
     {
@@ -40,6 +41,9 @@ export default class searchBar extends React.Component
                         name="search"
                         type="font-awesome"
                         size={40}
+                        onPress={()=>{
+                            this.props.key(this.state.search);
+                        }}
                     />
                 </TouchableOpacity>
             </View>

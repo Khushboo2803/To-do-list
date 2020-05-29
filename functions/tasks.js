@@ -1,6 +1,6 @@
 import axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage';
-import { Alert } from 'react-native';
+import { Alert, ToastAndroid } from 'react-native';
 // these functions will interact with task management related functions
 exports.closeModal = async (thisObj) => {
     return thisObj.setState((prevState) => {
@@ -124,13 +124,13 @@ exports.updateTask = async (task) => {
     console.log("task we got is ", taskResponse.data);
     if (taskResponse.data.response === false) {
         if (taskResponse.data.msg)
-            alert(taskResponse.data.msg);
+            ToastAndroid.show("Fail to update task", ToastAndroid.LONG);
         if (taskResponse.data.message)
-            alert(taskResponse.data.msg);
+            ToastAndroid.show("Fail to update task", ToastAndroid.LONG);
         return false;
     }
     else {
-        alert(taskResponse.data.message);
+        ToastAndroid.show("Task updated Successfully ", ToastAndroid.LONG);
         return true;
     }
 }
@@ -145,4 +145,15 @@ exports.getCompletedTask = async () => {
     return taskResponse.data.data.taskItems;
 }
 
+exports.searchTask = async(SearchObj) => {
+    const userId = await AsyncStorage.getItem('id');
+    const taskResponse = await axios({
+        method: 'post',
+        url: `https://stackhack.herokuapp.com/task/${userId}/search`,
+        data: {
+            "search": SearchObj
+        }
+    })
+    console.log(taskResponse.data);
+}
 
