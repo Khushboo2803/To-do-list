@@ -71,3 +71,23 @@ exports.deleteTask = async (req) => {
 	else
 		throw new reply.errorResponse(code.CODE002, 'No such task', null)
 }
+
+exports.search = async (req) => {
+	const { search } = await req.body;
+	let taskFind = {};
+	if(search.taskHeading && search.taskHeading != null)
+		taskFind.taskHeading = search.taskHeading;
+	if(search.taskStatus && search.taskStatus != null)
+		taskFind.taskStatus=search.taskStatus;
+	if(search.category && search.category != null)
+		taskFind.category=search.category;
+
+	taskFind.author = await req.params.author
+	const response = await taskModel.find(taskFind);
+
+	if (response)
+		return new reply.successResponse(code.CODE007, 'filter success', response);
+	else
+		throw new reply.errorResponse(code.CODE002, 'No such task', null)
+	
+}
