@@ -71,9 +71,9 @@ exports.addTask = async (thisObj) => {
     }
     else {
         if (taskResponse.data.msg)
-            alert(taskResponse.data.msg);
+            Alert.alert(taskResponse.data.msg);
         if (taskResponse.data.message)
-            alert(taskResponse.data.message);
+            Alert.alert(taskResponse.data.message);
         return thisObj.setState((prevState) => {
             const newState = {
                 showModal: false,
@@ -102,13 +102,13 @@ exports.deleteTask = async (task) => {
     });
     if (taskResponse.data.response === false) {
         if (taskResponse.data.msg)
-            alert(taskResponse.data.msg);
+            Alert.alert("Task Delete Status",taskResponse.data.msg);
         if (taskResponse.data.message)
-            alert(taskResponse.data.message);
+            Alert.alert("Task Delete Status",taskResponse.data.message);
         return false;
     }
     else
-        alert(taskResponse.data.message)
+        Alert.alert("Task Delete Status",taskResponse.data.message)
     return taskResponse.data.response
 }
 
@@ -147,21 +147,58 @@ exports.getCompletedTask = async () => {
 
 exports.searchTask = async(SearchObj) => {
     const userId = await AsyncStorage.getItem('id');
-    const taskResponse = await axios({
+    console.log("got length of taskstatus ", SearchObj.taskStatus.length);
+    
+    const taskResponse1 = await axios({
         method: 'post',
         url: `https://stackhack.herokuapp.com/task/${userId}/search`,
         data: {
-            "search": SearchObj
+            "search": {
+                taskHeading: SearchObj.taskHeading,
+                taskStatus: SearchObj.taskStatus[0],
+                category: SearchObj.category
+            }
         }
     })
-    console.log(taskResponse.data);
-    if(taskResponse.data.data.length==0)
+
+    var arr=taskResponse1.data.data;
+    if(SearchObj.taskStatus.length==2)
     {
-        ToastAndroid.show("No match found", ToastAndroid.LONG);
+        const taskResponse2 = await axios({
+            method: 'post',
+            url: `https://stackhack.herokuapp.com/task/${userId}/search`,
+            data: {
+                "search": {
+                    taskHeading: SearchObj.taskHeading,
+                    taskStatus: SearchObj.taskStatus[1],
+                    category: SearchObj.category
+                }
+            }
+        })
+        const arr=[...taskResponse1.data.data, ...taskResponse2.data.data];
+        if(arr.length==0)
+        {
+            ToastAndroid.show("No match found", ToastAndroid.LONG);
+        }
+        else{
+            return arr;
+        }
     }
-    else{
-        return taskResponse.data.data;
+    else
+    {
+        const arr=taskResponse1.data.data;
+        if(arr.length==0)
+        {
+            ToastAndroid.show("No match found", ToastAndroid.LONG);
+        }
+        else{
+            return arr;
+        }
     }
+    
+    
+    console.log("taskResponse.data", arr);
+    
 
 }
 

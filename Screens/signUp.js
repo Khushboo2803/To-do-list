@@ -166,7 +166,7 @@ export default class signUp extends React.Component {
                                 color='blue'
                                 size={25}
                                 style={{
-                                    marginTop: 6
+                                    marginTop: '22%'
                                 }}
                             />
                         </TouchableOpacity>
@@ -180,7 +180,7 @@ export default class signUp extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <Text style={{
-                        marginLeft: '48%',
+                        marginLeft: Dimensions.get('screen').width*0.50,
                         fontFamily: 'monospace',
                         fontSize: 16,
                         color: 'black'

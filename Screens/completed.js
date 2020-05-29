@@ -106,17 +106,33 @@ export default class CompleteTask extends React.Component {
         };
         this.showFilter = this.showFilter.bind(this);
         this.showSearch = this.showSearch.bind(this);
+        this.showCategories = this.showCategories.bind(this);
     }
 
     async UNSAFE_componentWillMount() {
+        {/** Initially called */}
         BackHandler.addEventListener('hardwareBackPress', () => {
             BackHandler.exitApp();
         });
         {/** Get user tasks from the database */ }
         this.setUser();
-        {/** Get user name from the phone storage */ }
-        const user = await AsyncStorage.getItem('user');
-        this.setState({ user: user });
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', () => {
+            BackHandler.exitApp();
+        });
+    }
+
+    setUser = async () => {
+        //get completed tasks
+        const taskItems = await taskApi.getCompletedTask();
+        this.setState({ tasks: taskItems });
+    }
+
+    _refresh=async()=>
+    {   //refresh cards
+        await this.setUser();
     }
 
     confirmDelete(task) {
@@ -135,26 +151,10 @@ export default class CompleteTask extends React.Component {
         ])
     }
 
-    setUser = async () => {
-        const taskItems = await taskApi.getCompletedTask();
-        this.setState({ tasks: taskItems });
-    }
-
-    _refresh=async()=>
-    {
-        await this.setUser();
-    }
-
     showFilter(sortby) {
-        console.log(sortby);
+            //sort by function
             this.setState({tasks: this.state.tasks.sort((a,b)=>(a[sortby].toUpperCase() > b[sortby].toUpperCase())?1:-1)});
             console.log(this.state.tasks); 
-    }
-
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', () => {
-            BackHandler.exitApp();
-        });
     }
 
     getFilteredTask = async(searchObj)=>
@@ -163,15 +163,28 @@ export default class CompleteTask extends React.Component {
         if(new_array!=undefined)
             this.setState({tasks: new_array});
     }
+
     showSearch(search){
-        console.log(search);
+        //search by textInput handler
         const findTask={
             taskHeading:search,
             category:null,
-            taskStatus: "complete"
+            taskStatus: ["complete"]
         }
         this.getFilteredTask(findTask);
     }
+
+    showCategories(obj)
+    { //filter view handler
+            const findTask={
+                taskHeading:null,
+                category:obj.category,
+                taskStatus:["complete"]
+            }
+        this.getFilteredTask(findTask);   
+    }
+
+    //start rendering
     render() {
         return (
             <ImageBackground source={require('../assets/todonew.png')}
@@ -181,11 +194,10 @@ export default class CompleteTask extends React.Component {
                 }}>
                 {/* Menu starts */}
                 <MenuBar props={this.props} />
-                {/* Menu end */}
 
                 {/* Search bar starts here */}
                 <SearchBar searchBy={this.showSearch}/>
-                {/* Search bar ends here */}
+               
                 {/* cards render here */}
                 < PTRView onRefresh={this._refresh}>
                 <ScrollView>
@@ -201,6 +213,7 @@ export default class CompleteTask extends React.Component {
                                                         borderRadius: 9,
                                                         borderWidth: 2,
                                                         borderColor: 'brown',
+                                                        marginBottom:'3%'
                                                     }}
                                                     titleStyle={{
                                                         fontSize: 20,
@@ -252,7 +265,9 @@ export default class CompleteTask extends React.Component {
                 </ScrollView>
                 </PTRView>
                 {/* card render ends here */}
-                {this.state.tasks.length > 0 ? <Sort filter={this.showFilter} /> : null}
+
+                {/* sort by view */}
+                {this.state.tasks.length > 0 ? <Sort filter={this.showFilter} screenName="complete" sortCat={this.showCategories}/> : null}
             </ImageBackground>
         );
     }

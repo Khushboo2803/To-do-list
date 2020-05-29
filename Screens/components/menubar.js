@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Dimensions, TouchableOpacity, Image, Button, TextInput, BackHandler } from 'react-native';
+import { Text, View, Dimensions, TouchableOpacity, Image, Button, TextInput, BackHandler, ToastAndroid } from 'react-native';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import AsyncStorage from '@react-native-community/async-storage';
 import Dialog, { DialogTitle, DialogContent, DialogFooter, DialogButton, ScaleAnimation } from 'react-native-popup-dialog';
@@ -217,7 +217,7 @@ export default class MenuBar extends React.Component {
                                     if (this.state.oldpass != '' && this.state.newpassConfirm == this.state.newpass && this.state.newpass != '') {
                                         const res = await user.updatePassword(this.state.oldpass, this.state.newpass);
                                         if (res) {
-                                            Alert.alert("Password reset successful. Login again with new password");
+                                            ToastAndroid.show("Password reset successful. Login again with new password", ToastAndroid.LONG);
                                             await AsyncStorage.removeItem('id');
                                             await AsyncStorage.removeItem('user');
                                             this.setState({ oldpass: '', newpass: '', newpassConfirm: '' });

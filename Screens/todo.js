@@ -137,6 +137,7 @@ export default class main extends React.Component {
         };
         this.showFilter = this.showFilter.bind(this);
         this.showSearch = this.showSearch.bind(this);
+        this.showCategories = this.showCategories.bind(this);
     }
 
     _refresh=async()=>
@@ -224,9 +225,30 @@ export default class main extends React.Component {
             const findTask={
                 taskHeading:search,
                 category:null,
-                taskStatus: null
+                taskStatus: ["ongoing", "new"]
             }
             this.getFilteredTask(findTask);
+        }
+    }
+
+    showCategories(obj)
+    {
+        if(obj.taskStatus==null)
+        {
+            const findTask={
+                taskHeading:null,
+                category:obj.category,
+                taskStatus:["ongoing", "new"]
+            }
+        this.getFilteredTask(findTask);
+        }
+        else{
+            const findTask={
+                taskHeading:null,
+                category:obj.category,
+                taskStatus: [obj.taskStatus]
+            }
+        this.getFilteredTask(findTask);
         }
     }
     render() {
@@ -256,6 +278,7 @@ export default class main extends React.Component {
                                                         borderRadius: 9,
                                                         borderWidth: 2,
                                                         borderColor: 'brown',
+                                                        marginBottom:'3%'
                                                     }}
                                                     titleStyle={{
                                                         fontSize: 20,
@@ -373,7 +396,7 @@ export default class main extends React.Component {
                             fontFamily: 'monospace'
                         }}
                         containerStyle={{
-                            borderColor: 'green',
+                            borderColor: 'brown',
                             borderRadius: 10,
                             borderWidth: 4,
                             marginTop: '20%',
@@ -567,7 +590,7 @@ export default class main extends React.Component {
 
                 
                 {/* Sort by  */}
-                {this.state.tasks.length > 0 ? <Sort filter={this.showFilter} /> : null}
+                {this.state.tasks.length > 0 ? <Sort filter={this.showFilter} screenName="todo" sortCat={this.showCategories}/> : null}
 
             </ImageBackground>
             

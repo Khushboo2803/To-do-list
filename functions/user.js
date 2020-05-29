@@ -7,15 +7,15 @@ import AsyncStorage from '@react-native-community/async-storage';
 exports.signupValidation = async (email, password, username = null) => {
     const expression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (expression.test(email) === false) {
-        alert("invalid email");
+        Alert.alert("Invalid email");
         return false;
     }
     else if (password == '') {
-        alert("password cannot be blank");
+        Alert.alert("password cannot be blank");
         return false;
     }
     else if (username == null || username == '') {
-        alert("Username cannot be blank");
+        Alert.alert("Username cannot be blank");
         return false;
     }
     return true;
@@ -39,9 +39,9 @@ exports.register = async (email, user, password) => {
         //console.log(response.data.data.id);
         if (response.data.response == false) {
             if (response.data.message)
-                alert(response.data.message);
+                Alert.alert(response.data.message);
             if (response.data.msg)
-                alert(response.data.msg);
+                Alert.alert(response.data.msg);
             return false;
         }
         else
@@ -65,7 +65,7 @@ exports.verifyOTP = async (id, otp) => {
         }
     });
     if (response.data.msg == "invalid otp") {
-        Alert.alert("invalid otp");
+        Alert.alert("Invalid otp");
         return false;
     }
     else if (response.data.message == "successfully verified") {
@@ -106,9 +106,9 @@ exports.login = async (email, password) => {
         return response.data.data;
     else {
         if (response.data.msg)
-            alert(response.data.msg);
+            Alert.alert(response.data.msg);
         if (response.data.message)
-            alert(response.data.message);
+            Alert.alert(response.data.message);
         return false;
     }
 }

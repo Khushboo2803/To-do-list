@@ -5,7 +5,6 @@ import user from '../functions/user';
 import Dialog, {
     DialogTitle,
     DialogContent,
-    DialogFooter,
     DialogButton,
     ScaleAnimation
 } from 'react-native-popup-dialog';
@@ -125,7 +124,7 @@ export default class login extends React.Component {
 
                     {/* forget password */}
                     <View style={{
-                        marginLeft: '43%',
+                        marginLeft: Dimensions.get('screen').width*0.43,
                         marginTop: '5%'
                     }}>
                         <TouchableOpacity onPress={() => {
@@ -145,10 +144,10 @@ export default class login extends React.Component {
                     </View>
 
                     <Text style={{
-                        marginLeft: '45%',
+                        marginLeft: Dimensions.get('screen').width*0.49,
                         fontFamily: 'monospace',
                         fontSize: 16,
-                        color: 'white'
+                        color: 'black'
                     }}>OR</Text>
 
                     <View style={styles.loginButton}>
@@ -220,7 +219,7 @@ export default class login extends React.Component {
 
                 {/* Share button */}
                 <View style={{
-                    marginLeft: '45%',
+                    marginLeft: Dimensions.get('screen').width*0.45,
                     marginTop: '10%'
                 }}>
                     <Icon

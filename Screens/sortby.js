@@ -10,11 +10,14 @@ import { View, Text, TouchableOpacity, BackHandler, Dimensions } from 'react-nat
 import styles from './styles';
 
 export default function sort(props) {
-    console.log(props)
+
     const [dialog, setDialog] = useState(false);
     const [Filterdialog, setFilterDialog] = useState(false);
+    const[taskStatus, setStatus]=useState(null);
+    const[category, setCategory]=useState(null);
     return (
         <View style={{flexDirection:'row'}}>
+            
         <View style={{
             height: 35,
             width: '100%',
@@ -203,7 +206,13 @@ export default function sort(props) {
                                     textAlign:'center'
                                 }}>---Task Category---</Text>
 
-                                <Picker>
+                                <Picker
+                                    selectedValue={category}
+                                    style={{ height: 50, width: 200 }}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        setCategory(itemValue);
+                                    }}
+                                >
                                     <Picker.Item label="Task Category" value={null} />
                                     <Picker.Item label="Personal" value="personal" />
                                     <Picker.Item label="work" value="work" />
@@ -220,16 +229,37 @@ export default function sort(props) {
                                     marginTop:'10%'
                                 }}>---Task Status---</Text>
 
-                                <Picker>
+                                <Picker enabled={!(props.screenName=="complete")}
+                                    selectedValue={taskStatus}
+                                    style={{ height: 50, width: 200 }}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        setStatus(itemValue);
+                                    }}
+                                >
                                     <Picker.Item label="Task Status" value={null} />
                                     <Picker.Item label="New" value="new" />
                                     <Picker.Item label="In-Progress" value="ongoing" />
-                                    <Picker.Item label="Complete" value="complete" />
                                 </Picker>
-
+                                <View>
+                                    {
+                                        props.screenName=="complete"?
+                                        <Text style={
+                                            {
+                                                color:'red',
+                                                fontWeight:'bold',
+                                                marginLeft:'2%'
+                                            }
+                                        }> * Not applicable here</Text>:null
+                                    }
+                                </View>
                                 <TouchableOpacity style={styles.filterButton} onPress={
                                     ()=>{
                                         setFilterDialog(false);
+                                        const obj={
+                                            taskStatus: taskStatus,
+                                            category: category
+                                        }
+                                        props.sortCat(obj);
                                     }
                                 }>
                                     <Text style={{

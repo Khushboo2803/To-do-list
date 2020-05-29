@@ -4,7 +4,6 @@ import { StyleSheet, Dimensions } from 'react-native';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-
     email: {
         flexDirection: 'row',
         height: height * 0.07,
@@ -25,6 +24,7 @@ const styles = StyleSheet.create({
         marginTop: '10%',
         backgroundColor: 'white'
     },
+    //
     submitButton: {
         width: width * 0.42,
         height: height * 0.06,
@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     icon: {
-        height: 30,
-        width: 30,
+        height: height*0.04,
+        width: width*0.08,
         marginTop: 6,
         marginLeft: 2
     },
@@ -69,11 +69,11 @@ const styles = StyleSheet.create({
     addCancelButton: {
         borderWidth: 2,
         borderRadius: 3,
-        borderColor: 'red',
+        borderColor: 'green',
         height: 35,
         width: 90,
         marginRight: '7%',
-        backgroundColor: 'tomato'
+        backgroundColor: 'green'
     },
     addCancelText: {
         alignSelf: 'center',
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontFamily: 'monospace',
         marginTop: '4%',
-        color: 'black'
+        color: 'white'
     },
     deteleTask: {
         position: "absolute",
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
         top: 0,
 
     },
+    //
     forgetText:
     {
         fontStyle: 'italic',
