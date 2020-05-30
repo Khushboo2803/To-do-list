@@ -76,28 +76,38 @@ exports.search = async (req) => {
 	const { search } = await req.body;
 	let taskFind = {}
 	taskFind.author = await req.params.author;
+	taskFind.taskStatus = search.taskStatus;
 	let response;
 	if (search.taskHeading && search.taskHeading != null) {
 		taskFind.taskHeading = search.taskHeading;
-		response = await taskModel.find({ author: taskFind.author, taskHeading: { $regex: taskFind.taskHeading, $options: "i" } });
+		response = await taskModel.find({
+			author: taskFind.author,
+			taskHeading: { $regex: taskFind.taskHeading, $options: "i" },
+			taskStatus: { $in: taskFind.taskStatus }
+		});
 		if (response)
 			return new reply.successResponse(code.CODE007, 'Search success', response);
 		else
 			throw new reply.errorResponse(code.CODE002, 'No task for this heading', null)
 	}
-	else {
-		if (search.taskStatus && search.taskStatus != null)
-			taskFind.taskStatus = search.taskStatus;
-		if (search.category && search.category != null)
-			taskFind.category = search.category;
-
-		response = await taskModel.find(taskFind);
-
+	else if (search.category && search.category != null) {
+		taskFind.category = search.category;
+		response = await taskModel.find({
+			category: taskFind.category,
+			taskStatus: { $in: taskFind.taskStatus }
+		})
 		if (response)
 			return new reply.successResponse(code.CODE007, 'filter success', response);
 		else
 			throw new reply.errorResponse(code.CODE002, 'No task found', null)
-
 	}
+	else
+		response = await taskModel.find({
+			taskStatus: { $in: taskFind.taskStatus }
+		});
+	if (response)
+		return new reply.successResponse(code.CODE007, 'filter success', response);
+	else
+		throw new reply.errorResponse(code.CODE002, 'No task found', null)
 
 }
