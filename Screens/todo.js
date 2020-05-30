@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Modal, TextInput, BackHandler, Alert } from 'react-native';
+import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Modal, TextInput, BackHandler, Alert, ToastAndroid } from 'react-native';
 import { Card, Icon, PricingCard } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import { Picker } from '@react-native-community/picker'
@@ -133,7 +133,7 @@ export default class main extends React.Component {
             id: '',
             buttonText: '',
             taskID: '',
-            refreshing: false
+            date:[]
         };
         this.showFilter = this.showFilter.bind(this);
         this.showSearch = this.showSearch.bind(this);
@@ -166,6 +166,7 @@ export default class main extends React.Component {
     setUser = async () => {
         const userTasks = await taskApi.getCurrentTask();
         this.setState({ tasks: userTasks });
+        var arr='';
     }
 
     componentWillUnmount() {
@@ -211,8 +212,10 @@ export default class main extends React.Component {
     getFilteredTask = async (searchObj) => {
         {/** Filter tasks  */ }
         const new_array = await taskApi.searchTask(searchObj);
-        if (new_array != undefined)
+        if (new_array.length!=0)
             this.setState({ tasks: new_array });
+        else
+        ToastAndroid.show("No Task found for your search", ToastAndroid.LONG)
     }
 
     showSearch(search) {
@@ -245,7 +248,6 @@ export default class main extends React.Component {
             this.getFilteredTask(findTask);
         }
     }
-
     render() {
         return (
 
@@ -254,13 +256,13 @@ export default class main extends React.Component {
                     height: '100%',
                     width: '100%'
                 }}>
-                <PTRView onRefresh={this._refresh}>
+                
                     {/* Menu starts */}
                     <MenuBar props={this.props} />
                     {/* Menu end */}
-                    <SearchBar searchBy={this.showSearch} />
+                    {this.state.tasks.length > 0 ?<SearchBar searchBy={this.showSearch} />:null}
                     {/* cards render here */}
-
+                    <PTRView onRefresh={this._refresh}>
                     <ScrollView>
                         {
                             this.state.tasks.length > 0 ?
@@ -303,7 +305,7 @@ export default class main extends React.Component {
                                                             titleStyle={{ height: 0 }}
                                                             pricingStyle={{ height: 0 }}
                                                             info={[`Task: ${taskItem.taskDetail}`,
-                                                            `Due Date : ${taskItem.dueDate}`,
+                                                            `Due Date : ${taskApi.getDateString(taskItem.dueDate)}`,
                                                             `Task Status : ${taskItem.taskStatus}`,
                                                             `Category : ${taskItem.category}`]}
                                                             button={{ title: "nn", buttonStyle: { display: "none" } }}

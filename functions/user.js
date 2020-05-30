@@ -1,21 +1,21 @@
 // This will handle user related functions
 // function to implement signup user
 import axios from 'axios';
-import { Alert, Share } from 'react-native';
+import { Alert, Share, ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 exports.signupValidation = async (email, password, username = null) => {
     const expression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (expression.test(email) === false) {
-        Alert.alert("Invalid email");
+        ToastAndroid.show("Invalid email",ToastAndroid.LONG);
         return false;
     }
     else if (password == '') {
-        Alert.alert("password cannot be blank");
+        ToastAndroid.show("Password cannot be blank",ToastAndroid.LONG);
         return false;
     }
     else if (username == null || username == '') {
-        Alert.alert("Username cannot be blank");
+        ToastAndroid.show("Username cannot be blank",ToastAndroid.LONG);
         return false;
     }
     return true;

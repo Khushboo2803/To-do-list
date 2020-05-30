@@ -158,8 +158,10 @@ export default class CompleteTask extends React.Component {
 
     getFilteredTask = async (searchObj) => {
         const new_array = await taskApi.searchTask(searchObj);
-        if (new_array != undefined)
+        if (new_array.length != 0)
             this.setState({ tasks: new_array });
+        else
+            ToastAndroid.show("No Task found for your search", ToastAndroid.LONG)
     }
 
     showSearch(search) {
@@ -189,14 +191,15 @@ export default class CompleteTask extends React.Component {
                     height: '100%',
                     width: '100%'
                 }}>
-                < PTRView onRefresh={this._refresh}>
+                
                     {/* Menu starts */}
                     <MenuBar props={this.props} />
 
                     {/* Search bar starts here */}
-                    <SearchBar searchBy={this.showSearch} />
+                    {this.state.tasks.length > 0 ?<SearchBar searchBy={this.showSearch} />:null }
 
                     {/* cards render here */}
+                    < PTRView onRefresh={this._refresh}>
                     <ScrollView>
                         {
                             this.state.tasks.length > 0 ?
@@ -239,7 +242,7 @@ export default class CompleteTask extends React.Component {
                                                             titleStyle={{ height: 0 }}
                                                             pricingStyle={{ height: 0 }}
                                                             info={[`Task: ${taskItem.taskDetail}`,
-                                                            `Due Date : ${taskItem.dueDate}`,
+                                                            `Due Date : ${taskApi.getDateString(taskItem.dueDate)}`,
                                                             `Task Status : ${taskItem.taskStatus}`,
                                                             `Category : ${taskItem.category}`]}
                                                             button={{ title: "nn", buttonStyle: { display: "none" } }}
@@ -250,7 +253,8 @@ export default class CompleteTask extends React.Component {
                                             })
                                         }
                                     </View>
-                                </ScrollView> :
+                                </ScrollView> 
+                                :
                                 <ImageBackground source={require('../assets/todolist.jpg')}
                                     style={{
                                         height: Dimensions.get('screen').height,
@@ -260,7 +264,7 @@ export default class CompleteTask extends React.Component {
                                 </ImageBackground>
                         }
                     </ScrollView>
-                </PTRView>
+                    </PTRView>
                 {/* card render ends here */}
 
                 {/* sort by view */}
