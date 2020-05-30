@@ -13,6 +13,10 @@ import Dialog, {
 import { Icon } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage';
 
+
+    const Height=Dimensions.get('screen').height;
+    const Width=Dimensions.get('screen').width;
+
 export default class signUp extends React.Component {
     constructor(props) {
         super()
@@ -31,7 +35,6 @@ export default class signUp extends React.Component {
     i = '';
     async UNSAFE_componentWillMount() {
         /** check if user is already logged in */
-        const user = await AsyncStorage.getItem('user');
         const id = await AsyncStorage.getItem('id');
         if (id == '' || id == null) {
             this.render();
@@ -89,8 +92,8 @@ export default class signUp extends React.Component {
         return (
             <ImageBackground source={require('../assets/signUp.jpg')}
                 style={{
-                    height: Dimensions.get('screen').height,
-                    width: Dimensions.get('screen').width
+                    height: Height,
+                    width: Width
                 }}>
                 <View>
                     <View style={{
@@ -118,7 +121,9 @@ export default class signUp extends React.Component {
                             defaultValue={this.state.email}
                             style={{
                                 color: 'navy',
-                                fontFamily: 'monospace'
+                                fontFamily: 'monospace',
+                                height:Height*0.06,
+                                width:Width*0.8
                             }}
                         />
                     </View>
@@ -135,7 +140,9 @@ export default class signUp extends React.Component {
                             defaultValue={this.state.username}
                             style={{
                                 color: 'navy',
-                                fontFamily: 'monospace'
+                                fontFamily: 'monospace',
+                                height:Height*0.06,
+                                width:Width*0.8
                             }}
                         />
                     </View>
@@ -154,7 +161,8 @@ export default class signUp extends React.Component {
                             style={{
                                 color: 'navy',
                                 fontFamily: 'monospace',
-                                width: Dimensions.get('screen').width * 0.6
+                                height:Height*0.06,
+                                width:Width*0.58
                             }}
                         />
                         <TouchableOpacity onPress={() => {
@@ -164,9 +172,11 @@ export default class signUp extends React.Component {
                                 name='eye-slash'
                                 type='font-awesome'
                                 color='blue'
-                                size={25}
+                                size={Height*0.04}
                                 style={{
-                                    marginTop: '22%'
+                                    left:0,
+                                    alignSelf:'center',
+                                    top:2
                                 }}
                             />
                         </TouchableOpacity>
@@ -176,7 +186,7 @@ export default class signUp extends React.Component {
                     {/* submit button */}
                     <View style={styles.submitButton}>
                         <TouchableOpacity onPress={() => { this.onSubmitPress() }}>
-                            <Text style={styles.text}>  Submit</Text>
+                            <Text style={styles.text}>   Submit</Text>
                         </TouchableOpacity>
                     </View>
                     <Text style={{
@@ -188,8 +198,18 @@ export default class signUp extends React.Component {
 
                     {/* login button */}
                     <View style={styles.loginButton}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('login')}>
-                            <Text style={styles.text}>>>Login </Text>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('login')}
+                        style={{flexDirection:'row'}}>
+                            <Icon 
+                                name="sign-in"
+                                type="font-awesome"
+                                size={Height*0.04}
+                                color='green'
+                                style={{
+                                    left:1
+                                }}
+                            />
+                            <Text style={styles.text}> Login </Text>
                         </TouchableOpacity>
                     </View>
 

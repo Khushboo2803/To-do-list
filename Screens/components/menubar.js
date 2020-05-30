@@ -34,7 +34,10 @@ export default class MenuBar extends React.Component {
 
     render() {
         return (
-            <View>
+            <View style={{
+                height:Dimensions.get('screen').height*0.07,
+                width:Dimensions.get('screen').width
+            }}>
                 {/* menu starts here */}
                 <View
                     style={{

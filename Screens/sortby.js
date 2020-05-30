@@ -16,7 +16,9 @@ export default function sort(props) {
     const[taskStatus, setStatus]=useState(null);
     const[category, setCategory]=useState(null);
     return (
-        <View style={{flexDirection:'row'}}>
+        <View style={{flexDirection:'row',
+        height:Dimensions.get('screen').height*0.04,
+        width: Dimensions.get('screen').width}}>
             
         <View style={{
             height: 35,

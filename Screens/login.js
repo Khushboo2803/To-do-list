@@ -11,6 +11,8 @@ import Dialog, {
 import AsyncStorage from '@react-native-community/async-storage';
 import { Icon } from 'react-native-elements';
 
+    const Height=Dimensions.get('screen').height;
+    const Width=Dimensions.get('screen').width;
 export default class login extends React.Component {
     constructor(props) {
         super(props)
@@ -52,12 +54,12 @@ export default class login extends React.Component {
         return (
             <ImageBackground source={require('../assets/login.jpg')}
                 style={{
-                    height: Dimensions.get('screen').height,
-                    width: Dimensions.get('screen').width
+                    height: Height,
+                    width: Width
                 }}>
                 <View>
                     <View style={{
-                        marginTop: '10%',
+                        marginTop: Height*0.10,
                         alignSelf: 'center'
                     }}>
                         <Text style={{
@@ -81,7 +83,9 @@ export default class login extends React.Component {
                             defaultValue={this.state.email}
                             style={{
                                 color: 'navy',
-                                fontFamily: 'monospace'
+                                fontFamily: 'monospace',
+                                height:Height*0.06,
+                                width:Width*0.8
                             }}
                         />
                     </View>
@@ -102,7 +106,8 @@ export default class login extends React.Component {
                             style={{
                                 color: 'navy',
                                 fontFamily: 'monospace',
-                                width: Dimensions.get('screen').width * 0.61
+                                height:Height*0.06,
+                                width:Width*0.58
                             }}
                         />
                         <TouchableOpacity onPress={() => {
@@ -112,11 +117,12 @@ export default class login extends React.Component {
                                 name='eye-slash'
                                 type='font-awesome'
                                 color='blue'
-                                size={25}
+                                size={Height*0.04}
                                 style={{
-                                    marginTop: 6
-                                }}
-                            />
+                                    left:0,
+                                    alignSelf:'center',
+                                    top:2
+                                }}/>
                         </TouchableOpacity>
                     </View>
 
@@ -139,7 +145,7 @@ export default class login extends React.Component {
 
                     <View style={styles.submitButton}>
                         <TouchableOpacity onPress={() => this.loginUser()}>
-                            <Text style={styles.text}>   Login </Text>
+                            <Text style={styles.text}>   Login</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -151,8 +157,15 @@ export default class login extends React.Component {
                     }}>OR</Text>
 
                     <View style={styles.loginButton}>
-                        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                            <Text style={styles.text}>>>Register</Text>
+                        <TouchableOpacity onPress={() => this.props.navigation.goBack()}
+                        style={{flexDirection:'row'}}>
+                            <Icon
+                                name="book"
+                                type="font-awesome"
+                                size={Height*0.04}
+                                color='green'
+                            />
+                            <Text style={styles.text}> Register</Text>
                         </TouchableOpacity>
                     </View>
 

@@ -23,7 +23,9 @@ export default class searchBar extends React.Component
                 borderRadius:15,
                 borderColor:'green',
                 marginTop:2,
-                width: Dimensions.get('screen').width
+                width: Dimensions.get('screen').width,
+                height:Dimensions.get('screen').height*0.06
+                
             }}>
                 <TextInput
                             placeholder=" Search task here            "

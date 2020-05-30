@@ -26,15 +26,18 @@ const styles = StyleSheet.create({
     },
     //
     submitButton: {
-        width: width * 0.42,
+        width: width * 0.5,
         height: height * 0.06,
         borderWidth: 4,
         borderRadius: 9,
         marginTop: '10%',
-        marginLeft: '33%',
+        marginLeft: width*0.28,
         backgroundColor: 'dodgerblue',
         borderColor: 'midnightblue',
         flexDirection: 'row',
+        alignItems:'center',
+        textAlign:'center',
+        alignContent:'center'
     },
     icon: {
         height: height*0.04,
@@ -43,22 +46,23 @@ const styles = StyleSheet.create({
         marginLeft: 2
     },
     loginButton: {
-        width: width * 0.42,
+        width: width * 0.5,
         height: height * 0.06,
         borderWidth: 4,
         borderRadius: 9,
         marginTop: '2%',
-        marginLeft: '33%',
+        marginLeft: width*0.28,
         backgroundColor: 'dodgerblue',
         borderColor: 'midnightblue',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems:'center',
+        alignContent:'center'
     },
     text: {
         fontSize: 23,
         fontWeight: 'bold',
         color: 'mistyrose',
         fontFamily: 'monospace',
-        textAlign: 'center'
     },
     addButton: {
         display: "flex",
