@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Modal, TextInput, BackHandler, Alert} from 'react-native';
+import { ImageBackground, Dimensions, View, Text, TouchableOpacity, Modal, TextInput, BackHandler, Alert } from 'react-native';
 import { Card, Icon, PricingCard } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import { Picker } from '@react-native-community/picker'
@@ -35,7 +35,7 @@ function Error() {
 }
 
 function BlankTask() {
-    {/** Called when there is no task to do */}
+    {/** Called when there is no task to do */ }
     return (
         <View style={{
             height: 250,
@@ -140,9 +140,8 @@ export default class main extends React.Component {
         this.showCategories = this.showCategories.bind(this);
     }
 
-    _refresh=async()=>
-    {
-        await this.setUser();
+    _refresh = () => {
+        return this.setUser();
     }
 
     buttonStatus() {
@@ -193,7 +192,7 @@ export default class main extends React.Component {
     }
 
     completeTask(task) {
-        {/** mark task as complete */}
+        {/** mark task as complete */ }
         task.id = task._id;
         task.taskStatus = "complete";
         async function a() { return await taskApi.updateTask(task) };
@@ -204,161 +203,158 @@ export default class main extends React.Component {
     }
 
     showFilter(sortby) {
-        {/** Sort task */}
-            this.setState({tasks: this.state.tasks.sort((a,b)=>(a[sortby].toUpperCase() > b[sortby].toUpperCase())?1:-1)});
-            console.log(this.state.tasks); 
+        {/** Sort task */ }
+        this.setState({ tasks: this.state.tasks.sort((a, b) => (a[sortby].toUpperCase() > b[sortby].toUpperCase()) ? 1 : -1) });
+        console.log(this.state.tasks);
     }
 
-    getFilteredTask = async(searchObj)=>
-    {
-        {/** Filter tasks  */}
-        const new_array=await taskApi.searchTask(searchObj);
-        if(new_array!=undefined)
-            this.setState({tasks: new_array});
+    getFilteredTask = async (searchObj) => {
+        {/** Filter tasks  */ }
+        const new_array = await taskApi.searchTask(searchObj);
+        if (new_array != undefined)
+            this.setState({ tasks: new_array });
     }
-    
-    showSearch(search)
-    {
-        {/** get task heading to search from user */}
-        if(search!='')
-        {
-            const findTask={
-                taskHeading:search,
-                category:null,
+
+    showSearch(search) {
+        {/** get task heading to search from user */ }
+        if (search != '') {
+            const findTask = {
+                taskHeading: search,
+                category: null,
                 taskStatus: ["ongoing", "new"]
             }
             this.getFilteredTask(findTask);
         }
     }
 
-    showCategories(obj)
-    {
-        if(obj.taskStatus==null)
-        {
-            const findTask={
-                taskHeading:null,
-                category:obj.category,
-                taskStatus:["ongoing", "new"]
+    showCategories(obj) {
+        if (obj.taskStatus == null) {
+            const findTask = {
+                taskHeading: null,
+                category: obj.category,
+                taskStatus: ["ongoing", "new"]
             }
-        this.getFilteredTask(findTask);
+            this.getFilteredTask(findTask);
         }
-        else{
-            const findTask={
-                taskHeading:null,
-                category:obj.category,
+        else {
+            const findTask = {
+                taskHeading: null,
+                category: obj.category,
                 taskStatus: [obj.taskStatus]
             }
-        this.getFilteredTask(findTask);
+            this.getFilteredTask(findTask);
         }
     }
+
     render() {
         return (
-            
+
             <ImageBackground source={require('../assets/todonew.png')}
                 style={{
                     height: '100%',
                     width: '100%'
                 }}>
-                {/* Menu starts */}
-                <MenuBar props={this.props} />
-                {/* Menu end */}
-                <SearchBar searchBy={this.showSearch}/>
-                {/* cards render here */}
                 <PTRView onRefresh={this._refresh}>
-                <ScrollView>
-                    {
-                        this.state.tasks.length > 0 ?
-                            <ScrollView>
-                                <View>
-                                    {
-                                        this.state.tasks.map((taskItem, index) => {
-                                            return (
-                                                <Card
-                                                    containerStyle={{
-                                                        borderRadius: 9,
-                                                        borderWidth: 2,
-                                                        borderColor: 'brown',
-                                                        marginBottom:'3%'
-                                                    }}
-                                                    titleStyle={{
-                                                        fontSize: 20,
-                                                        color: 'brown',
-                                                        textDecorationLine: 'underline'
-                                                    }}
-                                                    title={taskItem.taskHeading.toUpperCase()}
-                                                    key={taskItem._id}>
-                                                    <View style={styles.deteleTask}>
-                                                        <Icon
-                                                            name='trash'
-                                                            type='font-awesome'
-                                                            color='brown'
-                                                            size={23}
-                                                            onPress={() => this.confirmDelete(taskItem)}
-                                                        />
-                                                    </View>
-                                                    <PricingCard
-                                                        infoStyle={{
-                                                            color: 'black',
-                                                        }}
+                    {/* Menu starts */}
+                    <MenuBar props={this.props} />
+                    {/* Menu end */}
+                    <SearchBar searchBy={this.showSearch} />
+                    {/* cards render here */}
+
+                    <ScrollView>
+                        {
+                            this.state.tasks.length > 0 ?
+                                <ScrollView>
+                                    <View>
+                                        {
+                                            this.state.tasks.map((taskItem, index) => {
+                                                return (
+                                                    <Card
                                                         containerStyle={{
-                                                            borderRadius: 4,
-                                                            borderColor: 'green',
+                                                            borderRadius: 9,
+                                                            borderWidth: 2,
+                                                            borderColor: 'brown',
+                                                            marginBottom: '3%'
                                                         }}
-                                                        titleStyle={{ height: 0 }}
-                                                        pricingStyle={{ height: 0 }}
-                                                        info={[`Task: ${taskItem.taskDetail}`,
-                                                        `Due Date : ${taskItem.dueDate}`,
-                                                        `Task Status : ${taskItem.taskStatus}`,
-                                                        `Category : ${taskItem.category}`]}
-                                                        button={{ title: "nn", buttonStyle: { display: "none" } }}
-                                                    />
+                                                        titleStyle={{
+                                                            fontSize: 20,
+                                                            color: 'brown',
+                                                            textDecorationLine: 'underline'
+                                                        }}
+                                                        title={taskItem.taskHeading.toUpperCase()}
+                                                        key={taskItem._id}>
+                                                        <View style={styles.deteleTask}>
+                                                            <Icon
+                                                                name='trash'
+                                                                type='font-awesome'
+                                                                color='brown'
+                                                                size={23}
+                                                                onPress={() => this.confirmDelete(taskItem)}
+                                                            />
+                                                        </View>
+                                                        <PricingCard
+                                                            infoStyle={{
+                                                                color: 'black',
+                                                            }}
+                                                            containerStyle={{
+                                                                borderRadius: 4,
+                                                                borderColor: 'green',
+                                                            }}
+                                                            titleStyle={{ height: 0 }}
+                                                            pricingStyle={{ height: 0 }}
+                                                            info={[`Task: ${taskItem.taskDetail}`,
+                                                            `Due Date : ${taskItem.dueDate}`,
+                                                            `Task Status : ${taskItem.taskStatus}`,
+                                                            `Category : ${taskItem.category}`]}
+                                                            button={{ title: "nn", buttonStyle: { display: "none" } }}
+                                                        />
 
-                                                    <View style={{
-                                                        flexDirection: 'row',
-                                                        alignSelf: 'center'
-                                                    }}>
-                                                        <TouchableOpacity onPress={
-                                                            () => {
-                                                                this.setState(
-                                                                    {
-                                                                        buttonText: 'Update',
-                                                                        taskHeading: taskItem.taskHeading,
-                                                                        taskDetail: taskItem.taskDetail,
-                                                                        category: taskItem.category,
-                                                                        taskStatus: taskItem.taskStatus,
-                                                                        dueDate: taskItem.dueDate,
-                                                                        showModal: true,
-                                                                        taskID: taskItem._id
-                                                                    });
-                                                            }
-                                                        }>
-                                                            <View style={styles.updateButton}>
-                                                                <Text style={styles.updateText}>Update</Text>
-                                                            </View>
-                                                        </TouchableOpacity>
+                                                        <View style={{
+                                                            flexDirection: 'row',
+                                                            alignSelf: 'center'
+                                                        }}>
+                                                            <TouchableOpacity onPress={
+                                                                () => {
+                                                                    this.setState(
+                                                                        {
+                                                                            buttonText: 'Update',
+                                                                            taskHeading: taskItem.taskHeading,
+                                                                            taskDetail: taskItem.taskDetail,
+                                                                            category: taskItem.category,
+                                                                            taskStatus: taskItem.taskStatus,
+                                                                            dueDate: taskItem.dueDate,
+                                                                            showModal: true,
+                                                                            taskID: taskItem._id
+                                                                        });
+                                                                }
+                                                            }>
+                                                                <View style={styles.updateButton}>
+                                                                    <Text style={styles.updateText}>Update</Text>
+                                                                </View>
+                                                            </TouchableOpacity>
 
-                                                        <TouchableOpacity onPress={() => this.completeTask(taskItem)}>
-                                                            <View style={styles.updateButton}>
-                                                                <Text style={styles.updateText}>Complete</Text>
-                                                            </View>
-                                                        </TouchableOpacity>
-                                                    </View>
+                                                            <TouchableOpacity onPress={() => this.completeTask(taskItem)}>
+                                                                <View style={styles.updateButton}>
+                                                                    <Text style={styles.updateText}>Complete</Text>
+                                                                </View>
+                                                            </TouchableOpacity>
+                                                        </View>
 
-                                                </Card>
-                                            );
-                                        })
-                                    }
-                                </View>
-                            </ScrollView> :
-                            <ImageBackground source={require('../assets/todolist.jpg')}
-                                style={{
-                                    height: Dimensions.get('screen').height,
-                                    width: Dimensions.get('screen').width
-                                }}>
-                                <BlankTask />
-                            </ImageBackground>
-                    }
-                </ScrollView>
+                                                    </Card>
+                                                );
+                                            })
+                                        }
+                                    </View>
+                                </ScrollView> :
+                                <ImageBackground source={require('../assets/todolist.jpg')}
+                                    style={{
+                                        height: Dimensions.get('screen').height,
+                                        width: Dimensions.get('screen').width
+                                    }}>
+                                    <BlankTask />
+                                </ImageBackground>
+                        }
+                    </ScrollView>
                 </PTRView>
                 {/* card render ends here */}
 
@@ -588,12 +584,12 @@ export default class main extends React.Component {
                 </Modal>
                 {/* add task modal ends here */}
 
-                
+
                 {/* Sort by  */}
-                {this.state.tasks.length > 0 ? <Sort filter={this.showFilter} screenName="todo" sortCat={this.showCategories}/> : null}
+                {this.state.tasks.length > 0 ? <Sort filter={this.showFilter} screenName="todo" sortCat={this.showCategories} /> : null}
 
             </ImageBackground>
-            
+
         );
     }
 }

@@ -76,7 +76,6 @@ exports.verifyOTP = async (id, otp) => {
         Alert.alert("Internal error");
         return false;
     }
-
 }
 
 exports.resendOTP = async (id) => {

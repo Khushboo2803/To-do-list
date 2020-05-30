@@ -110,7 +110,7 @@ export default class CompleteTask extends React.Component {
     }
 
     async UNSAFE_componentWillMount() {
-        {/** Initially called */}
+        {/** Initially called */ }
         BackHandler.addEventListener('hardwareBackPress', () => {
             BackHandler.exitApp();
         });
@@ -130,8 +130,7 @@ export default class CompleteTask extends React.Component {
         this.setState({ tasks: taskItems });
     }
 
-    _refresh=async()=>
-    {   //refresh cards
+    _refresh = async () => {   //refresh cards
         await this.setUser();
     }
 
@@ -152,36 +151,34 @@ export default class CompleteTask extends React.Component {
     }
 
     showFilter(sortby) {
-            //sort by function
-            this.setState({tasks: this.state.tasks.sort((a,b)=>(a[sortby].toUpperCase() > b[sortby].toUpperCase())?1:-1)});
-            console.log(this.state.tasks); 
+        //sort by function
+        this.setState({ tasks: this.state.tasks.sort((a, b) => (a[sortby].toUpperCase() > b[sortby].toUpperCase()) ? 1 : -1) });
+        console.log(this.state.tasks);
     }
 
-    getFilteredTask = async(searchObj)=>
-    {
-        const new_array=await taskApi.searchTask(searchObj);
-        if(new_array!=undefined)
-            this.setState({tasks: new_array});
+    getFilteredTask = async (searchObj) => {
+        const new_array = await taskApi.searchTask(searchObj);
+        if (new_array != undefined)
+            this.setState({ tasks: new_array });
     }
 
-    showSearch(search){
+    showSearch(search) {
         //search by textInput handler
-        const findTask={
-            taskHeading:search,
-            category:null,
+        const findTask = {
+            taskHeading: search,
+            category: null,
             taskStatus: ["complete"]
         }
         this.getFilteredTask(findTask);
     }
 
-    showCategories(obj)
-    { //filter view handler
-            const findTask={
-                taskHeading:null,
-                category:obj.category,
-                taskStatus:["complete"]
-            }
-        this.getFilteredTask(findTask);   
+    showCategories(obj) { //filter view handler
+        const findTask = {
+            taskHeading: null,
+            category: obj.category,
+            taskStatus: ["complete"]
+        }
+        this.getFilteredTask(findTask);
     }
 
     //start rendering
@@ -192,82 +189,82 @@ export default class CompleteTask extends React.Component {
                     height: '100%',
                     width: '100%'
                 }}>
-                {/* Menu starts */}
-                <MenuBar props={this.props} />
-
-                {/* Search bar starts here */}
-                <SearchBar searchBy={this.showSearch}/>
-               
-                {/* cards render here */}
                 < PTRView onRefresh={this._refresh}>
-                <ScrollView>
-                    {
-                        this.state.tasks.length > 0 ?
-                            <ScrollView>
-                                <View>
-                                    {
-                                        this.state.tasks.map((taskItem, index) => {
-                                            return (
-                                                <Card
-                                                    containerStyle={{
-                                                        borderRadius: 9,
-                                                        borderWidth: 2,
-                                                        borderColor: 'brown',
-                                                        marginBottom:'3%'
-                                                    }}
-                                                    titleStyle={{
-                                                        fontSize: 20,
-                                                        color: 'brown',
-                                                        textDecorationLine: 'underline'
-                                                    }}
-                                                    title={taskItem.taskHeading.toUpperCase()}
-                                                    key={taskItem._id}>
-                                                    <View style={styles.deteleTask}>
-                                                        <Icon
-                                                            name='trash'
-                                                            type='font-awesome'
-                                                            color='brown'
-                                                            size={23}
-                                                            onPress={() => this.confirmDelete(taskItem)}
-                                                        />
-                                                    </View>
-                                                    <PricingCard
-                                                        infoStyle={{
-                                                            color: 'black',
-                                                        }}
-                                                        containerStyle={{
-                                                            borderRadius: 4,
-                                                            borderColor: 'green',
-                                                        }}
-                                                        titleStyle={{ height: 0 }}
-                                                        pricingStyle={{ height: 0 }}
-                                                        info={[`Task: ${taskItem.taskDetail}`,
-                                                        `Due Date : ${taskItem.dueDate}`,
-                                                        `Task Status : ${taskItem.taskStatus}`,
-                                                        `Category : ${taskItem.category}`]}
-                                                        button={{ title: "nn", buttonStyle: { display: "none" } }}
-                                                    />
+                    {/* Menu starts */}
+                    <MenuBar props={this.props} />
 
-                                                </Card>
-                                            );
-                                        })
-                                    }
-                                </View>
-                            </ScrollView> :
-                            <ImageBackground source={require('../assets/todolist.jpg')}
-                                style={{
-                                    height: Dimensions.get('screen').height,
-                                    width: Dimensions.get('screen').width
-                                }}>
-                                <BlankTask />
-                            </ImageBackground>
-                    }
-                </ScrollView>
+                    {/* Search bar starts here */}
+                    <SearchBar searchBy={this.showSearch} />
+
+                    {/* cards render here */}
+                    <ScrollView>
+                        {
+                            this.state.tasks.length > 0 ?
+                                <ScrollView>
+                                    <View>
+                                        {
+                                            this.state.tasks.map((taskItem, index) => {
+                                                return (
+                                                    <Card
+                                                        containerStyle={{
+                                                            borderRadius: 9,
+                                                            borderWidth: 2,
+                                                            borderColor: 'brown',
+                                                            marginBottom: '3%'
+                                                        }}
+                                                        titleStyle={{
+                                                            fontSize: 20,
+                                                            color: 'brown',
+                                                            textDecorationLine: 'underline'
+                                                        }}
+                                                        title={taskItem.taskHeading.toUpperCase()}
+                                                        key={taskItem._id}>
+                                                        <View style={styles.deteleTask}>
+                                                            <Icon
+                                                                name='trash'
+                                                                type='font-awesome'
+                                                                color='brown'
+                                                                size={23}
+                                                                onPress={() => this.confirmDelete(taskItem)}
+                                                            />
+                                                        </View>
+                                                        <PricingCard
+                                                            infoStyle={{
+                                                                color: 'black',
+                                                            }}
+                                                            containerStyle={{
+                                                                borderRadius: 4,
+                                                                borderColor: 'green',
+                                                            }}
+                                                            titleStyle={{ height: 0 }}
+                                                            pricingStyle={{ height: 0 }}
+                                                            info={[`Task: ${taskItem.taskDetail}`,
+                                                            `Due Date : ${taskItem.dueDate}`,
+                                                            `Task Status : ${taskItem.taskStatus}`,
+                                                            `Category : ${taskItem.category}`]}
+                                                            button={{ title: "nn", buttonStyle: { display: "none" } }}
+                                                        />
+
+                                                    </Card>
+                                                );
+                                            })
+                                        }
+                                    </View>
+                                </ScrollView> :
+                                <ImageBackground source={require('../assets/todolist.jpg')}
+                                    style={{
+                                        height: Dimensions.get('screen').height,
+                                        width: Dimensions.get('screen').width
+                                    }}>
+                                    <BlankTask />
+                                </ImageBackground>
+                        }
+                    </ScrollView>
                 </PTRView>
                 {/* card render ends here */}
 
                 {/* sort by view */}
-                {this.state.tasks.length > 0 ? <Sort filter={this.showFilter} screenName="complete" sortCat={this.showCategories}/> : null}
+                {this.state.tasks.length > 0 ? <Sort filter={this.showFilter} screenName="complete" sortCat={this.showCategories} /> : null}
             </ImageBackground>
         );
     }

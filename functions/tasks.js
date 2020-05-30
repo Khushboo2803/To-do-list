@@ -22,183 +22,196 @@ exports.closeModal = async (thisObj) => {
 }
 
 exports.getCurrentTask = async () => {
-    const userId = await AsyncStorage.getItem('id');
-    const taskResponse = await axios({
-        method: 'post',
-        url: `https://stackhack.herokuapp.com/task/${userId}/tasks`,
-    });
+    try {
+        const userId = await AsyncStorage.getItem('id');
+        const taskResponse = await axios({
+            method: 'post',
+            url: `https://stackhack.herokuapp.com/task/${userId}/tasks`,
+        });
 
-    console.log(" taskResponse is ", taskResponse.data.data.taskItems);
-    return taskResponse.data.data.taskItems;
+        console.log(" taskResponse is ", taskResponse.data.data.taskItems);
+        return taskResponse.data.data.taskItems;
+    } catch (error) {
+        console.log('error in get current task', error);
+        ToastAndroid.show("Error in getting tasks", ToastAndroid.LONG)
+    }
+
 }
 
 exports.addTask = async (thisObj) => {
-    const task = {};
-    task["taskHeading"] = thisObj.state.taskHeading;
-    task["taskDetail"] = thisObj.state.taskDetail;
-    task["dueDate"] = thisObj.state.dueDate;
-    task["taskStatus"] = thisObj.state.taskStatus;
-    task["category"] = thisObj.state.category;
+    try {
+        const task = {};
+        task["taskHeading"] = thisObj.state.taskHeading;
+        task["taskDetail"] = thisObj.state.taskDetail;
+        task["dueDate"] = thisObj.state.dueDate;
+        task["taskStatus"] = thisObj.state.taskStatus;
+        task["category"] = thisObj.state.category;
 
-    const userId = await AsyncStorage.getItem('id');
-    const taskResponse = await axios({
-        method: 'post',
-        url: `https://stackhack.herokuapp.com/task/${userId}/addtask`,
-        data: { task }
-    })
-    if (taskResponse.data.response) {
-        task["_id"] = taskResponse.data.data.taskItems._id;
-        return thisObj.setState((prevState) => {
-            //console.log(task)
-            let tasks = prevState.tasks;
-            tasks[tasks.length] = task;
-            //console.log(users)
-            const newState = {
-                showModal: false,
-                taskHeading: '',
-                taskDetail: '',
-                category: null,
-                taskStatus: null,
-                dueDate: null,
-                isHeaderSet: true,
-                isDesSet: true,
-                isTypeSet: true,
-                isStatusSet: true,
-                isDateSet: true
-            }
-            return newState;
-        });
+        const userId = await AsyncStorage.getItem('id');
+        const taskResponse = await axios({
+            method: 'post',
+            url: `https://stackhack.herokuapp.com/task/${userId}/addtask`,
+            data: { task }
+        })
+        if (taskResponse.data.response) {
+            task["_id"] = taskResponse.data.data.taskItems._id;
+            return thisObj.setState((prevState) => {
+                //console.log(task)
+                let tasks = prevState.tasks;
+                tasks[tasks.length] = task;
+                //console.log(users)
+                const newState = {
+                    showModal: false,
+                    taskHeading: '',
+                    taskDetail: '',
+                    category: null,
+                    taskStatus: null,
+                    dueDate: null,
+                    isHeaderSet: true,
+                    isDesSet: true,
+                    isTypeSet: true,
+                    isStatusSet: true,
+                    isDateSet: true
+                }
+                return newState;
+            });
+        }
+        else {
+            if (taskResponse.data.msg)
+                ToastAndroid.show(taskResponse.data.msg, ToastAndroid.LONG)
+            if (taskResponse.data.message)
+                ToastAndroid.show(taskResponse.data.message, ToastAndroid.LONG)
+            return thisObj.setState((prevState) => {
+                const newState = {
+                    showModal: false,
+                    taskHeading: '',
+                    taskDetail: '',
+                    category: null,
+                    taskStatus: null,
+                    dueDate: null,
+                    isHeaderSet: true,
+                    isDesSet: true,
+                    isTypeSet: true,
+                    isStatusSet: true,
+                    isDateSet: true
+                }
+                return newState;
+            });
+        }
+    } catch (error) {
+        console.log('error in add task', error);
+        ToastAndroid.show('error while adding task', ToastAndroid.LONG)
     }
-    else {
-        if (taskResponse.data.msg)
-            Alert.alert(taskResponse.data.msg);
-        if (taskResponse.data.message)
-            Alert.alert(taskResponse.data.message);
-        return thisObj.setState((prevState) => {
-            const newState = {
-                showModal: false,
-                taskHeading: '',
-                taskDetail: '',
-                category: null,
-                taskStatus: null,
-                dueDate: null,
-                isHeaderSet: true,
-                isDesSet: true,
-                isTypeSet: true,
-                isStatusSet: true,
-                isDateSet: true
-            }
-            return newState;
-        });
-    }
+
 }
 
 exports.deleteTask = async (task) => {
-    console.log("in delete task ", task);
-    const userId = await AsyncStorage.getItem('id');
-    const taskResponse = await axios({
-        method: 'post',
-        url: `https://stackhack.herokuapp.com/task/${userId}/delete/${task._id}`,
-    });
-    if (taskResponse.data.response === false) {
-        if (taskResponse.data.msg)
-            Alert.alert("Task Delete Status",taskResponse.data.msg);
-        if (taskResponse.data.message)
-            Alert.alert("Task Delete Status",taskResponse.data.message);
-        return false;
+    try {
+        console.log("in delete task ", task);
+        const userId = await AsyncStorage.getItem('id');
+        const taskResponse = await axios({
+            method: 'post',
+            url: `https://stackhack.herokuapp.com/task/${userId}/delete/${task._id}`,
+        });
+        if (taskResponse.data.response === false) {
+            if (taskResponse.data.msg)
+                ToastAndroid.show(taskResponse.data.msg, ToastAndroid.LONG)
+            if (taskResponse.data.message)
+                ToastAndroid.show(taskResponse.data.message, ToastAndroid.LONG)
+            return false;
+        }
+        else
+            ToastAndroid.show(taskResponse.data.message, ToastAndroid.LONG)
+        return taskResponse.data.response
+    } catch (error) {
+        console.log('error in delete', error);
+        ToastAndroid.show('error in delete', ToastAndroid.LONG);
     }
-    else
-        Alert.alert("Task Delete Status",taskResponse.data.message)
-    return taskResponse.data.response
+
 }
 
 exports.updateTask = async (task) => {
-    const userId = await AsyncStorage.getItem('id');
-    const taskResponse = await axios({
-        method: 'post',
-        url: `https://stackhack.herokuapp.com/task/${userId}/update/${task.id}`,
-        data: {
-            "update": task
+    try {
+        const userId = await AsyncStorage.getItem('id');
+        const taskResponse = await axios({
+            method: 'post',
+            url: `https://stackhack.herokuapp.com/task/${userId}/update/${task.id}`,
+            data: {
+                "update": task
+            }
+        })
+        console.log("task we got is ", taskResponse.data);
+        if (taskResponse.data.response === false) {
+            if (taskResponse.data.msg)
+                ToastAndroid.show(taskResponse.data.msg, ToastAndroid.LONG);
+            if (taskResponse.data.message)
+                ToastAndroid.show(taskResponse.data.message, ToastAndroid.LONG);
+            return false;
         }
-    })
-    console.log("task we got is ", taskResponse.data);
-    if (taskResponse.data.response === false) {
-        if (taskResponse.data.msg)
-            ToastAndroid.show("Fail to update task", ToastAndroid.LONG);
-        if (taskResponse.data.message)
-            ToastAndroid.show("Fail to update task", ToastAndroid.LONG);
-        return false;
+        else {
+            ToastAndroid.show(taskResponse.data.message, ToastAndroid.LONG);
+            return true;
+        }
+    } catch (error) {
+        console.log('error in update task');
+        ToastAndroid.show('error in update', ToastAndroid.LONG)
     }
-    else {
-        ToastAndroid.show("Task updated Successfully ", ToastAndroid.LONG);
-        return true;
-    }
+
 }
 
 exports.getCompletedTask = async () => {
-    const userId = await AsyncStorage.getItem('id');
-    const taskResponse = await axios({
-        method: 'post',
-        url: `https://stackhack.herokuapp.com/task/${userId}/completed`,
-    })
-    console.log(taskResponse.data);
-    return taskResponse.data.data.taskItems;
+    try {
+        const userId = await AsyncStorage.getItem('id');
+        const taskResponse = await axios({
+            method: 'post',
+            url: `https://stackhack.herokuapp.com/task/${userId}/completed`,
+        })
+        if (taskResponse.data.response == false) {
+            if (taskResponse.data.msg)
+                ToastAndroid.show(taskResponse.data.msg, ToastAndroid.LONG);
+            if (taskResponse.data.message)
+                ToastAndroid.show(taskResponse.data.message, ToastAndroid.LONG);
+            return null;
+        }
+        else {
+            console.log(taskResponse.data);
+            ToastAndroid.show(taskResponse.data.message, ToastAndroid.LONG);
+            return taskResponse.data.data.taskItems;
+        }
+    } catch (error) {
+        console.log('error in getComplete task');
+        ToastAndroid.show('error getting completed task', ToastAndroid.LONG)
+    }
+
 }
 
-exports.searchTask = async(SearchObj) => {
-    const userId = await AsyncStorage.getItem('id');
-    console.log("got length of taskstatus ", SearchObj.taskStatus.length);
-    
-    const taskResponse1 = await axios({
-        method: 'post',
-        url: `https://stackhack.herokuapp.com/task/${userId}/search`,
-        data: {
-            "search": {
-                taskHeading: SearchObj.taskHeading,
-                taskStatus: SearchObj.taskStatus[0],
-                category: SearchObj.category
-            }
-        }
-    })
+exports.searchTask = async (SearchObj) => {
+    try {
+        const userId = await AsyncStorage.getItem('id');
+        console.log("got length of taskstatus ", SearchObj);
 
-    var arr=taskResponse1.data.data;
-    if(SearchObj.taskStatus.length==2)
-    {
-        const taskResponse2 = await axios({
+        const taskResponse = await axios({
             method: 'post',
             url: `https://stackhack.herokuapp.com/task/${userId}/search`,
             data: {
-                "search": {
-                    taskHeading: SearchObj.taskHeading,
-                    taskStatus: SearchObj.taskStatus[1],
-                    category: SearchObj.category
-                }
+                "search": SearchObj
             }
-        })
-        const arr=[...taskResponse1.data.data, ...taskResponse2.data.data];
-        if(arr.length==0)
-        {
-            ToastAndroid.show("No match found", ToastAndroid.LONG);
+        });
+        if (taskResponse.data.response == false) {
+            if (taskResponse.data.msg)
+                ToastAndroid.show(taskResponse.data.msg, ToastAndroid.LONG);
+            if (taskResponse.data.message)
+                ToastAndroid.show(taskResponse.data.message, ToastAndroid.LONG);
+            return undefined;
         }
-        else{
-            return arr;
+        else {
+            console.log(taskResponse.data);
+            ToastAndroid.show(taskResponse.data.message, ToastAndroid.LONG);
+            return taskResponse.data.data;
         }
+    } catch (error) {
+        console.log('error in search');
+        ToastAndroid.show('error in task search', ToastAndroid.LONG)
     }
-    else
-    {
-        const arr=taskResponse1.data.data;
-        if(arr.length==0)
-        {
-            ToastAndroid.show("No match found", ToastAndroid.LONG);
-        }
-        else{
-            return arr;
-        }
-    }
-    
-    
-    console.log("taskResponse.data", arr);
-    
-
 }
 
