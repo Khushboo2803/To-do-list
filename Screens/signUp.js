@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Dimensions, View, TouchableOpacity, Text, Alert, Image, Button, BackHandler } from 'react-native';
+import { ImageBackground, StyleSheet, Dimensions, View, TouchableOpacity, Text, Alert, Image, BackHandler } from 'react-native';
 import styles from './styles.js';
 import { TextInput } from 'react-native-gesture-handler';
 import user from '../functions/user';
@@ -10,12 +10,12 @@ import Dialog, {
     DialogButton,
     ScaleAnimation
 } from 'react-native-popup-dialog';
-import { Icon } from 'react-native-elements';
+import { Icon, Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage';
 
 
-    const Height=Dimensions.get('screen').height;
-    const Width=Dimensions.get('screen').width;
+const Height = Dimensions.get('screen').height;
+const Width = Dimensions.get('screen').width;
 
 export default class signUp extends React.Component {
     constructor(props) {
@@ -117,13 +117,14 @@ export default class signUp extends React.Component {
                         <TextInput
                             placeholder="Enter your email id here                 "
                             underlineColorAndroid="transparent"
+                            autoCompleteType="off"
                             onChangeText={text => this.setState({ email: text })}
                             defaultValue={this.state.email}
                             style={{
                                 color: 'navy',
                                 fontFamily: 'monospace',
-                                height:Height*0.06,
-                                width:Width*0.8
+                                height: Height * 0.06,
+                                width: Width * 0.8
                             }}
                         />
                     </View>
@@ -141,8 +142,8 @@ export default class signUp extends React.Component {
                             style={{
                                 color: 'navy',
                                 fontFamily: 'monospace',
-                                height:Height*0.06,
-                                width:Width*0.8
+                                height: Height * 0.06,
+                                width: Width * 0.8
                             }}
                         />
                     </View>
@@ -161,8 +162,8 @@ export default class signUp extends React.Component {
                             style={{
                                 color: 'navy',
                                 fontFamily: 'monospace',
-                                height:Height*0.06,
-                                width:Width*0.58
+                                height: Height * 0.06,
+                                width: Width * 0.58
                             }}
                         />
                         <TouchableOpacity onPress={() => {
@@ -172,11 +173,11 @@ export default class signUp extends React.Component {
                                 name='eye-slash'
                                 type='font-awesome'
                                 color='blue'
-                                size={Height*0.04}
+                                size={Height * 0.04}
                                 style={{
-                                    left:0,
-                                    alignSelf:'center',
-                                    top:2
+                                    left: 0,
+                                    alignSelf: 'center',
+                                    top: 2
                                 }}
                             />
                         </TouchableOpacity>
@@ -190,7 +191,7 @@ export default class signUp extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <Text style={{
-                        marginLeft: Dimensions.get('screen').width*0.50,
+                        marginLeft: Dimensions.get('screen').width * 0.50,
                         fontFamily: 'monospace',
                         fontSize: 16,
                         color: 'black'
@@ -199,15 +200,13 @@ export default class signUp extends React.Component {
                     {/* login button */}
                     <View style={styles.loginButton}>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('login')}
-                        style={{flexDirection:'row'}}>
-                            <Icon 
+                            style={{ flexDirection: 'row' }}>
+                            <Icon
                                 name="sign-in"
                                 type="font-awesome"
-                                size={Height*0.04}
-                                color='green'
-                                style={{
-                                    left:1
-                                }}
+                                size={Height * 0.04}
+                                color='white'
+                                iconStyle={{ marginLeft: Width * 0.05 }}
                             />
                             <Text style={styles.text}> Login </Text>
                         </TouchableOpacity>
@@ -299,9 +298,9 @@ export default class signUp extends React.Component {
                     {/* OTP dialog box ends here */}
 
                 </View>
-
+                {/* share button */}
                 <View style={{
-                    marginLeft: '45%',
+                    marginLeft: Width * 0.43,
                     marginTop: '10%'
                 }}>
                     <Icon

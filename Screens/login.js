@@ -11,8 +11,8 @@ import Dialog, {
 import AsyncStorage from '@react-native-community/async-storage';
 import { Icon } from 'react-native-elements';
 
-    const Height=Dimensions.get('screen').height;
-    const Width=Dimensions.get('screen').width;
+const Height = Dimensions.get('screen').height;
+const Width = Dimensions.get('screen').width;
 export default class login extends React.Component {
     constructor(props) {
         super(props)
@@ -22,10 +22,6 @@ export default class login extends React.Component {
             dialogBox: false,
             textEntry: true
         };
-    }
-
-    UNSAFE_componentWillMount() {
-
     }
 
     setTextEntry() {
@@ -59,7 +55,7 @@ export default class login extends React.Component {
                 }}>
                 <View>
                     <View style={{
-                        marginTop: Height*0.10,
+                        marginTop: Height * 0.10,
                         alignSelf: 'center'
                     }}>
                         <Text style={{
@@ -78,21 +74,21 @@ export default class login extends React.Component {
                         <TextInput
                             placeholder="Enter your email id here                 "
                             underlineColorAndroid="transparent"
+                            autoCompleteType="off"
                             onChangeText={text => this.setState({ email: text })}
                             keyboardType='email-address'
                             defaultValue={this.state.email}
                             style={{
                                 color: 'navy',
                                 fontFamily: 'monospace',
-                                height:Height*0.06,
-                                width:Width*0.8
+                                height: Height * 0.06,
+                                width: Width * 0.8
                             }}
                         />
                     </View>
                     {/* Email TextInput ends here */}
 
                     {/* password textinput view */}
-
                     <View style={styles.user}>
                         <Image source={require('../assets/pass.png')}
                             style={styles.icon} />
@@ -106,8 +102,8 @@ export default class login extends React.Component {
                             style={{
                                 color: 'navy',
                                 fontFamily: 'monospace',
-                                height:Height*0.06,
-                                width:Width*0.58
+                                height: Height * 0.06,
+                                width: Width * 0.58
                             }}
                         />
                         <TouchableOpacity onPress={() => {
@@ -117,20 +113,19 @@ export default class login extends React.Component {
                                 name='eye-slash'
                                 type='font-awesome'
                                 color='blue'
-                                size={Height*0.04}
+                                size={Height * 0.04}
                                 style={{
-                                    left:0,
-                                    alignSelf:'center',
-                                    top:2
-                                }}/>
+                                    left: 0,
+                                    alignSelf: 'center',
+                                    top: 2
+                                }} />
                         </TouchableOpacity>
                     </View>
-
                     {/* password textinput view ends here */}
 
                     {/* forget password */}
                     <View style={{
-                        marginLeft: Dimensions.get('screen').width*0.43,
+                        marginLeft: Dimensions.get('screen').width * 0.43,
                         marginTop: '5%'
                     }}>
                         <TouchableOpacity onPress={() => {
@@ -150,20 +145,22 @@ export default class login extends React.Component {
                     </View>
 
                     <Text style={{
-                        marginLeft: Dimensions.get('screen').width*0.49,
+                        marginLeft: Dimensions.get('screen').width * 0.49,
                         fontFamily: 'monospace',
                         fontSize: 16,
-                        color: 'black'
+                        color: 'black',
+                        fontWeight: "bold"
                     }}>OR</Text>
 
                     <View style={styles.loginButton}>
                         <TouchableOpacity onPress={() => this.props.navigation.goBack()}
-                        style={{flexDirection:'row'}}>
+                            style={{ flexDirection: 'row' }}>
                             <Icon
                                 name="book"
                                 type="font-awesome"
-                                size={Height*0.04}
-                                color='green'
+                                size={Height * 0.04}
+                                color='white'
+                                iconStyle={{ marginLeft: Width * 0.05 }}
                             />
                             <Text style={styles.text}> Register</Text>
                         </TouchableOpacity>
@@ -232,7 +229,7 @@ export default class login extends React.Component {
 
                 {/* Share button */}
                 <View style={{
-                    marginLeft: Dimensions.get('screen').width*0.45,
+                    marginLeft: Dimensions.get('screen').width * 0.45,
                     marginTop: '10%'
                 }}>
                     <Icon

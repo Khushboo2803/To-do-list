@@ -31,17 +31,18 @@ const styles = StyleSheet.create({
         borderWidth: 4,
         borderRadius: 9,
         marginTop: '10%',
-        marginLeft: width*0.28,
+        marginLeft: width * 0.25,
+        marginRight: width * 0.25,
         backgroundColor: 'dodgerblue',
         borderColor: 'midnightblue',
         flexDirection: 'row',
-        alignItems:'center',
-        textAlign:'center',
-        alignContent:'center'
+        alignItems: 'center',
+        textAlign: 'center',
+        alignContent: 'center'
     },
     icon: {
-        height: height*0.04,
-        width: width*0.08,
+        height: height * 0.04,
+        width: width * 0.08,
         marginTop: 6,
         marginLeft: 2
     },
@@ -51,12 +52,13 @@ const styles = StyleSheet.create({
         borderWidth: 4,
         borderRadius: 9,
         marginTop: '2%',
-        marginLeft: width*0.28,
+        marginLeft: width * 0.25,
         backgroundColor: 'dodgerblue',
         borderColor: 'midnightblue',
         flexDirection: 'row',
-        alignItems:'center',
-        alignContent:'center'
+        alignItems: 'center',
+        textAlign: 'center',
+        alignContent: 'center'
     },
     text: {
         fontSize: 23,
@@ -67,8 +69,8 @@ const styles = StyleSheet.create({
     addButton: {
         display: "flex",
         position: "absolute",
-        bottom: height*0.05,
-        right: width*0.01
+        bottom: height * 0.05,
+        right: width * 0.01
     },
     addCancelButton: {
         borderWidth: 2,
@@ -121,24 +123,24 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     filterButton: {
-        alignSelf:'center',
-        borderWidth:2,
-        borderRadius:10,
-        width: Dimensions.get('screen').width*0.30,
-        height: Dimensions.get('screen').height*0.05,
-        backgroundColor:'green',
-        marginTop:10
+        alignSelf: 'center',
+        borderWidth: 2,
+        borderRadius: 10,
+        width: Dimensions.get('screen').width * 0.30,
+        height: Dimensions.get('screen').height * 0.05,
+        backgroundColor: 'green',
+        marginTop: 10
 
     },
     filterView: {
-            height: 35,
-            width: '100%',
-            backgroundColor: 'lightgrey',
-            flexDirection: 'row',
-            left: 2,
-            borderTopWidth:4,
-            borderTopColor:'green',
-            width:width*0.50
+        height: 35,
+        width: '100%',
+        backgroundColor: 'lightgrey',
+        flexDirection: 'row',
+        left: 2,
+        borderTopWidth: 4,
+        borderTopColor: 'green',
+        width: width * 0.50
     }
 });
 export default styles;

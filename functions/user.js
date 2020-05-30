@@ -7,15 +7,15 @@ import AsyncStorage from '@react-native-community/async-storage';
 exports.signupValidation = async (email, password, username = null) => {
     const expression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (expression.test(email) === false) {
-        ToastAndroid.show("Invalid email",ToastAndroid.LONG);
+        ToastAndroid.show("Invalid email", ToastAndroid.LONG);
         return false;
     }
     else if (password == '') {
-        ToastAndroid.show("Password cannot be blank",ToastAndroid.LONG);
+        ToastAndroid.show("Password cannot be blank", ToastAndroid.LONG);
         return false;
     }
     else if (username == null || username == '') {
-        ToastAndroid.show("Username cannot be blank",ToastAndroid.LONG);
+        ToastAndroid.show("Username cannot be blank", ToastAndroid.LONG);
         return false;
     }
     return true;
@@ -39,121 +39,165 @@ exports.register = async (email, user, password) => {
         //console.log(response.data.data.id);
         if (response.data.response == false) {
             if (response.data.message)
-                Alert.alert(response.data.message);
+                ToastAndroid.show(response.data.message, ToastAndroid.LONG);
             if (response.data.msg)
-                Alert.alert(response.data.msg);
+                ToastAndroid.show(response.data.msg, ToastAndroid.LONG);
             return false;
         }
         else
             return response.data.data.id;
     }
     catch (error) {
-        console.log(error.message);
+        console.log(error)
+        ToastAndroid.show(error.message, ToastAndroid.LONG);
+        return false;
     }
 }
 
 //function to verify otp
 exports.verifyOTP = async (id, otp) => {
-    const response = await axios({
-        method: 'post',
-        url: 'https://stackhack.herokuapp.com/verify',
-        data: {
-            "verify": {
-                "id": id,
-                "otp": otp
+    try {
+        const response = await axios({
+            method: 'post',
+            url: 'https://stackhack.herokuapp.com/verify',
+            data: {
+                "verify": {
+                    "id": id,
+                    "otp": otp
+                }
             }
+        });
+        if (response.data.response == false) {
+            if (response.data.msg)
+                ToastAndroid.show(response.data.msg, ToastAndroid.LONG);
+            if (response.data.message)
+                ToastAndroid.show(response.data.message, ToastAndroid.LONG);
+            return false;
         }
-    });
-    if (response.data.msg == "invalid otp") {
-        Alert.alert("Invalid otp");
-        return false;
-    }
-    else if (response.data.message == "successfully verified") {
-        console.log("sid is ", response.data.data._sid);
-        return response.data.data._sid;
-    }
-    else {
-        Alert.alert("Internal error");
+        else {
+            ToastAndroid.show(response.data.message, ToastAndroid.LONG);
+            console.log("sid is ", response.data.data._sid);
+            return response.data.data._sid;
+        }
+    } catch (error) {
+        console.log(error)
+        ToastAndroid.show(error.message, ToastAndroid.LONG);
         return false;
     }
 }
 
 exports.resendOTP = async (id) => {
-    console.log(id);
-    const response = await axios({
-        method: 'post',
-        url: 'https://stackhack.herokuapp.com/resend',
-        data: {
-            "id": id
-        }
-    });
-    console.log(response.data);
+    try {
+        console.log(id);
+        const response = await axios({
+            method: 'post',
+            url: 'https://stackhack.herokuapp.com/resend',
+            data: {
+                "id": id
+            }
+        });
+        if (response.data.message)
+            ToastAndroid.show(response.data.message, ToastAndroid.LONG);
+        if (response.data.msg)
+            ToastAndroid.show(response.data.msg, ToastAndroid.LONG);
+        else
+            ToastAndroid.show("internal error", ToastAndroid.LONG);
+    } catch (error) {
+        console.log(error);
+        ToastAndroid.show(error.message, ToastAndroid.LONG);
+    }
+
 }
 
 exports.login = async (email, password) => {
-    const response = await axios({
-        method: 'post',
-        url: 'https://stackhack.herokuapp.com/login',
-        data: {
-            user: {
-                "email": email,
-                "password": password
+    try {
+        const response = await axios({
+            method: 'post',
+            url: 'https://stackhack.herokuapp.com/login',
+            data: {
+                user: {
+                    "email": email,
+                    "password": password
+                }
             }
+        });
+        if (response.data.response) {
+            ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
+            return response.data.data;
         }
-    });
-    if (response.data.response)
-        return response.data.data;
-    else {
-        if (response.data.msg)
-            Alert.alert(response.data.msg);
-        if (response.data.message)
-            Alert.alert(response.data.message);
+        else {
+            if (response.data.msg)
+                ToastAndroid.show(response.data.msg, ToastAndroid.LONG)
+            if (response.data.message)
+                ToastAndroid.show(response.data.message, ToastAndroid.LONG)
+            return false;
+        }
+    } catch (error) {
+        console.log(error);
+        ToastAndroid.show(error.message, ToastAndroid.LONG);
         return false;
     }
+
 }
 
 // forget password
 exports.forgetPass = async (email) => {
-    console.log("got mail ", email);
-    const response = await axios({
-        method: 'post',
-        url: 'https://stackhack.herokuapp.com/password/forgot',
-        data: {
-            "forgot": {
-                "email": email
+    try {
+        console.log("got mail ", email);
+        const response = await axios({
+            method: 'post',
+            url: 'https://stackhack.herokuapp.com/password/forgot',
+            data: {
+                "forgot": {
+                    "email": email
+                }
             }
+        });
+        console.log(response.data);
+        if (response.data.response) {
+            ToastAndroid.show("Temporary password sent to your mail", ToastAndroid.LONG);
         }
-    });
-    console.log(response.data);
-    if (response.data.response) {
-        Alert.alert("Temporary password sent to your mail");
-    }
-    else {
-        Alert.alert("Email not registered. Please Sign-Up first");
+        else {
+            ToastAndroid.show("Email not registered. Please Sign-Up first", ToastAndroid.LONG);
+        }
+    } catch (error) {
+        console.log(error)
+        ToastAndroid.show(error.message, ToastAndroid.LONG);
     }
 }
 
 exports.updatePassword = async (oldpass, newpass) => {
-    const id = await AsyncStorage.getItem('id');
-    console.log('got id as ', id);
-    const response = await axios({
-        method: 'post',
-        url: 'https://stackhack.herokuapp.com/password/update',
-        data: {
-            "update": {
-                "id": id,
-                "currentPassword": oldpass,
-                "newPassword": newpass
+    try {
+        const id = await AsyncStorage.getItem('id');
+        console.log('got id as ', id);
+        const response = await axios({
+            method: 'post',
+            url: 'https://stackhack.herokuapp.com/password/update',
+            data: {
+                "update": {
+                    "id": id,
+                    "currentPassword": oldpass,
+                    "newPassword": newpass
+                }
             }
-        }
-    });
-    return response.data.response;
+        });
+        return response.data.response;
+    } catch (error) {
+        console.log(error);
+        ToastAndroid.show(error.message, ToastAndroid.LONG);
+    }
+
 }
 
 exports.shareMessage = async () => {
-    console.log("inside sare");
-    const msg = "StackHack 1.0 " + '\n' + "In this unorganized world, stay organized !" + '\n' + "Download To-Do App created by \*Khushboo Grover\* and \*Rohit Nayak\* " + '\n' + '\n' + "https://cutt.ly/stackvapp" + '\n' + '\n' + "Stay Organized!";
-    Share.share({ message: msg.toString() })
-        .then(result => console.log(result))
-        .catch(error => console.log(error));
+    try {
+        console.log("inside sare");
+        const msg = "StackHack 1.0 " + '\n' + "In this unorganized world, stay organized !" + '\n' + "Download To-Do App created by \*Khushboo Grover\* and \*Rohit Nayak\* " + '\n' + '\n' + "https://cutt.ly/stackvapp" + '\n' + '\n' + "Stay Organized!";
+        Share.share({ message: msg.toString() })
+            .then(result => console.log(result));
+    } catch (error) {
+        console.log(error);
+        ToastAndroid.show(error.message, ToastAndroid.LONG);
+    }
+
 }
