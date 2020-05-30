@@ -80,10 +80,14 @@ exports.search = async (req) => {
 	let response;
 	if (search.taskHeading && search.taskHeading != null) {
 		taskFind.taskHeading = search.taskHeading;
+		taskFind.category = ['personal', 'work', 'shopping', 'others'];
+		if (search.category && search.category != null)
+			taskFind.category = [search.category]
 		response = await taskModel.find({
 			author: taskFind.author,
 			taskHeading: { $regex: taskFind.taskHeading, $options: "i" },
-			taskStatus: { $in: taskFind.taskStatus }
+			taskStatus: { $in: taskFind.taskStatus },
+			category: { $in: taskFind.category }
 		});
 		if (response)
 			return new reply.successResponse(code.CODE007, 'Search success', response);
