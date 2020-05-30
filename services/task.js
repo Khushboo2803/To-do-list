@@ -97,6 +97,7 @@ exports.search = async (req) => {
 	else if (search.category && search.category != null) {
 		taskFind.category = search.category;
 		response = await taskModel.find({
+			author: taskFind.author,
 			category: taskFind.category,
 			taskStatus: { $in: taskFind.taskStatus }
 		})
@@ -107,6 +108,7 @@ exports.search = async (req) => {
 	}
 	else
 		response = await taskModel.find({
+			author: taskFind.author,
 			taskStatus: { $in: taskFind.taskStatus }
 		});
 	if (response)
