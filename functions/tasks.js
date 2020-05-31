@@ -33,7 +33,7 @@ exports.getCurrentTask = async () => {
         return taskResponse.data.data.taskItems;
     } catch (error) {
         console.log('error in get current task', error);
-        ToastAndroid.show("Error in getting tasks", ToastAndroid.LONG)
+        ToastAndroid.show(error.essage, ToastAndroid.LONG)
     }
 
 }
@@ -100,7 +100,7 @@ exports.addTask = async (thisObj) => {
         }
     } catch (error) {
         console.log('error in add task', error);
-        ToastAndroid.show('error while adding task', ToastAndroid.LONG)
+        ToastAndroid.show(error.message, ToastAndroid.LONG)
     }
 
 }
@@ -125,7 +125,7 @@ exports.deleteTask = async (task) => {
         return taskResponse.data.response
     } catch (error) {
         console.log('error in delete', error);
-        ToastAndroid.show('error in delete', ToastAndroid.LONG);
+        ToastAndroid.show(error.message, ToastAndroid.LONG);
     }
 
 }
@@ -154,7 +154,7 @@ exports.updateTask = async (task) => {
         }
     } catch (error) {
         console.log('error in update task');
-        ToastAndroid.show('error in update', ToastAndroid.LONG)
+        ToastAndroid.show(error.message, ToastAndroid.LONG)
     }
 
 }
@@ -180,7 +180,7 @@ exports.getCompletedTask = async () => {
         }
     } catch (error) {
         console.log('error in getComplete task');
-        ToastAndroid.show('error getting completed task', ToastAndroid.LONG)
+        ToastAndroid.show(error.message, ToastAndroid.LONG)
     }
 
 }
@@ -211,28 +211,28 @@ exports.searchTask = async (SearchObj) => {
         }
     } catch (error) {
         console.log('error in search');
-        ToastAndroid.show('error in task search', ToastAndroid.LONG)
+        ToastAndroid.show(error.message, ToastAndroid.LONG)
     }
 }
 
-exports.getDateString=(date)=>{
+exports.getDateString = (date) => {
     console.log("got date as ", date);
-    const dateDue=date.split("-");
-    var month='';
-    switch(dateDue[1]){
-        case '01': month='Jan'; break;
-        case '02': month='Feb'; break;
-        case '03': month='Mar'; break;
-        case '04': month='Apr'; break;
-        case '05': month="May"; break;
-        case '06': month='June'; break;
-        case '07': month='July'; break;
-        case '08': month='Aug'; break;
-        case '09': month='Sept'; break;
-        case '10': month='Oct'; break;
-        case '11': month='Nov'; break;
-        case '12': month='Dec'; break;
+    const dateDue = date.split("-");
+    var month = '';
+    switch (dateDue[1]) {
+        case '01': month = 'Jan'; break;
+        case '02': month = 'Feb'; break;
+        case '03': month = 'Mar'; break;
+        case '04': month = 'Apr'; break;
+        case '05': month = "May"; break;
+        case '06': month = 'June'; break;
+        case '07': month = 'July'; break;
+        case '08': month = 'Aug'; break;
+        case '09': month = 'Sept'; break;
+        case '10': month = 'Oct'; break;
+        case '11': month = 'Nov'; break;
+        case '12': month = 'Dec'; break;
     }
-    const dateR=dateDue[2]+' '+month+' '+dateDue[0];
+    const dateR = dateDue[2] + ' ' + month + ' ' + dateDue[0];
     return dateR;
 }
