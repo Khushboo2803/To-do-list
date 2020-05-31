@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 exports.signupValidation = async (email, password, username = null) => {
     const expression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const passwordExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/
     if (expression.test(email) === false) {
         ToastAndroid.show("Invalid email", ToastAndroid.LONG);
         return false;
@@ -18,6 +19,16 @@ exports.signupValidation = async (email, password, username = null) => {
         ToastAndroid.show("Username cannot be blank", ToastAndroid.LONG);
         return false;
     }
+    else if (password.length < 8) {
+        ToastAndroid.show("minimum length of password is 8", ToastAndroid.LONG);
+        return false;
+    }
+    else if (!passwordExpression.test(password)) {
+        ToastAndroid.show("Password must contain 1 alphabet, 1 digit and 1 special character", ToastAndroid.LONG)
+        return false;
+    }
+
+
     return true;
 }
 
