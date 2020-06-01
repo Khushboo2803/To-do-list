@@ -9,14 +9,20 @@
 ### Cloning the Repository
 
 * Clone repos  
+```sh
  $ git clone https://github.com/Khushboo2803/To-do-list.git
+```
 
 * Checkout to frontend branch   
+```sh
     $ git checkout frontend
+```
 
 ### Installation
 * Installing dependencies  
+```sh
      $ npm install
+```
 
 ### Running on device
 * To run on device  
