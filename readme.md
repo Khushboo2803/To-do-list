@@ -20,7 +20,7 @@
 
 ### Running on device
 * To run on device  
- ' ''sh $ react-native run-android
+ $ react-native run-android
 
 #### **Author**  
 [Rohit](https://github.com/rnayak1) :smile: (rohit.mca17.du@gmail.com)        
