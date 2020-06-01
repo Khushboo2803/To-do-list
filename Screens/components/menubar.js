@@ -6,8 +6,8 @@ import Dialog, { DialogTitle, DialogContent, DialogFooter, DialogButton, ScaleAn
 
 import user from '../../functions/user'
 
-const Height=Dimensions.get('screen').height;
-const Width=Dimensions.get('screen').width;
+const Height = Dimensions.get('screen').height;
+const Width = Dimensions.get('screen').width;
 export default class MenuBar extends React.Component {
     constructor(props) {
         super(props);
@@ -37,8 +37,8 @@ export default class MenuBar extends React.Component {
     render() {
         return (
             <View style={{
-                height:Dimensions.get('screen').height*0.07,
-                width:Dimensions.get('screen').width,
+                height: Dimensions.get('screen').height * 0.07,
+                width: Dimensions.get('screen').width,
             }}>
                 {/* menu starts here */}
                 <View
@@ -57,7 +57,7 @@ export default class MenuBar extends React.Component {
                             fontWeight: '900',
                             textShadowRadius: 20,
                             textShadowColor: 'gainsboro',
-                            width: Width*0.5
+                            width: Width * 0.5
                         }}> To-do List</Text>
 
                     {/* header menu starts here */}
@@ -66,12 +66,13 @@ export default class MenuBar extends React.Component {
                         button={
                             <TouchableOpacity onPress={this.showMenu}>
                                 <Image source={require('../../assets/menu.jpg')}
-                                    style={{ 
-                                        height: Height*0.06, 
-                                        width: Width*0.13, 
-                                        marginLeft: Width*0.35, 
-                                        borderRadius: 98, 
-                                        marginTop: 2 }}
+                                    style={{
+                                        height: Height * 0.06,
+                                        width: Width * 0.13,
+                                        marginLeft: Width * 0.35,
+                                        borderRadius: 98,
+                                        marginTop: 2
+                                    }}
                                 />
                             </TouchableOpacity>
                         }
@@ -180,40 +181,42 @@ export default class MenuBar extends React.Component {
                         <View>
                             <TextInput
                                 placeholder="Enter current password                 "
-                                underlineColorAndroid="transparent"
+                                underlineColorAndroid="black"
                                 onChangeText={text => this.setState({ oldpass: text })}
                                 defaultValue={this.state.oldpass}
                                 style={{
                                     color: 'navy',
-                                    fontFamily: 'monospace'
+                                    fontFamily: 'monospace',
+                                    borderBottomColor: 1
                                 }}
                             />
 
                             <TextInput
                                 placeholder="Enter new password                 "
-                                underlineColorAndroid="transparent"
+                                underlineColorAndroid="black"
                                 onChangeText={text => this.setState({ newpass: text })}
                                 defaultValue={this.state.newpass}
                                 style={{
                                     color: 'navy',
-                                    fontFamily: 'monospace'
+                                    fontFamily: 'monospace',
                                 }}
                             />
 
                             <TextInput
                                 placeholder="confirm new password                 "
-                                underlineColorAndroid="transparent"
+                                underlineColorAndroid="black"
                                 onChangeText={text => this.setState({ newpassConfirm: text })}
                                 defaultValue={this.state.newpassConfirm}
                                 style={{
                                     color: 'navy',
-                                    fontFamily: 'monospace'
+                                    fontFamily: 'monospace',
+                                    borderBottomColor: 1
                                 }}
                             />
 
                             <View>
                                 {
-                                    this.state.newpass == this.state.newpassConfirm ? null :
+                                    this.state.newpass === this.state.newpassConfirm ? null :
                                         <View style={{ marginTop: '4%' }}>
                                             <Text style={{
                                                 color: 'red'
@@ -223,23 +226,26 @@ export default class MenuBar extends React.Component {
                             </View>
 
                             <Button
-                                title="Verify"
+                                title="Update Password"
                                 onPress={async () => {
 
                                     if (this.state.oldpass != '' && this.state.newpassConfirm == this.state.newpass && this.state.newpass != '') {
+                                        const validateNewPass = await user.isValidPassword(this.state.newpass)
+                                        if (!validateNewPass) {
+                                            ToastAndroid.show("Password must contain 1 alphabet, 1 digit and 1 special character", ToastAndroid.LONG)
+                                            return;
+                                        }
                                         const res = await user.updatePassword(this.state.oldpass, this.state.newpass);
                                         if (res) {
                                             ToastAndroid.show("Password reset successful. Login again with new password", ToastAndroid.LONG);
                                             await AsyncStorage.removeItem('id');
                                             await AsyncStorage.removeItem('user');
-                                            this.setState({ oldpass: '', newpass: '', newpassConfirm: '' });
-                                            this.props.navigation.navigate('login');
-                                            this.setState({ dialogBox: false });
+                                            this.setState({ oldpass: '', newpass: '', newpassConfirm: '', dialogBox: false });
+                                            this.props.props.navigation.navigate('login');
                                         }
                                         else {
-                                            Alert.alert("You have entered wrong password. Try again.");
-                                            this.setState({ oldpass: '', newpass: '', newpassConfirm: '' });
-                                            this.setState({ dialogBox: false });
+                                            ToastAndroid.show("You have entered wrong password. Try again.", ToastAndroid.LONG);
+                                            this.setState({ oldpass: '', newpass: '', newpassConfirm: '', dialogBox: false });
                                         }
                                     }
                                 }

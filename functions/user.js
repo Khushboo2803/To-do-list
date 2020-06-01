@@ -4,6 +4,11 @@ import axios from 'axios';
 import { Alert, Share, ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
+exports.isValidPassword = async (passwordToCheck) => {
+    const passwordExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/
+    return passwordExpression.test(passwordToCheck);
+}
+
 exports.signupValidation = async (email, password, username = null) => {
     const expression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const passwordExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/

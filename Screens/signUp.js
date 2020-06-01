@@ -54,7 +54,6 @@ export default class signUp extends React.Component {
             clearInterval(this.interval);
             this.setState({ resendBox: true })
         }
-        console.log(this.i);
         this.i = this.i - 1;
     }
     onSubmitPress = async () => {
@@ -63,9 +62,9 @@ export default class signUp extends React.Component {
         if (await user.signupValidation(this.state.email, this.state.password, this.state.username)) {
             /** Inside 'if' if all fields are in correct format */
             const id = await user.register(this.state.email.toLowerCase(), this.state.username, this.state.password);
-            /** On success, get user id */
-            this.setState({ id: id });
             if (id !== false) {
+                /** On success, get user id */
+                this.setState({ id: id });
                 {/** Ask for OTP */ }
                 this.setState({ dialogBox: true });
                 this.i = 30;
@@ -269,8 +268,8 @@ export default class signUp extends React.Component {
                                             await AsyncStorage.setItem('user', this.state.username);
                                             this.props.navigation.navigate('todo');
                                         }
-                                        else{
-                                            this.setState({otp: null});
+                                        else {
+                                            this.setState({ otp: null });
                                             clearInterval(this.interval);
                                         }
 

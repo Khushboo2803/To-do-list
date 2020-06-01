@@ -31,18 +31,22 @@ export default class login extends React.Component {
 
     loginUser = async () => {
         /* function called on login press */
-        
-            /*if format of input is correct */
-            const res = await user.login(this.state.email.toLowerCase(), this.state.password);
-            /* res is the response we get from backend */
-            if (res !== false) {
-                // if the user exist
-                AsyncStorage.setItem('id', res._sid);
-                AsyncStorage.setItem('user', res.name);
-                this.props.navigation.navigate('todo');
-            }
-            else
-                return;
+
+        /*if format of input is correct */
+        const res = await user.login(this.state.email.toLowerCase(), this.state.password);
+        /* res is the response we get from backend */
+        if (res !== false) {
+            // if the user exist
+            AsyncStorage.setItem('id', res._sid);
+            AsyncStorage.setItem('user', res.name);
+            this.setState({
+                email: '',
+                password: ''
+            });
+            this.props.navigation.navigate('todo');
+        }
+        else
+            return;
 
     }
     render() {
