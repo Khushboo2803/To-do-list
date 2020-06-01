@@ -12,7 +12,7 @@
  $ git clone https://github.com/Khushboo2803/To-do-list.git
 
 * Checkout to frontend branch   
-    $ git checkout backend
+    $ git checkout frontend
 
 ### Installation
 * Installing dependencies  
