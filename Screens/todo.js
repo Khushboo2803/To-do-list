@@ -474,7 +474,7 @@ export default class main extends React.Component {
                                 >
                                     <Picker.Item label="Task Category" value={null} />
                                     <Picker.Item label="Personal" value="personal" />
-                                    <Picker.Item label="work" value="work" />
+                                    <Picker.Item label="Work" value="work" />
                                     <Picker.Item label="Shopping" value="shopping" />
                                     <Picker.Item label="Other" value="others" />
                                 </Picker>

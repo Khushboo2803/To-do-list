@@ -265,10 +265,13 @@ export default class signUp extends React.Component {
                                         this.setState({ dialogBox: false });
                                         const id = await user.verifyOTP(this.state.id, this.state.otp);
                                         if (id != false) {
-                                            console.log('validated');
                                             await AsyncStorage.setItem('id', id);
                                             await AsyncStorage.setItem('user', this.state.username);
                                             this.props.navigation.navigate('todo');
+                                        }
+                                        else{
+                                            this.setState({otp: null});
+                                            clearInterval(this.interval);
                                         }
 
                                     }}

@@ -31,7 +31,7 @@ export default class login extends React.Component {
 
     loginUser = async () => {
         /* function called on login press */
-        if (await user.signupValidation(this.state.email, this.state.password, "default")) {
+        
             /*if format of input is correct */
             const res = await user.login(this.state.email.toLowerCase(), this.state.password);
             /* res is the response we get from backend */
@@ -43,7 +43,6 @@ export default class login extends React.Component {
             }
             else
                 return;
-        }
 
     }
     render() {
