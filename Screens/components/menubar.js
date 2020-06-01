@@ -69,7 +69,7 @@ export default class MenuBar extends React.Component {
                                     style={{ 
                                         height: Height*0.06, 
                                         width: Width*0.13, 
-                                        left:Width*0.35, 
+                                        marginLeft: Width*0.35, 
                                         borderRadius: 98, 
                                         marginTop: 2 }}
                                 />
