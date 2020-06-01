@@ -247,8 +247,8 @@ export default class signUp extends React.Component {
                             <View>
 
                                 <TextInput
-                                    placeholder="OTP is sent to your email                 "
-                                    underlineColorAndroid="transparent"
+                                    placeholder="Enter OTP here                 "
+                                    underlineColorAndroid="green"
                                     onChangeText={text => this.setState({ otp: text })}
                                     defaultValue={this.state.otp}
                                     keyboardType='numeric'

@@ -6,6 +6,8 @@ import Dialog, { DialogTitle, DialogContent, DialogFooter, DialogButton, ScaleAn
 
 import user from '../../functions/user'
 
+const Height=Dimensions.get('screen').height;
+const Width=Dimensions.get('screen').width;
 export default class MenuBar extends React.Component {
     constructor(props) {
         super(props);
@@ -36,7 +38,7 @@ export default class MenuBar extends React.Component {
         return (
             <View style={{
                 height:Dimensions.get('screen').height*0.07,
-                width:Dimensions.get('screen').width
+                width:Dimensions.get('screen').width,
             }}>
                 {/* menu starts here */}
                 <View
@@ -45,7 +47,8 @@ export default class MenuBar extends React.Component {
                         borderWidth: 2,
                         backgroundColor: 'darkseagreen',
                         flexDirection: 'row',
-                        borderColor: 'green'
+                        borderColor: 'green',
+                        width: Width
                     }}>
                     {/* header text */}
                     <Text
@@ -53,7 +56,8 @@ export default class MenuBar extends React.Component {
                             fontSize: 36,
                             fontWeight: '900',
                             textShadowRadius: 20,
-                            textShadowColor: 'gainsboro'
+                            textShadowColor: 'gainsboro',
+                            width: Width*0.5
                         }}> To-do List</Text>
 
                     {/* header menu starts here */}
@@ -62,7 +66,12 @@ export default class MenuBar extends React.Component {
                         button={
                             <TouchableOpacity onPress={this.showMenu}>
                                 <Image source={require('../../assets/menu.jpg')}
-                                    style={{ height: 43, width: 45, marginLeft: '56%', borderRadius: 98, marginTop: 2 }}
+                                    style={{ 
+                                        height: Height*0.06, 
+                                        width: Width*0.13, 
+                                        left:Width*0.35, 
+                                        borderRadius: 98, 
+                                        marginTop: 2 }}
                                 />
                             </TouchableOpacity>
                         }
