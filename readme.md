@@ -22,5 +22,5 @@
 $ react-native run-android
 
 **Author**
-[Rohit](https://github.com/rnayak1) :smile: (rohit.mca17.du@gmail.com)
+[Rohit](https://github.com/rnayak1) :smile: (rohit.mca17.du@gmail.com)        
 [Khushboo](https://github.com/khushboo2803) :relaxed: (khushboogrover.mca19.du@gmail.com)
