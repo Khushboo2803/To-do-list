@@ -10,17 +10,17 @@
 
  $ git clone https://github.com/Khushboo2803/To-do-list.git
 
-* Checkout to frontend branch 
+* Checkout to frontend branch   
     $ git checkout backend
 
 ### Installation
-* Installing dependencies
+* Installing dependencies  
      $ npm install
 
 ### Running on device
-* To run on device
-$ react-native run-android
+* To run on device  
+    $ react-native run-android
 
-**Author**
+#### **Author**  
 [Rohit](https://github.com/rnayak1) :smile: (rohit.mca17.du@gmail.com)        
 [Khushboo](https://github.com/khushboo2803) :relaxed: (khushboogrover.mca19.du@gmail.com)
