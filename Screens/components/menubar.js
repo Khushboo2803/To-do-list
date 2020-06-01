@@ -181,36 +181,46 @@ export default class MenuBar extends React.Component {
                         <View>
                             <TextInput
                                 placeholder="Enter current password                 "
-                                underlineColorAndroid="black"
+                                underlineColorAndroid="transparent"
                                 onChangeText={text => this.setState({ oldpass: text })}
                                 defaultValue={this.state.oldpass}
                                 style={{
                                     color: 'navy',
                                     fontFamily: 'monospace',
-                                    borderBottomColor: 1
+                                    borderColor: "lightgrey",
+                                    borderWidth: 1,
+                                    borderRadius: 7,
+                                    marginBottom: 12
                                 }}
                             />
 
                             <TextInput
                                 placeholder="Enter new password                 "
-                                underlineColorAndroid="black"
+                                underlineColorAndroid="transparent"
                                 onChangeText={text => this.setState({ newpass: text })}
                                 defaultValue={this.state.newpass}
                                 style={{
                                     color: 'navy',
                                     fontFamily: 'monospace',
+                                    borderColor: "lightgrey",
+                                    borderWidth: 1,
+                                    borderRadius: 7,
+                                    marginBottom: 12
                                 }}
                             />
 
                             <TextInput
                                 placeholder="confirm new password                 "
-                                underlineColorAndroid="black"
+                                underlineColorAndroid="transparent"
                                 onChangeText={text => this.setState({ newpassConfirm: text })}
                                 defaultValue={this.state.newpassConfirm}
                                 style={{
                                     color: 'navy',
                                     fontFamily: 'monospace',
-                                    borderBottomColor: 1
+                                    borderColor: "lightgrey",
+                                    borderWidth: 1,
+                                    borderRadius: 7,
+                                    marginBottom: 12
                                 }}
                             />
 
