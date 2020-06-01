@@ -15,13 +15,13 @@
 
 * Checkout to frontend branch   
 ```sh
-    $ git checkout frontend
+ $ git checkout frontend
 ```
 
 ### Installation
 * Installing dependencies  
 ```sh
-     $ npm install
+ $ npm install
 ```
 
 ### Running on device
