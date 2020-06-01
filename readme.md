@@ -8,6 +8,7 @@
 
 ### Cloning the Repository
 
+* Clone repos  
  $ git clone https://github.com/Khushboo2803/To-do-list.git
 
 * Checkout to frontend branch   
