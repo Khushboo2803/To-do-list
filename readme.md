@@ -10,9 +10,13 @@
 
  $ git clone https://github.com/Khushboo2803/To-do-list.git
 
-* Checkout to frontend branch
+* Checkout to frontend branch 
     $ git checkout backend
 
 ### Installation
 * Installing dependencies
      $ npm install
+
+### Running on device
+* To run on device
+$ react-native run-android
