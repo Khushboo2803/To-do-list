@@ -8,7 +8,7 @@
 
 ### Cloning the Repository
 
-* Clone repos  
+* Clone repository  
 ```sh
  $ git clone https://github.com/Khushboo2803/To-do-list.git
 ```
