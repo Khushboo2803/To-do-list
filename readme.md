@@ -1,4 +1,4 @@
-# Express Api for StackHack v1 to-do-list
+# Rest Api for StackHack v1 to-do-list (Built over express)
 
 - This project is made for the hackathon [StackHack 1.0](https://www.hackerearth.com/challenges/hackathon/stackhack-v1/) organised on [Hackerearth](https://www.hackerearth.com/)
 
