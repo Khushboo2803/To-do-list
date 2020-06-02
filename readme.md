@@ -15,13 +15,13 @@
 
 * Checkout to frontend branch   
 ```sh
-    $ git checkout frontend
+ $ git checkout frontend
 ```
 
 ### Installation
 * Installing dependencies  
 ```sh
-     $ npm install
+ $ npm install
 ```
 
 ### Running on device
@@ -29,6 +29,11 @@
 ```sh
  $ react-native run-android 
  ```
+
+* In case icons doesnot shows up, please run 
+```sh
+ $ react-native link react-native-vector-icons
+```
 
 #### **Author**  
 [Rohit](https://github.com/rnayak1) :smile: (rohit.mca17.du@gmail.com)        
